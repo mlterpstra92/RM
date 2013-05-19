@@ -283,6 +283,14 @@ class Interpreter extends DepthFirstAdapter {
             //Function call
             AIdentFactor fac = (AIdentFactor)factor;
             String ident = fac.getIdent().getText().trim();
+            ArrayList<Number> list = getArgs(fac.getArglst());
+            //Built-in pow function because approximating it sucks
+            if(ident.equals("pow"))
+            {
+                Number x = new RealVal(new Double(list.get(0).getValue().toString()));
+                Number y = new RealVal(new Double(list.get(1).getValue().toString()));
+                return new RealVal(Math.pow((Double)x.getValue(), (Double)y.getValue()));
+            }
             Function func = func_list.get(ident);
             if(func == null)
             {
@@ -291,7 +299,6 @@ class Interpreter extends DepthFirstAdapter {
                     throw new IllegalArgumentException("No such func/arg " + ident);
                 return fa.getValue();
             }
-            ArrayList<Number> list = getArgs(fac.getArglst());
             for(int i = 0; i < list.size(); ++i)
             {
                 Number n = list.get(i);
