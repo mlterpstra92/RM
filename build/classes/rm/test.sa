@@ -1,0 +1,3 @@
+LET fac(n) = IF n <= 1.0 THEN 1.0 ELSE n * fac(n-1.0);
+LET e = 2.71828182846;
+.

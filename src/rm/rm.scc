@@ -1,0 +1,95 @@
+/* 
+	filename   : RM.ssc
+	created on : May 3, 2013
+	description:
+*/
+
+/* define package-prefix */
+Package rm;
+
+Helpers
+    all = [0 .. 0xFFFF];  
+    tab = 9;
+    cr = 13;
+    lf = 10;
+    letter = [['A'..'Z'] + ['a'..'z']];	
+    digit = ['0' .. '9'];
+    eol = cr lf | cr | lf;   
+    not_star = [all - '*'];
+    not_star_slash = [not_star - '/'];
+    short_comment = '//' [all - [cr + lf]]* eol;
+    long_comment = '/*' not_star* '*'+ (not_star_slash not_star* '*'+)* '/';
+
+/* define token */
+Tokens
+    blank = (' ' | eol | tab)+;
+    plussym = '+';
+    minussym = '-';
+    timessym = '*';
+    imodsym = '%';
+    rdivsym = '/';
+    idivsym = '/';
+    lesssym  = '<';
+    lseqsym = '<=';
+    noteqsym = '!=';
+    greqsym = '>=';
+    grtrsym = '>';
+    lshiftsym = '<<';
+    rshiftsym = '>>';
+    
+    condis = '&&'  | '||';
+    ifsym = 'IF';
+    thensym = 'THEN';
+    elsesym = 'ELSE';
+    letsym = 'LET';
+    
+    lparsym = '(';
+    rparsym = ')';
+    endsym = '.';
+    commasym = ',';
+
+    semicolonsym = ';';
+    equalsym = '==';
+    assignsym = '=';
+    questionsym = '?';
+    
+    intdenotation = digit+;
+    realdenotation = digit+ '.' digit+;
+    ident = letter+;
+    comment = short_comment | long_comment;
+
+/* Token to be ignored */
+Ignored Tokens
+    comment, blank;
+
+Productions
+    program = {def}def program | {comp}comp program | {end}endsym;
+    def = letsym ident parlst assignsym expr semicolonsym;
+    comp = expr questionsym;
+    parlst = {parlst}lparsym pars rparsym | {empty}empty;
+    pars = {ident}ident | {comma}pars commasym ident;
+    expr = {complexexpr}ifsym relcomp thensym [trueclause]:expr elsesym [falseclause]:expr | {simpleexpr}smplexpr;
+    relcomp = {condis}[p1]:relcomp condis [p2]:relexpr | {cond}relexpr;
+    relexpr = [left]:expr relop [right]:expr;
+    smplexpr = {term}term | {add}smplexpr addop term;
+    term = {factor}factor | {mult}term mulop factor;
+    factor = {par}lparsym expr rparsym
+             | {int}intdenotation
+             | {real}realdenotation
+             | {ident}ident arglst;
+    arglst = {args}lparsym args rparsym | {empty}empty;
+    args = {expr}expr | {listargs}args commasym expr;
+    addop = {plus}plussym | {minus}minussym;
+    mulop = {mult}timessym 
+            | {integerdiv}idivsym 
+            | {integermod}imodsym 
+            | {realdiv}rdivsym
+            | {lshift} lshiftsym
+            | {rshift} rshiftsym;
+    relop =   {lessthan}lesssym 
+            | {lessorequal}lseqsym 
+            | {equal}equalsym 
+            | {notequal}noteqsym 
+            | {greaterequal}greqsym 
+            | {greater}grtrsym;
+    empty = ;
