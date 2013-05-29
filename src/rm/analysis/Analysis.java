@@ -32,6 +32,7 @@ public interface Analysis extends Switch
     void caseAMultTerm(AMultTerm node);
     void caseAParFactor(AParFactor node);
     void caseAIntFactor(AIntFactor node);
+    void caseANegatetypeFactor(ANegatetypeFactor node);
     void caseARealFactor(ARealFactor node);
     void caseAIdentFactor(AIdentFactor node);
     void caseAArgsArglst(AArgsArglst node);
@@ -41,9 +42,8 @@ public interface Analysis extends Switch
     void caseAPlusAddop(APlusAddop node);
     void caseAMinusAddop(AMinusAddop node);
     void caseAMultMulop(AMultMulop node);
-    void caseAIntegerdivMulop(AIntegerdivMulop node);
+    void caseADivMulop(ADivMulop node);
     void caseAIntegermodMulop(AIntegermodMulop node);
-    void caseARealdivMulop(ARealdivMulop node);
     void caseALshiftMulop(ALshiftMulop node);
     void caseARshiftMulop(ARshiftMulop node);
     void caseALessthanRelop(ALessthanRelop node);
@@ -59,8 +59,7 @@ public interface Analysis extends Switch
     void caseTMinussym(TMinussym node);
     void caseTTimessym(TTimessym node);
     void caseTImodsym(TImodsym node);
-    void caseTRdivsym(TRdivsym node);
-    void caseTIdivsym(TIdivsym node);
+    void caseTDivsym(TDivsym node);
     void caseTLesssym(TLesssym node);
     void caseTLseqsym(TLseqsym node);
     void caseTNoteqsym(TNoteqsym node);

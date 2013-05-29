@@ -564,6 +564,31 @@ public class ReversedDepthFirstAdapter extends AnalysisAdapter
         outAIntFactor(node);
     }
 
+    public void inANegatetypeFactor(ANegatetypeFactor node)
+    {
+        defaultIn(node);
+    }
+
+    public void outANegatetypeFactor(ANegatetypeFactor node)
+    {
+        defaultOut(node);
+    }
+
+    @Override
+    public void caseANegatetypeFactor(ANegatetypeFactor node)
+    {
+        inANegatetypeFactor(node);
+        if(node.getFactor() != null)
+        {
+            node.getFactor().apply(this);
+        }
+        if(node.getMinussym() != null)
+        {
+            node.getMinussym().apply(this);
+        }
+        outANegatetypeFactor(node);
+    }
+
     public void inARealFactor(ARealFactor node)
     {
         defaultIn(node);
@@ -773,25 +798,25 @@ public class ReversedDepthFirstAdapter extends AnalysisAdapter
         outAMultMulop(node);
     }
 
-    public void inAIntegerdivMulop(AIntegerdivMulop node)
+    public void inADivMulop(ADivMulop node)
     {
         defaultIn(node);
     }
 
-    public void outAIntegerdivMulop(AIntegerdivMulop node)
+    public void outADivMulop(ADivMulop node)
     {
         defaultOut(node);
     }
 
     @Override
-    public void caseAIntegerdivMulop(AIntegerdivMulop node)
+    public void caseADivMulop(ADivMulop node)
     {
-        inAIntegerdivMulop(node);
-        if(node.getIdivsym() != null)
+        inADivMulop(node);
+        if(node.getDivsym() != null)
         {
-            node.getIdivsym().apply(this);
+            node.getDivsym().apply(this);
         }
-        outAIntegerdivMulop(node);
+        outADivMulop(node);
     }
 
     public void inAIntegermodMulop(AIntegermodMulop node)
@@ -813,27 +838,6 @@ public class ReversedDepthFirstAdapter extends AnalysisAdapter
             node.getImodsym().apply(this);
         }
         outAIntegermodMulop(node);
-    }
-
-    public void inARealdivMulop(ARealdivMulop node)
-    {
-        defaultIn(node);
-    }
-
-    public void outARealdivMulop(ARealdivMulop node)
-    {
-        defaultOut(node);
-    }
-
-    @Override
-    public void caseARealdivMulop(ARealdivMulop node)
-    {
-        inARealdivMulop(node);
-        if(node.getRdivsym() != null)
-        {
-            node.getRdivsym().apply(this);
-        }
-        outARealdivMulop(node);
     }
 
     public void inALshiftMulop(ALshiftMulop node)

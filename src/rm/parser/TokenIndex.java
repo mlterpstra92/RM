@@ -34,158 +34,152 @@ class TokenIndex extends AnalysisAdapter
     }
 
     @Override
-    public void caseTRdivsym(@SuppressWarnings("unused") TRdivsym node)
+    public void caseTDivsym(@SuppressWarnings("unused") TDivsym node)
     {
         this.index = 4;
     }
 
     @Override
-    public void caseTIdivsym(@SuppressWarnings("unused") TIdivsym node)
+    public void caseTLesssym(@SuppressWarnings("unused") TLesssym node)
     {
         this.index = 5;
     }
 
     @Override
-    public void caseTLesssym(@SuppressWarnings("unused") TLesssym node)
+    public void caseTLseqsym(@SuppressWarnings("unused") TLseqsym node)
     {
         this.index = 6;
     }
 
     @Override
-    public void caseTLseqsym(@SuppressWarnings("unused") TLseqsym node)
+    public void caseTNoteqsym(@SuppressWarnings("unused") TNoteqsym node)
     {
         this.index = 7;
     }
 
     @Override
-    public void caseTNoteqsym(@SuppressWarnings("unused") TNoteqsym node)
+    public void caseTGreqsym(@SuppressWarnings("unused") TGreqsym node)
     {
         this.index = 8;
     }
 
     @Override
-    public void caseTGreqsym(@SuppressWarnings("unused") TGreqsym node)
+    public void caseTGrtrsym(@SuppressWarnings("unused") TGrtrsym node)
     {
         this.index = 9;
     }
 
     @Override
-    public void caseTGrtrsym(@SuppressWarnings("unused") TGrtrsym node)
+    public void caseTLshiftsym(@SuppressWarnings("unused") TLshiftsym node)
     {
         this.index = 10;
     }
 
     @Override
-    public void caseTLshiftsym(@SuppressWarnings("unused") TLshiftsym node)
+    public void caseTRshiftsym(@SuppressWarnings("unused") TRshiftsym node)
     {
         this.index = 11;
     }
 
     @Override
-    public void caseTRshiftsym(@SuppressWarnings("unused") TRshiftsym node)
+    public void caseTCondis(@SuppressWarnings("unused") TCondis node)
     {
         this.index = 12;
     }
 
     @Override
-    public void caseTCondis(@SuppressWarnings("unused") TCondis node)
+    public void caseTIfsym(@SuppressWarnings("unused") TIfsym node)
     {
         this.index = 13;
     }
 
     @Override
-    public void caseTIfsym(@SuppressWarnings("unused") TIfsym node)
+    public void caseTThensym(@SuppressWarnings("unused") TThensym node)
     {
         this.index = 14;
     }
 
     @Override
-    public void caseTThensym(@SuppressWarnings("unused") TThensym node)
+    public void caseTElsesym(@SuppressWarnings("unused") TElsesym node)
     {
         this.index = 15;
     }
 
     @Override
-    public void caseTElsesym(@SuppressWarnings("unused") TElsesym node)
+    public void caseTLetsym(@SuppressWarnings("unused") TLetsym node)
     {
         this.index = 16;
     }
 
     @Override
-    public void caseTLetsym(@SuppressWarnings("unused") TLetsym node)
+    public void caseTLparsym(@SuppressWarnings("unused") TLparsym node)
     {
         this.index = 17;
     }
 
     @Override
-    public void caseTLparsym(@SuppressWarnings("unused") TLparsym node)
+    public void caseTRparsym(@SuppressWarnings("unused") TRparsym node)
     {
         this.index = 18;
     }
 
     @Override
-    public void caseTRparsym(@SuppressWarnings("unused") TRparsym node)
+    public void caseTEndsym(@SuppressWarnings("unused") TEndsym node)
     {
         this.index = 19;
     }
 
     @Override
-    public void caseTEndsym(@SuppressWarnings("unused") TEndsym node)
+    public void caseTCommasym(@SuppressWarnings("unused") TCommasym node)
     {
         this.index = 20;
     }
 
     @Override
-    public void caseTCommasym(@SuppressWarnings("unused") TCommasym node)
+    public void caseTSemicolonsym(@SuppressWarnings("unused") TSemicolonsym node)
     {
         this.index = 21;
     }
 
     @Override
-    public void caseTSemicolonsym(@SuppressWarnings("unused") TSemicolonsym node)
+    public void caseTEqualsym(@SuppressWarnings("unused") TEqualsym node)
     {
         this.index = 22;
     }
 
     @Override
-    public void caseTEqualsym(@SuppressWarnings("unused") TEqualsym node)
+    public void caseTAssignsym(@SuppressWarnings("unused") TAssignsym node)
     {
         this.index = 23;
     }
 
     @Override
-    public void caseTAssignsym(@SuppressWarnings("unused") TAssignsym node)
+    public void caseTQuestionsym(@SuppressWarnings("unused") TQuestionsym node)
     {
         this.index = 24;
     }
 
     @Override
-    public void caseTQuestionsym(@SuppressWarnings("unused") TQuestionsym node)
+    public void caseTIntdenotation(@SuppressWarnings("unused") TIntdenotation node)
     {
         this.index = 25;
     }
 
     @Override
-    public void caseTIntdenotation(@SuppressWarnings("unused") TIntdenotation node)
+    public void caseTRealdenotation(@SuppressWarnings("unused") TRealdenotation node)
     {
         this.index = 26;
     }
 
     @Override
-    public void caseTRealdenotation(@SuppressWarnings("unused") TRealdenotation node)
+    public void caseTIdent(@SuppressWarnings("unused") TIdent node)
     {
         this.index = 27;
     }
 
     @Override
-    public void caseTIdent(@SuppressWarnings("unused") TIdent node)
-    {
-        this.index = 28;
-    }
-
-    @Override
     public void caseEOF(@SuppressWarnings("unused") EOF node)
     {
-        this.index = 29;
+        this.index = 28;
     }
 }

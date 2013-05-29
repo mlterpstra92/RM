@@ -5,46 +5,46 @@ package rm.node;
 import rm.analysis.*;
 
 @SuppressWarnings("nls")
-public final class ARshiftMulop extends PMulop
+public final class ADivMulop extends PMulop
 {
-    private TRshiftsym _rshiftsym_;
+    private TDivsym _divsym_;
 
-    public ARshiftMulop()
+    public ADivMulop()
     {
         // Constructor
     }
 
-    public ARshiftMulop(
-        @SuppressWarnings("hiding") TRshiftsym _rshiftsym_)
+    public ADivMulop(
+        @SuppressWarnings("hiding") TDivsym _divsym_)
     {
         // Constructor
-        setRshiftsym(_rshiftsym_);
+        setDivsym(_divsym_);
 
     }
 
     @Override
     public Object clone()
     {
-        return new ARshiftMulop(
-            cloneNode(this._rshiftsym_));
+        return new ADivMulop(
+            cloneNode(this._divsym_));
     }
 
     @Override
     public void apply(Switch sw)
     {
-        ((Analysis) sw).caseARshiftMulop(this);
+        ((Analysis) sw).caseADivMulop(this);
     }
 
-    public TRshiftsym getRshiftsym()
+    public TDivsym getDivsym()
     {
-        return this._rshiftsym_;
+        return this._divsym_;
     }
 
-    public void setRshiftsym(TRshiftsym node)
+    public void setDivsym(TDivsym node)
     {
-        if(this._rshiftsym_ != null)
+        if(this._divsym_ != null)
         {
-            this._rshiftsym_.parent(null);
+            this._divsym_.parent(null);
         }
 
         if(node != null)
@@ -57,23 +57,23 @@ public final class ARshiftMulop extends PMulop
             node.parent(this);
         }
 
-        this._rshiftsym_ = node;
+        this._divsym_ = node;
     }
 
     @Override
     public String toString()
     {
         return ""
-            + toString(this._rshiftsym_);
+            + toString(this._divsym_);
     }
 
     @Override
     void removeChild(@SuppressWarnings("unused") Node child)
     {
         // Remove child
-        if(this._rshiftsym_ == child)
+        if(this._divsym_ == child)
         {
-            this._rshiftsym_ = null;
+            this._divsym_ = null;
             return;
         }
 
@@ -84,9 +84,9 @@ public final class ARshiftMulop extends PMulop
     void replaceChild(@SuppressWarnings("unused") Node oldChild, @SuppressWarnings("unused") Node newChild)
     {
         // Replace child
-        if(this._rshiftsym_ == oldChild)
+        if(this._divsym_ == oldChild)
         {
-            setRshiftsym((TRshiftsym) newChild);
+            setDivsym((TDivsym) newChild);
             return;
         }
 

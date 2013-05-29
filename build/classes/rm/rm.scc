@@ -27,8 +27,7 @@ Tokens
     minussym = '-';
     timessym = '*';
     imodsym = '%';
-    rdivsym = '/';
-    idivsym = '/';
+    divsym = '/';
     lesssym  = '<';
     lseqsym = '<=';
     noteqsym = '!=';
@@ -75,15 +74,15 @@ Productions
     term = {factor}factor | {mult}term mulop factor;
     factor = {par}lparsym expr rparsym
              | {int}intdenotation
+             | {negatetype} minussym factor
              | {real}realdenotation
              | {ident}ident arglst;
     arglst = {args}lparsym args rparsym | {empty}empty;
     args = {expr}expr | {listargs}args commasym expr;
     addop = {plus}plussym | {minus}minussym;
     mulop = {mult}timessym 
-            | {integerdiv}idivsym 
+            | {div}divsym 
             | {integermod}imodsym 
-            | {realdiv}rdivsym
             | {lshift} lshiftsym
             | {rshift} rshiftsym;
     relop =   {lessthan}lesssym 

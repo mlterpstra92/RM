@@ -44,7 +44,7 @@ public class Function {
     
     public FuncArg getArg(String name)
     {
-        //Arrays.sort(args.toArray());
+        Arrays.sort(args.toArray());
         for(FuncArg arg : args)
         {
             if(arg.getArgName().equals(name))
@@ -55,7 +55,7 @@ public class Function {
     
     public FuncArg getArg(int i)
     {
-        //Arrays.sort(args.toArray());
+        Arrays.sort(args.toArray());
         return args.get(i);
     }
     

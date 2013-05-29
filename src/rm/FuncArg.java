@@ -4,13 +4,24 @@
  */
 package rm;
 
+import rm.node.PExpr;
+
 /**
  *
  * @author Maarten
  */
 public class FuncArg implements Comparable<FuncArg>{
     private String argName;
-    private Number value;
+    private PExpr expr;
+    private Type value;
+
+    public Type getValue() {
+        return value;
+    }
+
+    public void setValue(Type value) {
+        this.value = value;
+    }
     private Integer order;
 
     public Integer getOrder() {
@@ -25,19 +36,22 @@ public class FuncArg implements Comparable<FuncArg>{
         return argName;
     }
 
-    public void setValue(Number n)
+    public void setExpr(PExpr n)
     {
-        this.value = n;
+        this.expr = n;
     }
-    public Number getValue() {
-        return value;
+    public PExpr getExpr() {
+        return expr;
     }
     
-    public FuncArg(String argName, Number value, Integer order)
+    
+    
+    public FuncArg(String argName, PExpr value, Integer order)
     {
         this.argName = argName;
-        this.value = value;
+        this.expr = value;
         this.order = order;
+        this.value = null;
     }
 
     @Override

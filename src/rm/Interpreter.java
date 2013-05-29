@@ -80,7 +80,7 @@ class Interpreter extends DepthFirstAdapter {
         int order = 0;
         for(String arg : getParams(def.getParlst()))
         {
-            FuncArg v = new FuncArg(arg, new IntVal(-1), order);
+            FuncArg v = new FuncArg(arg, null, order);
             ++order;
             f.addArg(v);
         }
@@ -90,7 +90,7 @@ class Interpreter extends DepthFirstAdapter {
     @Override
     public void caseAComp(AComp node)
     {
-        Number n;
+        Type n;
         try {
             n = parseExpr(node.getExpr());
         } catch (Exception ex) {
@@ -99,34 +99,26 @@ class Interpreter extends DepthFirstAdapter {
         }
         if(n != null)
         {
-            if(n instanceof RealVal)
+            if(n instanceof RealType)
             {
-               RealVal b = (RealVal)n;
                NumberFormat numf = NumberFormat.getNumberInstance();
                numf.setMaximumFractionDigits(8);
-               System.out.println(numf.format(b.getValue()));
             }
-            else
-            {
-                IntVal i = (IntVal)n;
-                System.out.println(i.getValue());
-            }
+            System.out.println(n.getValue());
         }
     }
     
-    public Number parseExpr(PExpr expr) throws Exception
+    public Type parseExpr(PExpr expr) throws Exception
     {
         if(expr instanceof AComplexexprExpr)
         {
             return parseComplexExpr((AComplexexprExpr)expr);
         }
-        
         else return parseSimpleExpr(((ASimpleexprExpr)expr).getSmplexpr());
     }
     
-    private Number parseComplexExpr(AComplexexprExpr aComplexExpr) throws Exception {
+    private Type parseComplexExpr(AComplexexprExpr aComplexExpr) throws Exception {
         Boolean isTrue = parseRelComp((PRelcomp)aComplexExpr.getRelcomp());
-        //Boolean isTrue = parseRelExpr((ARelexpr)aComplexExpr.getRelexpr());
         if(isTrue)
             return parseExpr(aComplexExpr.getTrueclause());
         else return parseExpr(aComplexExpr.getFalseclause());
@@ -159,8 +151,13 @@ class Interpreter extends DepthFirstAdapter {
     
     private Boolean parseRelExpr(ARelexpr relexpr) throws Exception 
     {
-        Number leftNumber = parseExpr(relexpr.getLeft());
-        Number rightNumber = parseExpr(relexpr.getRight());
+        Type leftNumber = parseExpr(relexpr.getLeft());
+        Type rightNumber = parseExpr(relexpr.getRight());
+        if(shouldCoerce(leftNumber, rightNumber))
+        {
+            leftNumber = new RealType(new Double(leftNumber.getValue().toString()));
+            rightNumber = new RealType(new Double(rightNumber.getValue().toString()));
+        }
         PRelop op = (relexpr.getRelop());
         if(op instanceof AEqualRelop)
             return leftNumber.equals(rightNumber);
@@ -177,12 +174,17 @@ class Interpreter extends DepthFirstAdapter {
         else throw new Exception("Invalid operator " + relexpr.getRelop().toString());
     }
     
-    private Number parseSimpleExpr(PSmplexpr aSimpleExpr) throws Exception {
+    private Type parseSimpleExpr(PSmplexpr aSimpleExpr) throws Exception {
         if(aSimpleExpr instanceof AAddSmplexpr)
         {
             AAddSmplexpr ex = (AAddSmplexpr)aSimpleExpr;
-            Number n1 = parseSimpleExpr(ex.getSmplexpr());
-            Number n2 = parseTerm(ex.getTerm());
+            Type n1 = parseSimpleExpr(ex.getSmplexpr());
+            Type n2 = parseTerm(ex.getTerm());
+            if(shouldCoerce(n1, n2))
+            {
+                n1 = new RealType(new Double(n1.getValue().toString()));
+                n2 = new RealType(new Double(n2.getValue().toString()));
+            }
             if(ex.getAddop() instanceof APlusAddop)
                 return n1.add(n2);
             else
@@ -192,48 +194,40 @@ class Interpreter extends DepthFirstAdapter {
             return parseTerm(((ATermSmplexpr)aSimpleExpr).getTerm());
     }
     
-    private Number parseTerm(PTerm term) throws Exception {
+    private Type parseTerm(PTerm term) throws Exception {
         if(term instanceof AMultTerm)
         {
             AMultTerm ex = (AMultTerm)term;
-            Number n1 = parseTerm(ex.getTerm());
-            Number n2 = parseFactor(ex.getFactor());
+            Type n1 = parseTerm(ex.getTerm());
+            Type n2 = parseFactor(ex.getFactor());
+            if(shouldCoerce(n1, n2))
+            {
+                n1 = new RealType(new Double(n1.getValue().toString()));
+                n2 = new RealType(new Double(n2.getValue().toString()));
+            }
             if(ex.getMulop() instanceof AMultMulop)
                 return n1.times(n2);
-            else if(ex.getMulop() instanceof AIntegerdivMulop)
+            else if(ex.getMulop() instanceof ADivMulop)
             {
-                IntVal iv1 = (IntVal)n1;
-                IntVal iv2 = (IntVal)n2;
-                if(iv2.getValue() == 0)
-                    throw new IllegalArgumentException("Division by zero");
-                return iv1.idiv(iv2);
+                return n1.div(n2);
             }
             else if(ex.getMulop() instanceof AIntegermodMulop)
             {
-                IntVal iv1 = (IntVal)n1;
-                IntVal iv2 = (IntVal)n2;
+                IntegerType iv1 = (IntegerType)n1;
+                IntegerType iv2 = (IntegerType)n2;
 
                 return iv1.imod(iv2);
             }
-            else if(ex.getMulop() instanceof ARealdivMulop)
-            {                
-                RealVal rv1 = (RealVal)n1;
-                RealVal rv2 = (RealVal)n2;
-
-                if(rv1.getValue() < 1.0/1000000.0)
-                    throw new IllegalArgumentException("Division by zero");
-                return rv1.rdiv(rv2);
-            }
             else if(ex.getMulop() instanceof ALshiftMulop)
             {
-                IntVal iv1 = (IntVal)n1;
-                IntVal iv2 = (IntVal)n2;
+                IntegerType iv1 = (IntegerType)n1;
+                IntegerType iv2 = (IntegerType)n2;
                 return iv1.lshift(iv2);
             }
             else if(ex.getMulop() instanceof ARshiftMulop)
             {
-                IntVal iv1 = (IntVal)n1;
-                IntVal iv2 = (IntVal)n2;
+                IntegerType iv1 = (IntegerType)n1;
+                IntegerType iv2 = (IntegerType)n2;
                 return iv1.rshift(iv2);
             }
             else throw new Exception("Invalid operator " + ex.getMulop().toString());
@@ -242,9 +236,9 @@ class Interpreter extends DepthFirstAdapter {
             return parseFactor(((AFactorTerm)term).getFactor());
     }
     
-    private ArrayList<Number> getArgs(PArglst args) throws Exception
+    private ArrayList<Type> getArgs(PArglst args) throws Exception
     {
-        ArrayList<Number> list = new ArrayList<>();
+        ArrayList<Type> list = new ArrayList<>();
         if(!(args instanceof AEmptyArglst))
         {
             AArgsArglst lst = (AArgsArglst)args;
@@ -253,7 +247,7 @@ class Interpreter extends DepthFirstAdapter {
         return list;
     }
     
-    private void parseArgs(PArgs args, ArrayList<Number> list) throws Exception
+    private void parseArgs(PArgs args, ArrayList<Type> list) throws Exception
     {
         if(args instanceof AExprArgs)
             list.add(parseExpr(((AExprArgs)args).getExpr()));
@@ -265,32 +259,35 @@ class Interpreter extends DepthFirstAdapter {
         }
     }
     
-    private Number parseFactor(PFactor factor) throws Exception {
+    private Type parseFactor(PFactor factor) throws Exception {
         if(factor instanceof AParFactor)
             return parseExpr(((AParFactor)factor).getExpr());
         else if (factor instanceof AIntFactor)
         {
             AIntFactor intfac = (AIntFactor)factor;
-            return new IntVal(Integer.parseInt(intfac.getIntdenotation().getText().trim()));
+            return new IntegerType(Integer.parseInt(intfac.getIntdenotation().getText().trim()));
         }
         else if (factor instanceof ARealFactor)
         {
             ARealFactor intfac = (ARealFactor)factor;
-            return new RealVal(Double.parseDouble(intfac.getRealdenotation().getText().trim()));
+            return new RealType(Double.parseDouble(intfac.getRealdenotation().getText().trim()));
+        }
+        else if(factor instanceof ANegatetypeFactor)
+        {
+            ANegatetypeFactor minfac = (ANegatetypeFactor)factor;
+            Type t = parseFactor(minfac.getFactor());
+            t.negate();
+            return t;
         }
         else
         {
             //Function call
             AIdentFactor fac = (AIdentFactor)factor;
             String ident = fac.getIdent().getText().trim();
-            ArrayList<Number> list = getArgs(fac.getArglst());
-            //Built-in pow function because approximating it sucks
-            if(ident.equals("pow"))
-            {
-                Number x = new RealVal(new Double(list.get(0).getValue().toString()));
-                Number y = new RealVal(new Double(list.get(1).getValue().toString()));
-                return new RealVal(Math.pow((Double)x.getValue(), (Double)y.getValue()));
-            }
+            ArrayList<Type> list = getArgs(fac.getArglst());
+            Type builtInFuncResult = executeBuiltInFunc(ident, list);
+            if(builtInFuncResult != null)
+                return builtInFuncResult;
             Function func = func_list.get(ident);
             if(func == null)
             {
@@ -301,7 +298,7 @@ class Interpreter extends DepthFirstAdapter {
             }
             for(int i = 0; i < list.size(); ++i)
             {
-                Number n = list.get(i);
+                Type n = list.get(i);
                 FuncArg fa = func.getArg(i);
                 
                 if(fa != null)
@@ -317,7 +314,7 @@ class Interpreter extends DepthFirstAdapter {
         }
     }
 
-   private Number handleFunc() throws Exception {
+   private Type handleFunc() throws Exception {
         if(funcStack.empty())
         {
             System.err.println("Error: stackerror");
@@ -327,4 +324,38 @@ class Interpreter extends DepthFirstAdapter {
         return parseExpr(currFunc.getExpr());
     }
 
+    private boolean shouldCoerce(Type n1, Type n2) {
+        return (n1 instanceof RealType) ^ (n2 instanceof RealType);
+    }
+
+    private Type executeBuiltInFunc(String ident, ArrayList<Type> list) 
+    {
+        Type retVal;
+        if(list.isEmpty())
+            return null;
+        
+        Double d = new Double(list.get(0).getValue().toString());
+        switch(ident)
+        {
+            case "sin":
+                retVal = new RealType(Math.sin(d));
+                break;
+            case "cos":
+                retVal = new RealType(Math.cos(d));
+                break;
+            case "tan":
+                retVal = new RealType(Math.tan(d));
+                break;
+            case "exp":
+                retVal = new RealType(Math.exp(d));
+                break;
+            case "log":
+                retVal = new RealType(Math.log(d));
+                break;
+            default:
+                retVal = null;
+                break;
+        }
+        return retVal;
+    }
 }

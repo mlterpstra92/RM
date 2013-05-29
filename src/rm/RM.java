@@ -22,10 +22,17 @@ public class RM {
      */
     public static void main(String[] args) {
         try {
-            Parser p = new Parser(new Lexer(new PushbackReader(new FileReader(args[0]), 1024)));
-            Start tree = p.parse();
-            tree.apply(new ASTDisplay());
-            tree.apply(new Interpreter());
+            new Parser(
+                new Lexer(
+                    new PushbackReader(
+                        new FileReader(args[0]), 1024
+                    )
+                )
+            )
+            .parse()
+            .apply(
+                new Interpreter()
+            );
         } catch (ParserException | LexerException | IOException ex) {
             Logger.getLogger(RM.class.getName()).log(Level.SEVERE, null, ex);
         }

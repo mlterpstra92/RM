@@ -5,26 +5,22 @@ package rm.node;
 import rm.analysis.*;
 
 @SuppressWarnings("nls")
-public final class AMultTerm extends PTerm
+public final class ANegatetypeFactor extends PFactor
 {
-    private PTerm _term_;
-    private PMulop _mulop_;
+    private TMinussym _minussym_;
     private PFactor _factor_;
 
-    public AMultTerm()
+    public ANegatetypeFactor()
     {
         // Constructor
     }
 
-    public AMultTerm(
-        @SuppressWarnings("hiding") PTerm _term_,
-        @SuppressWarnings("hiding") PMulop _mulop_,
+    public ANegatetypeFactor(
+        @SuppressWarnings("hiding") TMinussym _minussym_,
         @SuppressWarnings("hiding") PFactor _factor_)
     {
         // Constructor
-        setTerm(_term_);
-
-        setMulop(_mulop_);
+        setMinussym(_minussym_);
 
         setFactor(_factor_);
 
@@ -33,28 +29,27 @@ public final class AMultTerm extends PTerm
     @Override
     public Object clone()
     {
-        return new AMultTerm(
-            cloneNode(this._term_),
-            cloneNode(this._mulop_),
+        return new ANegatetypeFactor(
+            cloneNode(this._minussym_),
             cloneNode(this._factor_));
     }
 
     @Override
     public void apply(Switch sw)
     {
-        ((Analysis) sw).caseAMultTerm(this);
+        ((Analysis) sw).caseANegatetypeFactor(this);
     }
 
-    public PTerm getTerm()
+    public TMinussym getMinussym()
     {
-        return this._term_;
+        return this._minussym_;
     }
 
-    public void setTerm(PTerm node)
+    public void setMinussym(TMinussym node)
     {
-        if(this._term_ != null)
+        if(this._minussym_ != null)
         {
-            this._term_.parent(null);
+            this._minussym_.parent(null);
         }
 
         if(node != null)
@@ -67,32 +62,7 @@ public final class AMultTerm extends PTerm
             node.parent(this);
         }
 
-        this._term_ = node;
-    }
-
-    public PMulop getMulop()
-    {
-        return this._mulop_;
-    }
-
-    public void setMulop(PMulop node)
-    {
-        if(this._mulop_ != null)
-        {
-            this._mulop_.parent(null);
-        }
-
-        if(node != null)
-        {
-            if(node.parent() != null)
-            {
-                node.parent().removeChild(node);
-            }
-
-            node.parent(this);
-        }
-
-        this._mulop_ = node;
+        this._minussym_ = node;
     }
 
     public PFactor getFactor()
@@ -124,8 +94,7 @@ public final class AMultTerm extends PTerm
     public String toString()
     {
         return ""
-            + toString(this._term_)
-            + toString(this._mulop_)
+            + toString(this._minussym_)
             + toString(this._factor_);
     }
 
@@ -133,15 +102,9 @@ public final class AMultTerm extends PTerm
     void removeChild(@SuppressWarnings("unused") Node child)
     {
         // Remove child
-        if(this._term_ == child)
+        if(this._minussym_ == child)
         {
-            this._term_ = null;
-            return;
-        }
-
-        if(this._mulop_ == child)
-        {
-            this._mulop_ = null;
+            this._minussym_ = null;
             return;
         }
 
@@ -158,15 +121,9 @@ public final class AMultTerm extends PTerm
     void replaceChild(@SuppressWarnings("unused") Node oldChild, @SuppressWarnings("unused") Node newChild)
     {
         // Replace child
-        if(this._term_ == oldChild)
+        if(this._minussym_ == oldChild)
         {
-            setTerm((PTerm) newChild);
-            return;
-        }
-
-        if(this._mulop_ == oldChild)
-        {
-            setMulop((PMulop) newChild);
+            setMinussym((TMinussym) newChild);
             return;
         }
 

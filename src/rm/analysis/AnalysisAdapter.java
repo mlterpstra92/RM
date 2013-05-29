@@ -195,6 +195,12 @@ public class AnalysisAdapter implements Analysis
     }
 
     @Override
+    public void caseANegatetypeFactor(ANegatetypeFactor node)
+    {
+        defaultCase(node);
+    }
+
+    @Override
     public void caseARealFactor(ARealFactor node)
     {
         defaultCase(node);
@@ -249,19 +255,13 @@ public class AnalysisAdapter implements Analysis
     }
 
     @Override
-    public void caseAIntegerdivMulop(AIntegerdivMulop node)
+    public void caseADivMulop(ADivMulop node)
     {
         defaultCase(node);
     }
 
     @Override
     public void caseAIntegermodMulop(AIntegermodMulop node)
-    {
-        defaultCase(node);
-    }
-
-    @Override
-    public void caseARealdivMulop(ARealdivMulop node)
     {
         defaultCase(node);
     }
@@ -351,13 +351,7 @@ public class AnalysisAdapter implements Analysis
     }
 
     @Override
-    public void caseTRdivsym(TRdivsym node)
-    {
-        defaultCase(node);
-    }
-
-    @Override
-    public void caseTIdivsym(TIdivsym node)
+    public void caseTDivsym(TDivsym node)
     {
         defaultCase(node);
     }
