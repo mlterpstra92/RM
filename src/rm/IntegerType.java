@@ -117,7 +117,8 @@ public class IntegerType extends Type
         if(obj != null){
             return new IntegerType(this.value + other.getValue());
         }
-        return null;    }
+        return null;    
+    }
 
     @Override
     public Type minus(Type obj) {

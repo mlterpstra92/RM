@@ -1,11 +1,6 @@
 /*LET sumMulThreeFive(n, i, sum) = IF i < n THEN doSum(n, i, sum) ELSE sum;
 LET doSum(n, i, sum) = IF i % 3 == 0 || i % 5 == 0 THEN sumMulThreeFive(n, i+1, sum+i) ELSE sumMulThreeFive(n, i+1, sum);
 sumMulThreeFive(1000, 1, 0)?*/
-/*3+4*2.56?*/
-
-LET fib(n) = IF n < 2 THEN 1 ELSE (fib(n-1) + fib(n-2));
-fib(16)?
-
-//LET fac(n) = IF n <= 0 THEN 1 ELSE n * fac(n-1);
-//fac(5)?
+LET eps = 'a';
+SUCC eps?
 .

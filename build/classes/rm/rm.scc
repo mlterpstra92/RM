@@ -35,12 +35,14 @@ Tokens
     grtrsym = '>';
     lshiftsym = '<<';
     rshiftsym = '>>';
+    notsym = '!';
     
     condis = '&&'  | '||';
     ifsym = 'IF';
     thensym = 'THEN';
     elsesym = 'ELSE';
     letsym = 'LET';
+    succsym = 'SUCC';
     
     lparsym = '(';
     rparsym = ')';
@@ -48,13 +50,15 @@ Tokens
     commasym = ',';
 
     semicolonsym = ';';
-    equalsym = '==';
     assignsym = '=';
+    equalsym = '==';
     questionsym = '?';
     
     intdenotation = digit+;
     realdenotation = digit+ '.' digit+;
     ident = letter+;
+    charsym = '''letter''';
+    apostrophe = ''';
     comment = short_comment | long_comment;
 
 /* Token to be ignored */
@@ -74,9 +78,13 @@ Productions
     term = {factor}factor | {mult}term mulop factor;
     factor = {par}lparsym expr rparsym
              | {int}intdenotation
-             | {negatetype} minussym factor
+             | {monadexpr} monadexpr
              | {real}realdenotation
+             | {char} charsym
+             | {succchar} succsym factor
              | {ident}ident arglst;
+    monadexpr = {neg} minussym factor;
+    boolexpr = {boolunit} relexpr;
     arglst = {args}lparsym args rparsym | {empty}empty;
     args = {expr}expr | {listargs}args commasym expr;
     addop = {plus}plussym | {minus}minussym;

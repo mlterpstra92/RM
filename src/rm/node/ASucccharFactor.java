@@ -5,22 +5,22 @@ package rm.node;
 import rm.analysis.*;
 
 @SuppressWarnings("nls")
-public final class ANegatetypeFactor extends PFactor
+public final class ASucccharFactor extends PFactor
 {
-    private TMinussym _minussym_;
+    private TSuccsym _succsym_;
     private PFactor _factor_;
 
-    public ANegatetypeFactor()
+    public ASucccharFactor()
     {
         // Constructor
     }
 
-    public ANegatetypeFactor(
-        @SuppressWarnings("hiding") TMinussym _minussym_,
+    public ASucccharFactor(
+        @SuppressWarnings("hiding") TSuccsym _succsym_,
         @SuppressWarnings("hiding") PFactor _factor_)
     {
         // Constructor
-        setMinussym(_minussym_);
+        setSuccsym(_succsym_);
 
         setFactor(_factor_);
 
@@ -29,27 +29,27 @@ public final class ANegatetypeFactor extends PFactor
     @Override
     public Object clone()
     {
-        return new ANegatetypeFactor(
-            cloneNode(this._minussym_),
+        return new ASucccharFactor(
+            cloneNode(this._succsym_),
             cloneNode(this._factor_));
     }
 
     @Override
     public void apply(Switch sw)
     {
-        ((Analysis) sw).caseANegatetypeFactor(this);
+        ((Analysis) sw).caseASucccharFactor(this);
     }
 
-    public TMinussym getMinussym()
+    public TSuccsym getSuccsym()
     {
-        return this._minussym_;
+        return this._succsym_;
     }
 
-    public void setMinussym(TMinussym node)
+    public void setSuccsym(TSuccsym node)
     {
-        if(this._minussym_ != null)
+        if(this._succsym_ != null)
         {
-            this._minussym_.parent(null);
+            this._succsym_.parent(null);
         }
 
         if(node != null)
@@ -62,7 +62,7 @@ public final class ANegatetypeFactor extends PFactor
             node.parent(this);
         }
 
-        this._minussym_ = node;
+        this._succsym_ = node;
     }
 
     public PFactor getFactor()
@@ -94,7 +94,7 @@ public final class ANegatetypeFactor extends PFactor
     public String toString()
     {
         return ""
-            + toString(this._minussym_)
+            + toString(this._succsym_)
             + toString(this._factor_);
     }
 
@@ -102,9 +102,9 @@ public final class ANegatetypeFactor extends PFactor
     void removeChild(@SuppressWarnings("unused") Node child)
     {
         // Remove child
-        if(this._minussym_ == child)
+        if(this._succsym_ == child)
         {
-            this._minussym_ = null;
+            this._succsym_ = null;
             return;
         }
 
@@ -121,9 +121,9 @@ public final class ANegatetypeFactor extends PFactor
     void replaceChild(@SuppressWarnings("unused") Node oldChild, @SuppressWarnings("unused") Node newChild)
     {
         // Replace child
-        if(this._minussym_ == oldChild)
+        if(this._succsym_ == oldChild)
         {
-            setMinussym((TMinussym) newChild);
+            setSuccsym((TSuccsym) newChild);
             return;
         }
 

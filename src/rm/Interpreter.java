@@ -259,9 +259,41 @@ class Interpreter extends DepthFirstAdapter {
         }
     }
     
+    private Type parseMonad(PMonadexpr expr) throws Exception {
+        if(expr instanceof ANegMonadexpr)
+        {
+            ANegMonadexpr ex = (ANegMonadexpr)expr;
+            Type t = parseFactor(ex.getFactor());
+            t.negate();
+            return t;
+        }
+        return null;
+    }
+    
+/*    private Type parseBase(PBase b)
+    {
+        if(b instanceof AIntbaseBase)
+            return new IntegerType(Integer.parseInt(((AIntbaseBase)b).getIntdenotation().getText().trim()));
+        if(b instanceof ARealbaseBase)
+            return new RealType(Double.parseDouble(((ARealbaseBase)b).getRealdenotation().getText().trim()));
+        throw new IllegalArgumentException("Invalid basetype");
+    }
+    
+    private Type parseExp(PExp b) throws Exception
+    {
+        if(b instanceof AIntexpExp)
+            return new IntegerType(Integer.parseInt(((AIntexpExp)b).getIntdenotation().getText().trim()));
+        if(b instanceof ARealexpExp)
+            return new RealType(Double.parseDouble(((ARealexpExp)b).getRealdenotation().getText().trim()));
+        if(b instanceof AMonadexpExp)
+            return parseMonad(((AMonadexpExp)b).getMonadexpr());
+        throw new IllegalArgumentException("Invalid basetype");
+    }*/
+    
     private Type parseFactor(PFactor factor) throws Exception {
         if(factor instanceof AParFactor)
             return parseExpr(((AParFactor)factor).getExpr());
+        
         else if (factor instanceof AIntFactor)
         {
             AIntFactor intfac = (AIntFactor)factor;
@@ -272,12 +304,21 @@ class Interpreter extends DepthFirstAdapter {
             ARealFactor intfac = (ARealFactor)factor;
             return new RealType(Double.parseDouble(intfac.getRealdenotation().getText().trim()));
         }
-        else if(factor instanceof ANegatetypeFactor)
+        else if(factor instanceof AMonadexprFactor)
         {
-            ANegatetypeFactor minfac = (ANegatetypeFactor)factor;
-            Type t = parseFactor(minfac.getFactor());
-            t.negate();
-            return t;
+            return parseMonad(((AMonadexprFactor)factor).getMonadexpr());
+        }
+        else if(factor instanceof ACharFactor)
+        {
+            return new CharType(((ACharFactor)factor).getCharsym().getText().trim().charAt(1));
+        }
+        else if(factor instanceof ASucccharFactor)
+        {
+            ASucccharFactor succfac = (ASucccharFactor)factor;
+            Type toSucc = parseFactor(succfac.getFactor());
+            if(!toSucc.getClass().getName().equals(CharType.class.getName()))
+                throw new IllegalArgumentException("Cannot succeed to a non-character");
+            return toSucc.add(new IntegerType(1));
         }
         else
         {
@@ -325,7 +366,7 @@ class Interpreter extends DepthFirstAdapter {
     }
 
     private boolean shouldCoerce(Type n1, Type n2) {
-        return (n1 instanceof RealType) ^ (n2 instanceof RealType);
+        return ((n1 instanceof RealType) ^ (n2 instanceof RealType)) && ((n1 instanceof IntegerType || n2 instanceof IntegerType));
     }
 
     private Type executeBuiltInFunc(String ident, ArrayList<Type> list) 
@@ -358,4 +399,6 @@ class Interpreter extends DepthFirstAdapter {
         }
         return retVal;
     }
+
+    
 }

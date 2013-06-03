@@ -82,104 +82,128 @@ class TokenIndex extends AnalysisAdapter
     }
 
     @Override
-    public void caseTCondis(@SuppressWarnings("unused") TCondis node)
+    public void caseTNotsym(@SuppressWarnings("unused") TNotsym node)
     {
         this.index = 12;
     }
 
     @Override
-    public void caseTIfsym(@SuppressWarnings("unused") TIfsym node)
+    public void caseTCondis(@SuppressWarnings("unused") TCondis node)
     {
         this.index = 13;
     }
 
     @Override
-    public void caseTThensym(@SuppressWarnings("unused") TThensym node)
+    public void caseTIfsym(@SuppressWarnings("unused") TIfsym node)
     {
         this.index = 14;
     }
 
     @Override
-    public void caseTElsesym(@SuppressWarnings("unused") TElsesym node)
+    public void caseTThensym(@SuppressWarnings("unused") TThensym node)
     {
         this.index = 15;
     }
 
     @Override
-    public void caseTLetsym(@SuppressWarnings("unused") TLetsym node)
+    public void caseTElsesym(@SuppressWarnings("unused") TElsesym node)
     {
         this.index = 16;
     }
 
     @Override
-    public void caseTLparsym(@SuppressWarnings("unused") TLparsym node)
+    public void caseTLetsym(@SuppressWarnings("unused") TLetsym node)
     {
         this.index = 17;
     }
 
     @Override
-    public void caseTRparsym(@SuppressWarnings("unused") TRparsym node)
+    public void caseTSuccsym(@SuppressWarnings("unused") TSuccsym node)
     {
         this.index = 18;
     }
 
     @Override
-    public void caseTEndsym(@SuppressWarnings("unused") TEndsym node)
+    public void caseTLparsym(@SuppressWarnings("unused") TLparsym node)
     {
         this.index = 19;
     }
 
     @Override
-    public void caseTCommasym(@SuppressWarnings("unused") TCommasym node)
+    public void caseTRparsym(@SuppressWarnings("unused") TRparsym node)
     {
         this.index = 20;
     }
 
     @Override
-    public void caseTSemicolonsym(@SuppressWarnings("unused") TSemicolonsym node)
+    public void caseTEndsym(@SuppressWarnings("unused") TEndsym node)
     {
         this.index = 21;
     }
 
     @Override
-    public void caseTEqualsym(@SuppressWarnings("unused") TEqualsym node)
+    public void caseTCommasym(@SuppressWarnings("unused") TCommasym node)
     {
         this.index = 22;
     }
 
     @Override
-    public void caseTAssignsym(@SuppressWarnings("unused") TAssignsym node)
+    public void caseTSemicolonsym(@SuppressWarnings("unused") TSemicolonsym node)
     {
         this.index = 23;
     }
 
     @Override
-    public void caseTQuestionsym(@SuppressWarnings("unused") TQuestionsym node)
+    public void caseTAssignsym(@SuppressWarnings("unused") TAssignsym node)
     {
         this.index = 24;
     }
 
     @Override
-    public void caseTIntdenotation(@SuppressWarnings("unused") TIntdenotation node)
+    public void caseTEqualsym(@SuppressWarnings("unused") TEqualsym node)
     {
         this.index = 25;
     }
 
     @Override
-    public void caseTRealdenotation(@SuppressWarnings("unused") TRealdenotation node)
+    public void caseTQuestionsym(@SuppressWarnings("unused") TQuestionsym node)
     {
         this.index = 26;
     }
 
     @Override
-    public void caseTIdent(@SuppressWarnings("unused") TIdent node)
+    public void caseTIntdenotation(@SuppressWarnings("unused") TIntdenotation node)
     {
         this.index = 27;
     }
 
     @Override
-    public void caseEOF(@SuppressWarnings("unused") EOF node)
+    public void caseTRealdenotation(@SuppressWarnings("unused") TRealdenotation node)
     {
         this.index = 28;
+    }
+
+    @Override
+    public void caseTIdent(@SuppressWarnings("unused") TIdent node)
+    {
+        this.index = 29;
+    }
+
+    @Override
+    public void caseTCharsym(@SuppressWarnings("unused") TCharsym node)
+    {
+        this.index = 30;
+    }
+
+    @Override
+    public void caseTApostrophe(@SuppressWarnings("unused") TApostrophe node)
+    {
+        this.index = 31;
+    }
+
+    @Override
+    public void caseEOF(@SuppressWarnings("unused") EOF node)
+    {
+        this.index = 32;
     }
 }

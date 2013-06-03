@@ -564,29 +564,25 @@ public class ReversedDepthFirstAdapter extends AnalysisAdapter
         outAIntFactor(node);
     }
 
-    public void inANegatetypeFactor(ANegatetypeFactor node)
+    public void inAMonadexprFactor(AMonadexprFactor node)
     {
         defaultIn(node);
     }
 
-    public void outANegatetypeFactor(ANegatetypeFactor node)
+    public void outAMonadexprFactor(AMonadexprFactor node)
     {
         defaultOut(node);
     }
 
     @Override
-    public void caseANegatetypeFactor(ANegatetypeFactor node)
+    public void caseAMonadexprFactor(AMonadexprFactor node)
     {
-        inANegatetypeFactor(node);
-        if(node.getFactor() != null)
+        inAMonadexprFactor(node);
+        if(node.getMonadexpr() != null)
         {
-            node.getFactor().apply(this);
+            node.getMonadexpr().apply(this);
         }
-        if(node.getMinussym() != null)
-        {
-            node.getMinussym().apply(this);
-        }
-        outANegatetypeFactor(node);
+        outAMonadexprFactor(node);
     }
 
     public void inARealFactor(ARealFactor node)
@@ -608,6 +604,52 @@ public class ReversedDepthFirstAdapter extends AnalysisAdapter
             node.getRealdenotation().apply(this);
         }
         outARealFactor(node);
+    }
+
+    public void inACharFactor(ACharFactor node)
+    {
+        defaultIn(node);
+    }
+
+    public void outACharFactor(ACharFactor node)
+    {
+        defaultOut(node);
+    }
+
+    @Override
+    public void caseACharFactor(ACharFactor node)
+    {
+        inACharFactor(node);
+        if(node.getCharsym() != null)
+        {
+            node.getCharsym().apply(this);
+        }
+        outACharFactor(node);
+    }
+
+    public void inASucccharFactor(ASucccharFactor node)
+    {
+        defaultIn(node);
+    }
+
+    public void outASucccharFactor(ASucccharFactor node)
+    {
+        defaultOut(node);
+    }
+
+    @Override
+    public void caseASucccharFactor(ASucccharFactor node)
+    {
+        inASucccharFactor(node);
+        if(node.getFactor() != null)
+        {
+            node.getFactor().apply(this);
+        }
+        if(node.getSuccsym() != null)
+        {
+            node.getSuccsym().apply(this);
+        }
+        outASucccharFactor(node);
     }
 
     public void inAIdentFactor(AIdentFactor node)
@@ -633,6 +675,52 @@ public class ReversedDepthFirstAdapter extends AnalysisAdapter
             node.getIdent().apply(this);
         }
         outAIdentFactor(node);
+    }
+
+    public void inANegMonadexpr(ANegMonadexpr node)
+    {
+        defaultIn(node);
+    }
+
+    public void outANegMonadexpr(ANegMonadexpr node)
+    {
+        defaultOut(node);
+    }
+
+    @Override
+    public void caseANegMonadexpr(ANegMonadexpr node)
+    {
+        inANegMonadexpr(node);
+        if(node.getFactor() != null)
+        {
+            node.getFactor().apply(this);
+        }
+        if(node.getMinussym() != null)
+        {
+            node.getMinussym().apply(this);
+        }
+        outANegMonadexpr(node);
+    }
+
+    public void inABoolunitBoolexpr(ABoolunitBoolexpr node)
+    {
+        defaultIn(node);
+    }
+
+    public void outABoolunitBoolexpr(ABoolunitBoolexpr node)
+    {
+        defaultOut(node);
+    }
+
+    @Override
+    public void caseABoolunitBoolexpr(ABoolunitBoolexpr node)
+    {
+        inABoolunitBoolexpr(node);
+        if(node.getRelexpr() != null)
+        {
+            node.getRelexpr().apply(this);
+        }
+        outABoolunitBoolexpr(node);
     }
 
     public void inAArgsArglst(AArgsArglst node)

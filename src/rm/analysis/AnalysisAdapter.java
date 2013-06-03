@@ -195,7 +195,7 @@ public class AnalysisAdapter implements Analysis
     }
 
     @Override
-    public void caseANegatetypeFactor(ANegatetypeFactor node)
+    public void caseAMonadexprFactor(AMonadexprFactor node)
     {
         defaultCase(node);
     }
@@ -207,7 +207,31 @@ public class AnalysisAdapter implements Analysis
     }
 
     @Override
+    public void caseACharFactor(ACharFactor node)
+    {
+        defaultCase(node);
+    }
+
+    @Override
+    public void caseASucccharFactor(ASucccharFactor node)
+    {
+        defaultCase(node);
+    }
+
+    @Override
     public void caseAIdentFactor(AIdentFactor node)
+    {
+        defaultCase(node);
+    }
+
+    @Override
+    public void caseANegMonadexpr(ANegMonadexpr node)
+    {
+        defaultCase(node);
+    }
+
+    @Override
+    public void caseABoolunitBoolexpr(ABoolunitBoolexpr node)
     {
         defaultCase(node);
     }
@@ -399,6 +423,12 @@ public class AnalysisAdapter implements Analysis
     }
 
     @Override
+    public void caseTNotsym(TNotsym node)
+    {
+        defaultCase(node);
+    }
+
+    @Override
     public void caseTCondis(TCondis node)
     {
         defaultCase(node);
@@ -424,6 +454,12 @@ public class AnalysisAdapter implements Analysis
 
     @Override
     public void caseTLetsym(TLetsym node)
+    {
+        defaultCase(node);
+    }
+
+    @Override
+    public void caseTSuccsym(TSuccsym node)
     {
         defaultCase(node);
     }
@@ -459,13 +495,13 @@ public class AnalysisAdapter implements Analysis
     }
 
     @Override
-    public void caseTEqualsym(TEqualsym node)
+    public void caseTAssignsym(TAssignsym node)
     {
         defaultCase(node);
     }
 
     @Override
-    public void caseTAssignsym(TAssignsym node)
+    public void caseTEqualsym(TEqualsym node)
     {
         defaultCase(node);
     }
@@ -490,6 +526,18 @@ public class AnalysisAdapter implements Analysis
 
     @Override
     public void caseTIdent(TIdent node)
+    {
+        defaultCase(node);
+    }
+
+    @Override
+    public void caseTCharsym(TCharsym node)
+    {
+        defaultCase(node);
+    }
+
+    @Override
+    public void caseTApostrophe(TApostrophe node)
     {
         defaultCase(node);
     }
