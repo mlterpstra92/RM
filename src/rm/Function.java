@@ -40,6 +40,7 @@ public class Function {
         {
             this.args.add(n);
         }
+        Arrays.sort(args.toArray());
     }
     
     public FuncArg getArg(String name)

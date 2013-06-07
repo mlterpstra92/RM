@@ -183,55 +183,55 @@ public class AnalysisAdapter implements Analysis
     }
 
     @Override
-    public void caseAParFactor(AParFactor node)
+    public void caseAParFactorexpr(AParFactorexpr node)
     {
         defaultCase(node);
     }
 
     @Override
-    public void caseAIntFactor(AIntFactor node)
+    public void caseASimplefacFactorexpr(ASimplefacFactorexpr node)
     {
         defaultCase(node);
     }
 
     @Override
-    public void caseAMonadexprFactor(AMonadexprFactor node)
+    public void caseAIntSimplefactor(AIntSimplefactor node)
     {
         defaultCase(node);
     }
 
     @Override
-    public void caseARealFactor(ARealFactor node)
+    public void caseAMonadexprSimplefactor(AMonadexprSimplefactor node)
     {
         defaultCase(node);
     }
 
     @Override
-    public void caseACharFactor(ACharFactor node)
+    public void caseARealSimplefactor(ARealSimplefactor node)
     {
         defaultCase(node);
     }
 
     @Override
-    public void caseASucccharFactor(ASucccharFactor node)
+    public void caseACharSimplefactor(ACharSimplefactor node)
     {
         defaultCase(node);
     }
 
     @Override
-    public void caseAIdentFactor(AIdentFactor node)
+    public void caseASucccharSimplefactor(ASucccharSimplefactor node)
+    {
+        defaultCase(node);
+    }
+
+    @Override
+    public void caseAIdentSimplefactor(AIdentSimplefactor node)
     {
         defaultCase(node);
     }
 
     @Override
     public void caseANegMonadexpr(ANegMonadexpr node)
-    {
-        defaultCase(node);
-    }
-
-    @Override
-    public void caseABoolunitBoolexpr(ABoolunitBoolexpr node)
     {
         defaultCase(node);
     }

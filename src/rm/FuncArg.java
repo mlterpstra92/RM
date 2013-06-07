@@ -12,9 +12,16 @@ import rm.node.PExpr;
  */
 public class FuncArg implements Comparable<FuncArg>{
     private String argName;
-    private PExpr expr;
     private Type value;
+    private Integer order;
 
+    public FuncArg(String argName, Type value, Integer order)
+    {
+        this.argName = argName;
+        this.order = order;
+        this.value = value;
+    }
+    
     public Type getValue() {
         return value;
     }
@@ -22,7 +29,6 @@ public class FuncArg implements Comparable<FuncArg>{
     public void setValue(Type value) {
         this.value = value;
     }
-    private Integer order;
 
     public Integer getOrder() {
         return order;
@@ -35,25 +41,7 @@ public class FuncArg implements Comparable<FuncArg>{
     public String getArgName() {
         return argName;
     }
-
-    public void setExpr(PExpr n)
-    {
-        this.expr = n;
-    }
-    public PExpr getExpr() {
-        return expr;
-    }
     
-    
-    
-    public FuncArg(String argName, PExpr value, Integer order)
-    {
-        this.argName = argName;
-        this.expr = value;
-        this.order = order;
-        this.value = null;
-    }
-
     @Override
     public int compareTo(FuncArg t) {
         return this.order.compareTo(t.getOrder());

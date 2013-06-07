@@ -478,9 +478,9 @@ public class ReversedDepthFirstAdapter extends AnalysisAdapter
     public void caseAFactorTerm(AFactorTerm node)
     {
         inAFactorTerm(node);
-        if(node.getFactor() != null)
+        if(node.getFactorexpr() != null)
         {
-            node.getFactor().apply(this);
+            node.getFactorexpr().apply(this);
         }
         outAFactorTerm(node);
     }
@@ -499,9 +499,9 @@ public class ReversedDepthFirstAdapter extends AnalysisAdapter
     public void caseAMultTerm(AMultTerm node)
     {
         inAMultTerm(node);
-        if(node.getFactor() != null)
+        if(node.getFactorexpr() != null)
         {
-            node.getFactor().apply(this);
+            node.getFactorexpr().apply(this);
         }
         if(node.getMulop() != null)
         {
@@ -514,20 +514,20 @@ public class ReversedDepthFirstAdapter extends AnalysisAdapter
         outAMultTerm(node);
     }
 
-    public void inAParFactor(AParFactor node)
+    public void inAParFactorexpr(AParFactorexpr node)
     {
         defaultIn(node);
     }
 
-    public void outAParFactor(AParFactor node)
+    public void outAParFactorexpr(AParFactorexpr node)
     {
         defaultOut(node);
     }
 
     @Override
-    public void caseAParFactor(AParFactor node)
+    public void caseAParFactorexpr(AParFactorexpr node)
     {
-        inAParFactor(node);
+        inAParFactorexpr(node);
         if(node.getRparsym() != null)
         {
             node.getRparsym().apply(this);
@@ -540,132 +540,153 @@ public class ReversedDepthFirstAdapter extends AnalysisAdapter
         {
             node.getLparsym().apply(this);
         }
-        outAParFactor(node);
+        outAParFactorexpr(node);
     }
 
-    public void inAIntFactor(AIntFactor node)
+    public void inASimplefacFactorexpr(ASimplefacFactorexpr node)
     {
         defaultIn(node);
     }
 
-    public void outAIntFactor(AIntFactor node)
+    public void outASimplefacFactorexpr(ASimplefacFactorexpr node)
     {
         defaultOut(node);
     }
 
     @Override
-    public void caseAIntFactor(AIntFactor node)
+    public void caseASimplefacFactorexpr(ASimplefacFactorexpr node)
     {
-        inAIntFactor(node);
+        inASimplefacFactorexpr(node);
+        if(node.getSimplefactor() != null)
+        {
+            node.getSimplefactor().apply(this);
+        }
+        outASimplefacFactorexpr(node);
+    }
+
+    public void inAIntSimplefactor(AIntSimplefactor node)
+    {
+        defaultIn(node);
+    }
+
+    public void outAIntSimplefactor(AIntSimplefactor node)
+    {
+        defaultOut(node);
+    }
+
+    @Override
+    public void caseAIntSimplefactor(AIntSimplefactor node)
+    {
+        inAIntSimplefactor(node);
         if(node.getIntdenotation() != null)
         {
             node.getIntdenotation().apply(this);
         }
-        outAIntFactor(node);
+        outAIntSimplefactor(node);
     }
 
-    public void inAMonadexprFactor(AMonadexprFactor node)
+    public void inAMonadexprSimplefactor(AMonadexprSimplefactor node)
     {
         defaultIn(node);
     }
 
-    public void outAMonadexprFactor(AMonadexprFactor node)
+    public void outAMonadexprSimplefactor(AMonadexprSimplefactor node)
     {
         defaultOut(node);
     }
 
     @Override
-    public void caseAMonadexprFactor(AMonadexprFactor node)
+    public void caseAMonadexprSimplefactor(AMonadexprSimplefactor node)
     {
-        inAMonadexprFactor(node);
+        inAMonadexprSimplefactor(node);
         if(node.getMonadexpr() != null)
         {
             node.getMonadexpr().apply(this);
         }
-        outAMonadexprFactor(node);
+        outAMonadexprSimplefactor(node);
     }
 
-    public void inARealFactor(ARealFactor node)
+    public void inARealSimplefactor(ARealSimplefactor node)
     {
         defaultIn(node);
     }
 
-    public void outARealFactor(ARealFactor node)
+    public void outARealSimplefactor(ARealSimplefactor node)
     {
         defaultOut(node);
     }
 
     @Override
-    public void caseARealFactor(ARealFactor node)
+    public void caseARealSimplefactor(ARealSimplefactor node)
     {
-        inARealFactor(node);
+        inARealSimplefactor(node);
         if(node.getRealdenotation() != null)
         {
             node.getRealdenotation().apply(this);
         }
-        outARealFactor(node);
+        outARealSimplefactor(node);
     }
 
-    public void inACharFactor(ACharFactor node)
+    public void inACharSimplefactor(ACharSimplefactor node)
     {
         defaultIn(node);
     }
 
-    public void outACharFactor(ACharFactor node)
+    public void outACharSimplefactor(ACharSimplefactor node)
     {
         defaultOut(node);
     }
 
     @Override
-    public void caseACharFactor(ACharFactor node)
+    public void caseACharSimplefactor(ACharSimplefactor node)
     {
-        inACharFactor(node);
+        inACharSimplefactor(node);
         if(node.getCharsym() != null)
         {
             node.getCharsym().apply(this);
         }
-        outACharFactor(node);
+        outACharSimplefactor(node);
     }
 
-    public void inASucccharFactor(ASucccharFactor node)
+    public void inASucccharSimplefactor(ASucccharSimplefactor node)
     {
         defaultIn(node);
     }
 
-    public void outASucccharFactor(ASucccharFactor node)
+    public void outASucccharSimplefactor(ASucccharSimplefactor node)
     {
         defaultOut(node);
     }
 
     @Override
-    public void caseASucccharFactor(ASucccharFactor node)
+    public void caseASucccharSimplefactor(ASucccharSimplefactor node)
     {
-        inASucccharFactor(node);
-        if(node.getFactor() != null)
+        inASucccharSimplefactor(node);
+        if(node.getSimplefactor() != null)
         {
-            node.getFactor().apply(this);
+            node.getSimplefactor().apply(this);
         }
         if(node.getSuccsym() != null)
         {
             node.getSuccsym().apply(this);
         }
-        outASucccharFactor(node);
+        outASucccharSimplefactor(node);
     }
 
-    public void inAIdentFactor(AIdentFactor node)
+    public void inAIdentSimplefactor(AIdentSimplefactor node)
     {
         defaultIn(node);
     }
 
-    public void outAIdentFactor(AIdentFactor node)
+    public void outAIdentSimplefactor(AIdentSimplefactor node)
     {
         defaultOut(node);
     }
 
     @Override
-    public void caseAIdentFactor(AIdentFactor node)
+    public void caseAIdentSimplefactor(AIdentSimplefactor node)
     {
-        inAIdentFactor(node);
+        inAIdentSimplefactor(node);
         if(node.getArglst() != null)
         {
             node.getArglst().apply(this);
@@ -674,7 +695,7 @@ public class ReversedDepthFirstAdapter extends AnalysisAdapter
         {
             node.getIdent().apply(this);
         }
-        outAIdentFactor(node);
+        outAIdentSimplefactor(node);
     }
 
     public void inANegMonadexpr(ANegMonadexpr node)
@@ -691,36 +712,15 @@ public class ReversedDepthFirstAdapter extends AnalysisAdapter
     public void caseANegMonadexpr(ANegMonadexpr node)
     {
         inANegMonadexpr(node);
-        if(node.getFactor() != null)
+        if(node.getFactorexpr() != null)
         {
-            node.getFactor().apply(this);
+            node.getFactorexpr().apply(this);
         }
         if(node.getMinussym() != null)
         {
             node.getMinussym().apply(this);
         }
         outANegMonadexpr(node);
-    }
-
-    public void inABoolunitBoolexpr(ABoolunitBoolexpr node)
-    {
-        defaultIn(node);
-    }
-
-    public void outABoolunitBoolexpr(ABoolunitBoolexpr node)
-    {
-        defaultOut(node);
-    }
-
-    @Override
-    public void caseABoolunitBoolexpr(ABoolunitBoolexpr node)
-    {
-        inABoolunitBoolexpr(node);
-        if(node.getRelexpr() != null)
-        {
-            node.getRelexpr().apply(this);
-        }
-        outABoolunitBoolexpr(node);
     }
 
     public void inAArgsArglst(AArgsArglst node)
