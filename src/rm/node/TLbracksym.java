@@ -5,16 +5,16 @@ package rm.node;
 import rm.analysis.*;
 
 @SuppressWarnings("nls")
-public final class TLparsym extends Token
+public final class TLbracksym extends Token
 {
-    public TLparsym()
+    public TLbracksym()
     {
-        super.setText("(");
+        super.setText("[");
     }
 
-    public TLparsym(int line, int pos)
+    public TLbracksym(int line, int pos)
     {
-        super.setText("(");
+        super.setText("[");
         setLine(line);
         setPos(pos);
     }
@@ -22,18 +22,18 @@ public final class TLparsym extends Token
     @Override
     public Object clone()
     {
-      return new TLparsym(getLine(), getPos());
+      return new TLbracksym(getLine(), getPos());
     }
 
     @Override
     public void apply(Switch sw)
     {
-        ((Analysis) sw).caseTLparsym(this);
+        ((Analysis) sw).caseTLbracksym(this);
     }
 
     @Override
     public void setText(@SuppressWarnings("unused") String text)
     {
-        throw new RuntimeException("Cannot change TLparsym text.");
+        throw new RuntimeException("Cannot change TLbracksym text.");
     }
 }

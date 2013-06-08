@@ -219,6 +219,12 @@ public class AnalysisAdapter implements Analysis
     }
 
     @Override
+    public void caseAStringSimplefactor(AStringSimplefactor node)
+    {
+        defaultCase(node);
+    }
+
+    @Override
     public void caseASucccharSimplefactor(ASucccharSimplefactor node)
     {
         defaultCase(node);
@@ -477,6 +483,18 @@ public class AnalysisAdapter implements Analysis
     }
 
     @Override
+    public void caseTLbracksym(TLbracksym node)
+    {
+        defaultCase(node);
+    }
+
+    @Override
+    public void caseTRbracksym(TRbracksym node)
+    {
+        defaultCase(node);
+    }
+
+    @Override
     public void caseTEndsym(TEndsym node)
     {
         defaultCase(node);
@@ -532,6 +550,12 @@ public class AnalysisAdapter implements Analysis
 
     @Override
     public void caseTCharsym(TCharsym node)
+    {
+        defaultCase(node);
+    }
+
+    @Override
+    public void caseTStringsym(TStringsym node)
     {
         defaultCase(node);
     }

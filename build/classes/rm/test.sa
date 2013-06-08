@@ -6,4 +6,11 @@ LET abs(n) = IF n < 0 THEN -n ELSE n;
 LET fac(n) = IF n <= 1 THEN 1 ELSE n*fac(n-1);
 //LET q = eps == 'a';
 //SUCC eps?
+fac(abs(-15))?
+LET q = "a";
+q?
+LET c = "def";
+c?
+q + c?
+1+2*3.0?
 .

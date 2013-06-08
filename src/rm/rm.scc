@@ -46,6 +46,8 @@ Tokens
     
     lparsym = '(';
     rparsym = ')';
+    lbracksym = '[';
+    rbracksym = ']';
     endsym = '.';
     commasym = ',';
 
@@ -58,6 +60,7 @@ Tokens
     realdenotation = digit+ '.' digit+;
     ident = letter+;
     charsym = '''letter''';
+    stringsym = '"'letter*'"';
     apostrophe = ''';
     comment = short_comment | long_comment;
 
@@ -74,18 +77,19 @@ Productions
     expr = {complexexpr}ifsym relcomp thensym [trueclause]:expr elsesym [falseclause]:expr | {simpleexpr}smplexpr;
     relcomp = {condis}[p1]:relcomp condis [p2]:relexpr | {cond}relexpr;
     relexpr = [left]:expr relop [right]:expr;
-    smplexpr = {term}term | {add}smplexpr addop term;
+    smplexpr = {term}term 
+             | {add}smplexpr addop term;
     term = {factor}factorexpr | {mult}term mulop factorexpr;
-    factorexpr = {par}lparsym expr rparsym | {simplefac} simplefactor;
+    factorexpr = {par}lparsym expr rparsym 
+               | {simplefac} simplefactor;
     simplefactor  = 
               {int}intdenotation
              | {monadexpr} monadexpr
              | {real}realdenotation
              | {char} charsym
+             | {string} stringsym 
              | {succchar} succsym simplefactor
              | {ident}ident arglst;
-
-
     monadexpr = {neg} minussym factorexpr;
     arglst = {args}lparsym args rparsym | {empty}empty;
     args = {expr}expr | {listargs}args commasym expr;

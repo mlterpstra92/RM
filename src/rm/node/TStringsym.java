@@ -5,14 +5,14 @@ package rm.node;
 import rm.analysis.*;
 
 @SuppressWarnings("nls")
-public final class TBlank extends Token
+public final class TStringsym extends Token
 {
-    public TBlank(String text)
+    public TStringsym(String text)
     {
         setText(text);
     }
 
-    public TBlank(String text, int line, int pos)
+    public TStringsym(String text, int line, int pos)
     {
         setText(text);
         setLine(line);
@@ -22,12 +22,12 @@ public final class TBlank extends Token
     @Override
     public Object clone()
     {
-      return new TBlank(getText(), getLine(), getPos());
+      return new TStringsym(getText(), getLine(), getPos());
     }
 
     @Override
     public void apply(Switch sw)
     {
-        ((Analysis) sw).caseTBlank(this);
+        ((Analysis) sw).caseTStringsym(this);
     }
 }

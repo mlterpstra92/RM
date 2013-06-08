@@ -28,9 +28,7 @@ public class RM {
                         new FileReader(args[0]), 1024
                     )
                 )
-            )
-            .parse()
-            .apply(
+            ).parse().apply(
                 new Interpreter()
             );
         } catch (ParserException | LexerException | IOException ex) {

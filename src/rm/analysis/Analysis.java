@@ -36,6 +36,7 @@ public interface Analysis extends Switch
     void caseAMonadexprSimplefactor(AMonadexprSimplefactor node);
     void caseARealSimplefactor(ARealSimplefactor node);
     void caseACharSimplefactor(ACharSimplefactor node);
+    void caseAStringSimplefactor(AStringSimplefactor node);
     void caseASucccharSimplefactor(ASucccharSimplefactor node);
     void caseAIdentSimplefactor(AIdentSimplefactor node);
     void caseANegMonadexpr(ANegMonadexpr node);
@@ -80,6 +81,8 @@ public interface Analysis extends Switch
     void caseTSuccsym(TSuccsym node);
     void caseTLparsym(TLparsym node);
     void caseTRparsym(TRparsym node);
+    void caseTLbracksym(TLbracksym node);
+    void caseTRbracksym(TRbracksym node);
     void caseTEndsym(TEndsym node);
     void caseTCommasym(TCommasym node);
     void caseTSemicolonsym(TSemicolonsym node);
@@ -90,6 +93,7 @@ public interface Analysis extends Switch
     void caseTRealdenotation(TRealdenotation node);
     void caseTIdent(TIdent node);
     void caseTCharsym(TCharsym node);
+    void caseTStringsym(TStringsym node);
     void caseTApostrophe(TApostrophe node);
     void caseTComment(TComment node);
     void caseEOF(EOF node);

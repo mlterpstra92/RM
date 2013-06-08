@@ -71,7 +71,7 @@ class Interpreter extends DepthFirstAdapter {
         if(symbolTable.get(ident) != null)         
         {
             System.err.println("Function already defined");
-            System.exit(-1);
+            return;
         }
         Function f = new Function(ident);
         f.setExpr(def.getExpr());
@@ -294,6 +294,7 @@ class Interpreter extends DepthFirstAdapter {
         {
             return new CharType(((ACharSimplefactor)factor).getCharsym().getText().trim().charAt(1));
         }
+        
         else if(factor instanceof ASucccharSimplefactor)
         {
             ASucccharSimplefactor succfac = (ASucccharSimplefactor)factor;
@@ -301,6 +302,14 @@ class Interpreter extends DepthFirstAdapter {
             if(!toSucc.getClass().getName().equals(CharType.class.getName()))
                 throw new IllegalArgumentException("Cannot succeed to a non-character");
             return toSucc.add(new IntegerType(1));
+        }
+        else if(factor instanceof AStringSimplefactor)
+        {
+            AStringSimplefactor stringFac = (AStringSimplefactor)factor;
+            String tempString = (stringFac.getStringsym().getText().trim());
+            //Strip the quotes
+            tempString = tempString.substring(1, tempString.length() - 1);
+            return new StringType(tempString);
         }
         //Function call
         AIdentSimplefactor fac = (AIdentSimplefactor)factor;
@@ -319,7 +328,7 @@ class Interpreter extends DepthFirstAdapter {
         if(function != null)
         {
             stack.push(function);
-            setArgExpressions(function, list);
+            setArguments(function, list);
             return parseExpr(function.getExpr());
         }
         
@@ -368,7 +377,7 @@ class Interpreter extends DepthFirstAdapter {
         return retVal;
     }
 
-    private void setArgExpressions(Function func, ArrayList<Type> list) 
+    private void setArguments(Function func, ArrayList<Type> list) 
     {
         for(int i = 0; i < func.getArgs().size(); ++i)
         {

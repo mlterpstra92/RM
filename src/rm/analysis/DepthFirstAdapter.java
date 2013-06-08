@@ -648,6 +648,27 @@ public class DepthFirstAdapter extends AnalysisAdapter
         outACharSimplefactor(node);
     }
 
+    public void inAStringSimplefactor(AStringSimplefactor node)
+    {
+        defaultIn(node);
+    }
+
+    public void outAStringSimplefactor(AStringSimplefactor node)
+    {
+        defaultOut(node);
+    }
+
+    @Override
+    public void caseAStringSimplefactor(AStringSimplefactor node)
+    {
+        inAStringSimplefactor(node);
+        if(node.getStringsym() != null)
+        {
+            node.getStringsym().apply(this);
+        }
+        outAStringSimplefactor(node);
+    }
+
     public void inASucccharSimplefactor(ASucccharSimplefactor node)
     {
         defaultIn(node);
