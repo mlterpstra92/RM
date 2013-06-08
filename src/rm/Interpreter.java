@@ -272,23 +272,85 @@ class Interpreter extends DepthFirstAdapter {
         else return parseSimpleFactor(((ASimplefacFactorexpr)factor).getSimplefactor());
     }
     
-    private Type parseSimpleFactor(PSimplefactor factor) throws Exception
+    /*private Type parseNumber(PNumfac numfac)
     {
-        if (factor instanceof AIntSimplefactor)
+        if(numfac instanceof AIntNumfac)
         {
-            AIntSimplefactor intfac = (AIntSimplefactor)factor;
+            AIntNumfac intfac = (AIntNumfac)numfac;
             return new IntegerType(Integer.parseInt(intfac.getIntdenotation().getText().trim()));
-        }
-        else if (factor instanceof ARealSimplefactor)
+        }        
+        else
         {
-            ARealSimplefactor intfac = (ARealSimplefactor)factor;
-            return new RealType(Double.parseDouble(intfac.getRealdenotation().getText().trim()));
+            ARealNumfac realfac = (ARealNumfac)numfac;
+            return new RealType(Double.parseDouble(realfac.getRealdenotation().getText().trim()));
         }
-        else if(factor instanceof AMonadexprSimplefactor)
+
+    }*/
+    
+    private Type parseRealNum(ARealNumfac realnum) throws Exception
+    {
+        if(realnum.getRealnum() instanceof AScnumRealnum)
         {
-            Type t = parseFactorexpr(((ANegMonadexpr)((AMonadexprSimplefactor)factor).getMonadexpr()).getFactorexpr());
+            AScnumRealnum scnum = (AScnumRealnum)realnum.getRealnum();
+            double base = Double.parseDouble(scnum.getBase().getText().trim());
+            double exp = new Double(parseNumber(scnum.getExp()).getValue().toString());
+            System.out.println(base + " " + exp);
+            
+            return new RealType(Math.pow(base*10.0, exp));
+        }
+        else
+        {
+            ARealRealnum rreal = (ARealRealnum)realnum.getRealnum();
+            return new RealType(Double.parseDouble(rreal.getRealdenotation().getText().trim()));
+        }
+            
+    }
+    private Type parseNumber(PNumfac numfac) throws Exception
+    {
+        if(numfac instanceof AIntNumfac)
+        {
+            return new IntegerType(Integer.parseInt(((AIntNumfac)numfac).getIntdenotation().getText().trim()));
+        }
+        else if(numfac instanceof ARealNumfac)
+            return parseRealNum((ARealNumfac)numfac);
+        else if(numfac instanceof AMonadNumfac)
+        {
+             AMonadNumfac monadnum = (AMonadNumfac)numfac;
+            ANegMonadexpr negmonad = (ANegMonadexpr)monadnum.getMonadexpr();
+            Type t = parseSimpleFactor(negmonad.getSimplefactor());
             t.negate();
             return t;
+
+        }
+        else return null;
+    }
+    private Type parseNumber(ANumSimplefactor numfac) throws Exception{
+        if(numfac.getNumfac() instanceof AIntNumfac)
+        {
+            AIntNumfac intfac = (AIntNumfac)numfac.getNumfac();
+            return new IntegerType(Integer.parseInt(intfac.getIntdenotation().getText().trim()));
+        }
+        else if(numfac.getNumfac() instanceof ARealNumfac)
+        {
+            return parseRealNum((ARealNumfac)numfac.getNumfac());
+        }
+        else if(numfac.getNumfac() instanceof AMonadNumfac)
+        {
+            AMonadNumfac monadnum = (AMonadNumfac)numfac.getNumfac();
+            ANegMonadexpr negmonad = (ANegMonadexpr)monadnum.getMonadexpr();
+            Type t = parseSimpleFactor(negmonad.getSimplefactor());
+            t.negate();
+            return t;
+        }
+        return null;
+        
+    }
+    
+    private Type parseSimpleFactor(PSimplefactor factor) throws Exception
+    {
+        if (factor instanceof ANumSimplefactor)
+        {
+            return parseNumber((ANumSimplefactor)factor);
         }
         else if(factor instanceof ACharSimplefactor)
         {

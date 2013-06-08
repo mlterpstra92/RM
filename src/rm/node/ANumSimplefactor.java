@@ -5,46 +5,46 @@ package rm.node;
 import rm.analysis.*;
 
 @SuppressWarnings("nls")
-public final class ARealSimplefactor extends PSimplefactor
+public final class ANumSimplefactor extends PSimplefactor
 {
-    private TRealdenotation _realdenotation_;
+    private PNumfac _numfac_;
 
-    public ARealSimplefactor()
+    public ANumSimplefactor()
     {
         // Constructor
     }
 
-    public ARealSimplefactor(
-        @SuppressWarnings("hiding") TRealdenotation _realdenotation_)
+    public ANumSimplefactor(
+        @SuppressWarnings("hiding") PNumfac _numfac_)
     {
         // Constructor
-        setRealdenotation(_realdenotation_);
+        setNumfac(_numfac_);
 
     }
 
     @Override
     public Object clone()
     {
-        return new ARealSimplefactor(
-            cloneNode(this._realdenotation_));
+        return new ANumSimplefactor(
+            cloneNode(this._numfac_));
     }
 
     @Override
     public void apply(Switch sw)
     {
-        ((Analysis) sw).caseARealSimplefactor(this);
+        ((Analysis) sw).caseANumSimplefactor(this);
     }
 
-    public TRealdenotation getRealdenotation()
+    public PNumfac getNumfac()
     {
-        return this._realdenotation_;
+        return this._numfac_;
     }
 
-    public void setRealdenotation(TRealdenotation node)
+    public void setNumfac(PNumfac node)
     {
-        if(this._realdenotation_ != null)
+        if(this._numfac_ != null)
         {
-            this._realdenotation_.parent(null);
+            this._numfac_.parent(null);
         }
 
         if(node != null)
@@ -57,23 +57,23 @@ public final class ARealSimplefactor extends PSimplefactor
             node.parent(this);
         }
 
-        this._realdenotation_ = node;
+        this._numfac_ = node;
     }
 
     @Override
     public String toString()
     {
         return ""
-            + toString(this._realdenotation_);
+            + toString(this._numfac_);
     }
 
     @Override
     void removeChild(@SuppressWarnings("unused") Node child)
     {
         // Remove child
-        if(this._realdenotation_ == child)
+        if(this._numfac_ == child)
         {
-            this._realdenotation_ = null;
+            this._numfac_ = null;
             return;
         }
 
@@ -84,9 +84,9 @@ public final class ARealSimplefactor extends PSimplefactor
     void replaceChild(@SuppressWarnings("unused") Node oldChild, @SuppressWarnings("unused") Node newChild)
     {
         // Replace child
-        if(this._realdenotation_ == oldChild)
+        if(this._numfac_ == oldChild)
         {
-            setRealdenotation((TRealdenotation) newChild);
+            setNumfac((PNumfac) newChild);
             return;
         }
 

@@ -55,7 +55,7 @@ Tokens
     assignsym = '=';
     equalsym = '==';
     questionsym = '?';
-    
+    esym = 'E';
     intdenotation = digit+;
     realdenotation = digit+ '.' digit+;
     ident = letter+;
@@ -83,14 +83,14 @@ Productions
     factorexpr = {par}lparsym expr rparsym 
                | {simplefac} simplefactor;
     simplefactor  = 
-              {int}intdenotation
-             | {monadexpr} monadexpr
-             | {real}realdenotation
+               {num}numfac
              | {char} charsym
              | {string} stringsym 
              | {succchar} succsym simplefactor
              | {ident}ident arglst;
-    monadexpr = {neg} minussym factorexpr;
+    numfac = {int}intdenotation | {real} realnum | {monad} monadexpr;
+    realnum = {scnum} [base]:realdenotation esym [exp]:numfac | {real}realdenotation;
+    monadexpr = {neg} minussym simplefactor;
     arglst = {args}lparsym args rparsym | {empty}empty;
     args = {expr}expr | {listargs}args commasym expr;
     addop = {plus}plussym | {minus}minussym;

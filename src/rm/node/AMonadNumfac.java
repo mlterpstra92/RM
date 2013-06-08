@@ -5,46 +5,46 @@ package rm.node;
 import rm.analysis.*;
 
 @SuppressWarnings("nls")
-public final class AIntSimplefactor extends PSimplefactor
+public final class AMonadNumfac extends PNumfac
 {
-    private TIntdenotation _intdenotation_;
+    private PMonadexpr _monadexpr_;
 
-    public AIntSimplefactor()
+    public AMonadNumfac()
     {
         // Constructor
     }
 
-    public AIntSimplefactor(
-        @SuppressWarnings("hiding") TIntdenotation _intdenotation_)
+    public AMonadNumfac(
+        @SuppressWarnings("hiding") PMonadexpr _monadexpr_)
     {
         // Constructor
-        setIntdenotation(_intdenotation_);
+        setMonadexpr(_monadexpr_);
 
     }
 
     @Override
     public Object clone()
     {
-        return new AIntSimplefactor(
-            cloneNode(this._intdenotation_));
+        return new AMonadNumfac(
+            cloneNode(this._monadexpr_));
     }
 
     @Override
     public void apply(Switch sw)
     {
-        ((Analysis) sw).caseAIntSimplefactor(this);
+        ((Analysis) sw).caseAMonadNumfac(this);
     }
 
-    public TIntdenotation getIntdenotation()
+    public PMonadexpr getMonadexpr()
     {
-        return this._intdenotation_;
+        return this._monadexpr_;
     }
 
-    public void setIntdenotation(TIntdenotation node)
+    public void setMonadexpr(PMonadexpr node)
     {
-        if(this._intdenotation_ != null)
+        if(this._monadexpr_ != null)
         {
-            this._intdenotation_.parent(null);
+            this._monadexpr_.parent(null);
         }
 
         if(node != null)
@@ -57,23 +57,23 @@ public final class AIntSimplefactor extends PSimplefactor
             node.parent(this);
         }
 
-        this._intdenotation_ = node;
+        this._monadexpr_ = node;
     }
 
     @Override
     public String toString()
     {
         return ""
-            + toString(this._intdenotation_);
+            + toString(this._monadexpr_);
     }
 
     @Override
     void removeChild(@SuppressWarnings("unused") Node child)
     {
         // Remove child
-        if(this._intdenotation_ == child)
+        if(this._monadexpr_ == child)
         {
-            this._intdenotation_ = null;
+            this._monadexpr_ = null;
             return;
         }
 
@@ -84,9 +84,9 @@ public final class AIntSimplefactor extends PSimplefactor
     void replaceChild(@SuppressWarnings("unused") Node oldChild, @SuppressWarnings("unused") Node newChild)
     {
         // Replace child
-        if(this._intdenotation_ == oldChild)
+        if(this._monadexpr_ == oldChild)
         {
-            setIntdenotation((TIntdenotation) newChild);
+            setMonadexpr((PMonadexpr) newChild);
             return;
         }
 

@@ -184,44 +184,50 @@ class TokenIndex extends AnalysisAdapter
     }
 
     @Override
-    public void caseTIntdenotation(@SuppressWarnings("unused") TIntdenotation node)
+    public void caseTEsym(@SuppressWarnings("unused") TEsym node)
     {
         this.index = 29;
     }
 
     @Override
-    public void caseTRealdenotation(@SuppressWarnings("unused") TRealdenotation node)
+    public void caseTIntdenotation(@SuppressWarnings("unused") TIntdenotation node)
     {
         this.index = 30;
     }
 
     @Override
-    public void caseTIdent(@SuppressWarnings("unused") TIdent node)
+    public void caseTRealdenotation(@SuppressWarnings("unused") TRealdenotation node)
     {
         this.index = 31;
     }
 
     @Override
-    public void caseTCharsym(@SuppressWarnings("unused") TCharsym node)
+    public void caseTIdent(@SuppressWarnings("unused") TIdent node)
     {
         this.index = 32;
     }
 
     @Override
-    public void caseTStringsym(@SuppressWarnings("unused") TStringsym node)
+    public void caseTCharsym(@SuppressWarnings("unused") TCharsym node)
     {
         this.index = 33;
     }
 
     @Override
-    public void caseTApostrophe(@SuppressWarnings("unused") TApostrophe node)
+    public void caseTStringsym(@SuppressWarnings("unused") TStringsym node)
     {
         this.index = 34;
     }
 
     @Override
-    public void caseEOF(@SuppressWarnings("unused") EOF node)
+    public void caseTApostrophe(@SuppressWarnings("unused") TApostrophe node)
     {
         this.index = 35;
+    }
+
+    @Override
+    public void caseEOF(@SuppressWarnings("unused") EOF node)
+    {
+        this.index = 36;
     }
 }

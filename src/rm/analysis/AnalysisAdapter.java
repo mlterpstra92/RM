@@ -195,19 +195,7 @@ public class AnalysisAdapter implements Analysis
     }
 
     @Override
-    public void caseAIntSimplefactor(AIntSimplefactor node)
-    {
-        defaultCase(node);
-    }
-
-    @Override
-    public void caseAMonadexprSimplefactor(AMonadexprSimplefactor node)
-    {
-        defaultCase(node);
-    }
-
-    @Override
-    public void caseARealSimplefactor(ARealSimplefactor node)
+    public void caseANumSimplefactor(ANumSimplefactor node)
     {
         defaultCase(node);
     }
@@ -232,6 +220,36 @@ public class AnalysisAdapter implements Analysis
 
     @Override
     public void caseAIdentSimplefactor(AIdentSimplefactor node)
+    {
+        defaultCase(node);
+    }
+
+    @Override
+    public void caseAIntNumfac(AIntNumfac node)
+    {
+        defaultCase(node);
+    }
+
+    @Override
+    public void caseARealNumfac(ARealNumfac node)
+    {
+        defaultCase(node);
+    }
+
+    @Override
+    public void caseAMonadNumfac(AMonadNumfac node)
+    {
+        defaultCase(node);
+    }
+
+    @Override
+    public void caseAScnumRealnum(AScnumRealnum node)
+    {
+        defaultCase(node);
+    }
+
+    @Override
+    public void caseARealRealnum(ARealRealnum node)
     {
         defaultCase(node);
     }
@@ -526,6 +544,12 @@ public class AnalysisAdapter implements Analysis
 
     @Override
     public void caseTQuestionsym(TQuestionsym node)
+    {
+        defaultCase(node);
+    }
+
+    @Override
+    public void caseTEsym(TEsym node)
     {
         defaultCase(node);
     }

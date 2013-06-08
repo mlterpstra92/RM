@@ -564,67 +564,25 @@ public class DepthFirstAdapter extends AnalysisAdapter
         outASimplefacFactorexpr(node);
     }
 
-    public void inAIntSimplefactor(AIntSimplefactor node)
+    public void inANumSimplefactor(ANumSimplefactor node)
     {
         defaultIn(node);
     }
 
-    public void outAIntSimplefactor(AIntSimplefactor node)
+    public void outANumSimplefactor(ANumSimplefactor node)
     {
         defaultOut(node);
     }
 
     @Override
-    public void caseAIntSimplefactor(AIntSimplefactor node)
+    public void caseANumSimplefactor(ANumSimplefactor node)
     {
-        inAIntSimplefactor(node);
-        if(node.getIntdenotation() != null)
+        inANumSimplefactor(node);
+        if(node.getNumfac() != null)
         {
-            node.getIntdenotation().apply(this);
+            node.getNumfac().apply(this);
         }
-        outAIntSimplefactor(node);
-    }
-
-    public void inAMonadexprSimplefactor(AMonadexprSimplefactor node)
-    {
-        defaultIn(node);
-    }
-
-    public void outAMonadexprSimplefactor(AMonadexprSimplefactor node)
-    {
-        defaultOut(node);
-    }
-
-    @Override
-    public void caseAMonadexprSimplefactor(AMonadexprSimplefactor node)
-    {
-        inAMonadexprSimplefactor(node);
-        if(node.getMonadexpr() != null)
-        {
-            node.getMonadexpr().apply(this);
-        }
-        outAMonadexprSimplefactor(node);
-    }
-
-    public void inARealSimplefactor(ARealSimplefactor node)
-    {
-        defaultIn(node);
-    }
-
-    public void outARealSimplefactor(ARealSimplefactor node)
-    {
-        defaultOut(node);
-    }
-
-    @Override
-    public void caseARealSimplefactor(ARealSimplefactor node)
-    {
-        inARealSimplefactor(node);
-        if(node.getRealdenotation() != null)
-        {
-            node.getRealdenotation().apply(this);
-        }
-        outARealSimplefactor(node);
+        outANumSimplefactor(node);
     }
 
     public void inACharSimplefactor(ACharSimplefactor node)
@@ -719,6 +677,119 @@ public class DepthFirstAdapter extends AnalysisAdapter
         outAIdentSimplefactor(node);
     }
 
+    public void inAIntNumfac(AIntNumfac node)
+    {
+        defaultIn(node);
+    }
+
+    public void outAIntNumfac(AIntNumfac node)
+    {
+        defaultOut(node);
+    }
+
+    @Override
+    public void caseAIntNumfac(AIntNumfac node)
+    {
+        inAIntNumfac(node);
+        if(node.getIntdenotation() != null)
+        {
+            node.getIntdenotation().apply(this);
+        }
+        outAIntNumfac(node);
+    }
+
+    public void inARealNumfac(ARealNumfac node)
+    {
+        defaultIn(node);
+    }
+
+    public void outARealNumfac(ARealNumfac node)
+    {
+        defaultOut(node);
+    }
+
+    @Override
+    public void caseARealNumfac(ARealNumfac node)
+    {
+        inARealNumfac(node);
+        if(node.getRealnum() != null)
+        {
+            node.getRealnum().apply(this);
+        }
+        outARealNumfac(node);
+    }
+
+    public void inAMonadNumfac(AMonadNumfac node)
+    {
+        defaultIn(node);
+    }
+
+    public void outAMonadNumfac(AMonadNumfac node)
+    {
+        defaultOut(node);
+    }
+
+    @Override
+    public void caseAMonadNumfac(AMonadNumfac node)
+    {
+        inAMonadNumfac(node);
+        if(node.getMonadexpr() != null)
+        {
+            node.getMonadexpr().apply(this);
+        }
+        outAMonadNumfac(node);
+    }
+
+    public void inAScnumRealnum(AScnumRealnum node)
+    {
+        defaultIn(node);
+    }
+
+    public void outAScnumRealnum(AScnumRealnum node)
+    {
+        defaultOut(node);
+    }
+
+    @Override
+    public void caseAScnumRealnum(AScnumRealnum node)
+    {
+        inAScnumRealnum(node);
+        if(node.getBase() != null)
+        {
+            node.getBase().apply(this);
+        }
+        if(node.getEsym() != null)
+        {
+            node.getEsym().apply(this);
+        }
+        if(node.getExp() != null)
+        {
+            node.getExp().apply(this);
+        }
+        outAScnumRealnum(node);
+    }
+
+    public void inARealRealnum(ARealRealnum node)
+    {
+        defaultIn(node);
+    }
+
+    public void outARealRealnum(ARealRealnum node)
+    {
+        defaultOut(node);
+    }
+
+    @Override
+    public void caseARealRealnum(ARealRealnum node)
+    {
+        inARealRealnum(node);
+        if(node.getRealdenotation() != null)
+        {
+            node.getRealdenotation().apply(this);
+        }
+        outARealRealnum(node);
+    }
+
     public void inANegMonadexpr(ANegMonadexpr node)
     {
         defaultIn(node);
@@ -737,9 +808,9 @@ public class DepthFirstAdapter extends AnalysisAdapter
         {
             node.getMinussym().apply(this);
         }
-        if(node.getFactorexpr() != null)
+        if(node.getSimplefactor() != null)
         {
-            node.getFactorexpr().apply(this);
+            node.getSimplefactor().apply(this);
         }
         outANegMonadexpr(node);
     }

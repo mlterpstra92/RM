@@ -5,46 +5,46 @@ package rm.node;
 import rm.analysis.*;
 
 @SuppressWarnings("nls")
-public final class AMonadexprSimplefactor extends PSimplefactor
+public final class ARealNumfac extends PNumfac
 {
-    private PMonadexpr _monadexpr_;
+    private PRealnum _realnum_;
 
-    public AMonadexprSimplefactor()
+    public ARealNumfac()
     {
         // Constructor
     }
 
-    public AMonadexprSimplefactor(
-        @SuppressWarnings("hiding") PMonadexpr _monadexpr_)
+    public ARealNumfac(
+        @SuppressWarnings("hiding") PRealnum _realnum_)
     {
         // Constructor
-        setMonadexpr(_monadexpr_);
+        setRealnum(_realnum_);
 
     }
 
     @Override
     public Object clone()
     {
-        return new AMonadexprSimplefactor(
-            cloneNode(this._monadexpr_));
+        return new ARealNumfac(
+            cloneNode(this._realnum_));
     }
 
     @Override
     public void apply(Switch sw)
     {
-        ((Analysis) sw).caseAMonadexprSimplefactor(this);
+        ((Analysis) sw).caseARealNumfac(this);
     }
 
-    public PMonadexpr getMonadexpr()
+    public PRealnum getRealnum()
     {
-        return this._monadexpr_;
+        return this._realnum_;
     }
 
-    public void setMonadexpr(PMonadexpr node)
+    public void setRealnum(PRealnum node)
     {
-        if(this._monadexpr_ != null)
+        if(this._realnum_ != null)
         {
-            this._monadexpr_.parent(null);
+            this._realnum_.parent(null);
         }
 
         if(node != null)
@@ -57,23 +57,23 @@ public final class AMonadexprSimplefactor extends PSimplefactor
             node.parent(this);
         }
 
-        this._monadexpr_ = node;
+        this._realnum_ = node;
     }
 
     @Override
     public String toString()
     {
         return ""
-            + toString(this._monadexpr_);
+            + toString(this._realnum_);
     }
 
     @Override
     void removeChild(@SuppressWarnings("unused") Node child)
     {
         // Remove child
-        if(this._monadexpr_ == child)
+        if(this._realnum_ == child)
         {
-            this._monadexpr_ = null;
+            this._realnum_ = null;
             return;
         }
 
@@ -84,9 +84,9 @@ public final class AMonadexprSimplefactor extends PSimplefactor
     void replaceChild(@SuppressWarnings("unused") Node oldChild, @SuppressWarnings("unused") Node newChild)
     {
         // Replace child
-        if(this._monadexpr_ == oldChild)
+        if(this._realnum_ == oldChild)
         {
-            setMonadexpr((PMonadexpr) newChild);
+            setRealnum((PRealnum) newChild);
             return;
         }
 
