@@ -32,38 +32,26 @@ class Interpreter extends DepthFirstAdapter {
     {
         FailOnRedeclaration = true;
     }
-    
-    //Retrieve the parameters for a function call
-    private Iterable<String> getParams(PParlst parlst) {
-        ArrayList<String> list = new ArrayList<>();
-        if(!(parlst instanceof AEmptyParlst))
-        {
-            AParlstParlst lst = (AParlstParlst)parlst;
-            interpretParams(lst.getPars(), list);
-        }
-        return list;
-    }
-
-    private void interpretParams(PPars pars, ArrayList<String> list) {
-        if(pars instanceof AIdentPars)
-            list.add(((AIdentPars)pars).getIdent().getText().trim());
-        else
-        {
-            ACommaPars p = (ACommaPars)pars;
-            interpretParams(p.getPars(), list);
-            list.add(p.getIdent().getText().trim());
-        }
-    }
 
     //The function execution stack and the symbol table
     Stack<Function> stack = new Stack<>();
     HashMap<String, Function> symbolTable = new HashMap<>();
     
+    //Before the start of the program add the built-in functions
+    @Override
+    public void caseStart(Start node)
+    {
+        addBuiltInFunctions();
+        if(node.getPProgram() instanceof ADefProgram)
+            caseADefProgram((ADefProgram)node.getPProgram());
+        else
+            caseACompProgram((ACompProgram)node.getPProgram());
+    }
     
     //These are basically the main 'hooks' for the interpreter
     @Override
-    public void caseADefProgram(ADefProgram node){
-        
+    public void caseADefProgram(ADefProgram node)
+    {
         ADef def = (ADef)node.getDef();
         caseADef(def);
         if(node.getProgram() instanceof ADefProgram)
@@ -91,7 +79,7 @@ class Interpreter extends DepthFirstAdapter {
         String ident = (def.getIdent()).getText().trim();
         //Check if we are declaring a function
         //If we are we should at least issue a warning, depending on what the user wants
-        boolean isBuiltin = isBuiltinFunction(ident);
+        boolean isBuiltin = false;//isBuiltinFunction(ident);
         if((!isBuiltin) && (symbolTable.get(ident) == null))
         {
             //Add a new function to the symbol table
@@ -121,7 +109,28 @@ class Interpreter extends DepthFirstAdapter {
             else
                 System.err.println("Warning: function " + ident + " is already defined. Possibly the result is NOT what you intended");
         }
-        
+    }
+    
+    //Retrieve the parameters for a function call
+    private Iterable<String> getParams(PParlst parlst) {
+        ArrayList<String> list = new ArrayList<>();
+        if(!(parlst instanceof AEmptyParlst))
+        {
+            AParlstParlst lst = (AParlstParlst)parlst;
+            interpretParams(lst.getPars(), list);
+        }
+        return list;
+    }
+
+    private void interpretParams(PPars pars, ArrayList<String> list) {
+        if(pars instanceof AIdentPars)
+            list.add(((AIdentPars)pars).getIdent().getText().trim());
+        else
+        {
+            ACommaPars p = (ACommaPars)pars;
+            interpretParams(p.getPars(), list);
+            list.add(p.getIdent().getText().trim());
+        }
     }
     
     @Override
@@ -425,7 +434,8 @@ class Interpreter extends DepthFirstAdapter {
         }
         catch(Exception ex)
         {
-            System.err.println("Error in function handling: " + ex.getMessage());
+            System.err.println("Error in function handling: ");
+            ex.printStackTrace();
         }
         finally{
             return t;
@@ -440,9 +450,9 @@ class Interpreter extends DepthFirstAdapter {
         //Retrieve all its arguments
         ArrayList<Type> list = getArgs(func.getArglst());
         //Check if it is a built-in function
-        Type builtInFuncResult = executeBuiltInFunc(ident, list);
-        if(builtInFuncResult != null)
-            return builtInFuncResult;
+        //Type builtInFuncResult = executeBuiltInFunc(ident, list);
+        //if(builtInFuncResult != null)
+        //    return builtInFuncResult;
 
         //If we're here it means it wasn't a built-in function so we look
         //in the symbol table for a function that matches our name
@@ -479,15 +489,15 @@ class Interpreter extends DepthFirstAdapter {
         return ((n1 instanceof RealType) ^ (n2 instanceof RealType)) && ((n1 instanceof IntegerType ^ n2 instanceof IntegerType));
     }
 
-    //Possible improvement: add them to the symbol table instead of this hackey thing
-    private Type executeBuiltInFunc(String ident, ArrayList<Type> list) 
+    //Possible improvement: Set the appropriate expression for built-in functions
+    //so we don't need this
+    private Type executeBuiltInFunc(Function f) 
     {
-        Type retVal;
-        //All built-in function require exactly one argument
-        if(list.size() == 1) 
+        if(f.getArgs().size() == 1)
         {
-            Double d = new Double((list.get(0)).getValue().toString());
-            switch(ident)
+            Type retVal;
+            Double d = new Double(f.getArg("x").getValue().getValue().toString().trim());
+            switch(f.getName())
             {
                 case "sin":
                     retVal = new RealType(Math.sin(d));
@@ -509,9 +519,8 @@ class Interpreter extends DepthFirstAdapter {
                     break;
             }
             return retVal;
-        } 
-        else 
-            return null;
+        }
+        throw new IllegalArgumentException("One argument expected");
     }
 
     //Update the arguments of the called function with new values
@@ -529,19 +538,14 @@ class Interpreter extends DepthFirstAdapter {
     //and pop it off
     private Type executeFunc(Function function) 
     {
-        stack.push(function);
-        Type t = interpretExpr(function.getExpr());
-        stack.pop();
-        return t;
-    }
-
-    //Because built-in functions are not in the symbol table things like this are needed
-    private boolean isBuiltinFunction(String ident) {
-        return ident.equals("sin") ||
-               ident.equals("cos") ||
-               ident.equals("tan") ||
-               ident.equals("exp") ||
-               ident.equals("log");
+        if(function.getExpr() != null) {
+            stack.push(function);
+            Type t = interpretExpr(function.getExpr());
+            stack.pop();
+            return t;
+        }
+        else 
+            return executeBuiltInFunc(function);
     }
     
     //Make sure the stack is empty at the end of program execution
@@ -550,5 +554,24 @@ class Interpreter extends DepthFirstAdapter {
     {
         if(!stack.empty())
             System.err.println("Unexpected elements on stack");
+    }
+
+    //Functions to be added to the symbol table
+    private void addBuiltInFunctions() {
+        ArrayList<String> builtInFuncs = new ArrayList<String>(){{
+            add("cos");
+            add("sin");
+            add("tan");
+            add("exp");
+            add("log");
+        }};
+        for(String s : builtInFuncs)
+        {
+            ArrayList<FuncArg> args = new ArrayList<>();
+            //Default dummy parameter
+            args.add(new FuncArg("x", null, 0));
+            Function f = new Function(s, args);
+            symbolTable.put(s, f);
+        }
     }
 }

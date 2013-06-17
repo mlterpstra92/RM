@@ -1,4 +1,4 @@
-LET sumMulThreeFive(n, i, sum) = IF i < n THEN doSum(n, i, sum) ELSE sum;
+/*LET sumMulThreeFive(n, i, sum) = IF i < n THEN doSum(n, i, sum) ELSE sum;
 LET doSum(n, i, sum) = IF i % 3 == 0 || i % 5 == 0 THEN sumMulThreeFive(n, i+1, sum+i) ELSE sumMulThreeFive(n, i+1, sum);
 sumMulThreeFive(1000, 1, 0)?
 //LET eps = 'a';
@@ -16,5 +16,6 @@ LET a = 1.0E-4;
 a?
 1+2*3.0?
 LET b = 'a';
-SUCC 'z'?
+SUCC 'z'?*/
+log(0)?
 .
