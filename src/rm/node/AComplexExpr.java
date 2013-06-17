@@ -5,7 +5,7 @@ package rm.node;
 import rm.analysis.*;
 
 @SuppressWarnings("nls")
-public final class AComplexexprExpr extends PExpr
+public final class AComplexExpr extends PExpr
 {
     private TIfsym _ifsym_;
     private PRelcomp _relcomp_;
@@ -14,12 +14,12 @@ public final class AComplexexprExpr extends PExpr
     private TElsesym _elsesym_;
     private PExpr _falseclause_;
 
-    public AComplexexprExpr()
+    public AComplexExpr()
     {
         // Constructor
     }
 
-    public AComplexexprExpr(
+    public AComplexExpr(
         @SuppressWarnings("hiding") TIfsym _ifsym_,
         @SuppressWarnings("hiding") PRelcomp _relcomp_,
         @SuppressWarnings("hiding") TThensym _thensym_,
@@ -45,7 +45,7 @@ public final class AComplexexprExpr extends PExpr
     @Override
     public Object clone()
     {
-        return new AComplexexprExpr(
+        return new AComplexExpr(
             cloneNode(this._ifsym_),
             cloneNode(this._relcomp_),
             cloneNode(this._thensym_),
@@ -57,7 +57,7 @@ public final class AComplexexprExpr extends PExpr
     @Override
     public void apply(Switch sw)
     {
-        ((Analysis) sw).caseAComplexexprExpr(this);
+        ((Analysis) sw).caseAComplexExpr(this);
     }
 
     public TIfsym getIfsym()

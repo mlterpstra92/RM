@@ -1,14 +1,11 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-package rm;
 
+package rm.types;
 import java.util.Objects;
 
 /**
  *
  * @author maarten
+ * Implementation of the 'real' datatype
  */
 public class RealType extends Type {
     private Double value;
@@ -127,11 +124,15 @@ public class RealType extends Type {
     public Type div(Type rightNumber) 
     {
         RealType other = checkObj(rightNumber);
+        //division by zero is checked in the interpreter
         if(other != null)
             return new RealType(this.value / other.getValue());
         return null;
     }
 
+    //I chose to implement negation of a real as the negative value while
+    //I now realise it could also have been 1.0/value. I think that should be 
+    //the inverse of a real, while this is the negation
     @Override
     public void negate() {
         this.value *= -1.0;

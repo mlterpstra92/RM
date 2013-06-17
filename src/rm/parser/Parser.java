@@ -252,19 +252,19 @@ public class Parser
                 push(goTo(4), list, false);
             }
             break;
-            case 9: /* reduce AComplexexprExpr */
+            case 9: /* reduce AComplexExpr */
             {
                 ArrayList<Object> list = new9();
                 push(goTo(5), list, false);
             }
             break;
-            case 10: /* reduce ASimpleexprExpr */
+            case 10: /* reduce ASimpleExpr */
             {
                 ArrayList<Object> list = new10();
                 push(goTo(5), list, false);
             }
             break;
-            case 11: /* reduce ACondisRelcomp */
+            case 11: /* reduce ACompcondRelcomp */
             {
                 ArrayList<Object> list = new11();
                 push(goTo(6), list, false);
@@ -282,13 +282,13 @@ public class Parser
                 push(goTo(7), list, false);
             }
             break;
-            case 14: /* reduce ATermSmplexpr */
+            case 14: /* reduce ATermSimplexpr */
             {
                 ArrayList<Object> list = new14();
                 push(goTo(8), list, false);
             }
             break;
-            case 15: /* reduce AAddSmplexpr */
+            case 15: /* reduce AAddSimplexpr */
             {
                 ArrayList<Object> list = new15();
                 push(goTo(8), list, false);
@@ -336,49 +336,49 @@ public class Parser
                 push(goTo(11), list, false);
             }
             break;
-            case 23: /* reduce ASucccharSimplefactor */
+            case 23: /* reduce AIdentSimplefactor */
             {
                 ArrayList<Object> list = new23();
                 push(goTo(11), list, false);
             }
             break;
-            case 24: /* reduce AIdentSimplefactor */
+            case 24: /* reduce AIntNumfac */
             {
                 ArrayList<Object> list = new24();
-                push(goTo(11), list, false);
+                push(goTo(12), list, false);
             }
             break;
-            case 25: /* reduce AIntNumfac */
+            case 25: /* reduce ARealNumfac */
             {
                 ArrayList<Object> list = new25();
                 push(goTo(12), list, false);
             }
             break;
-            case 26: /* reduce ARealNumfac */
+            case 26: /* reduce AMonadNumfac */
             {
                 ArrayList<Object> list = new26();
                 push(goTo(12), list, false);
             }
             break;
-            case 27: /* reduce AMonadNumfac */
+            case 27: /* reduce AScnumRealnum */
             {
                 ArrayList<Object> list = new27();
-                push(goTo(12), list, false);
+                push(goTo(13), list, false);
             }
             break;
-            case 28: /* reduce AScnumRealnum */
+            case 28: /* reduce ARealRealnum */
             {
                 ArrayList<Object> list = new28();
                 push(goTo(13), list, false);
             }
             break;
-            case 29: /* reduce ARealRealnum */
+            case 29: /* reduce ANegMonadexpr */
             {
                 ArrayList<Object> list = new29();
-                push(goTo(13), list, false);
+                push(goTo(14), list, false);
             }
             break;
-            case 30: /* reduce ANegMonadexpr */
+            case 30: /* reduce ASucccharMonadexpr */
             {
                 ArrayList<Object> list = new30();
                 push(goTo(14), list, false);
@@ -714,7 +714,7 @@ public class Parser
 
 
     @SuppressWarnings({ "unchecked", "rawtypes" })
-    ArrayList<Object> new9() /* reduce AComplexexprExpr */
+    ArrayList<Object> new9() /* reduce AComplexExpr */
     {
         @SuppressWarnings("hiding") ArrayList<Object> nodeList = new ArrayList<Object>();
 
@@ -740,7 +740,7 @@ public class Parser
         telsesymNode6 = (TElsesym)nodeArrayList5.get(0);
         pexprNode7 = (PExpr)nodeArrayList6.get(0);
 
-        pexprNode1 = new AComplexexprExpr(tifsymNode2, prelcompNode3, tthensymNode4, pexprNode5, telsesymNode6, pexprNode7);
+        pexprNode1 = new AComplexExpr(tifsymNode2, prelcompNode3, tthensymNode4, pexprNode5, telsesymNode6, pexprNode7);
         }
 	nodeList.add(pexprNode1);
         return nodeList;
@@ -749,7 +749,7 @@ public class Parser
 
 
     @SuppressWarnings({ "unchecked", "rawtypes" })
-    ArrayList<Object> new10() /* reduce ASimpleexprExpr */
+    ArrayList<Object> new10() /* reduce ASimpleExpr */
     {
         @SuppressWarnings("hiding") ArrayList<Object> nodeList = new ArrayList<Object>();
 
@@ -757,10 +757,10 @@ public class Parser
         PExpr pexprNode1;
         {
             // Block
-        PSmplexpr psmplexprNode2;
-        psmplexprNode2 = (PSmplexpr)nodeArrayList1.get(0);
+        PSimplexpr psimplexprNode2;
+        psimplexprNode2 = (PSimplexpr)nodeArrayList1.get(0);
 
-        pexprNode1 = new ASimpleexprExpr(psmplexprNode2);
+        pexprNode1 = new ASimpleExpr(psimplexprNode2);
         }
 	nodeList.add(pexprNode1);
         return nodeList;
@@ -769,7 +769,7 @@ public class Parser
 
 
     @SuppressWarnings({ "unchecked", "rawtypes" })
-    ArrayList<Object> new11() /* reduce ACondisRelcomp */
+    ArrayList<Object> new11() /* reduce ACompcondRelcomp */
     {
         @SuppressWarnings("hiding") ArrayList<Object> nodeList = new ArrayList<Object>();
 
@@ -780,13 +780,13 @@ public class Parser
         {
             // Block
         PRelcomp prelcompNode2;
-        TCondis tcondisNode3;
+        TCondop tcondopNode3;
         PRelexpr prelexprNode4;
         prelcompNode2 = (PRelcomp)nodeArrayList1.get(0);
-        tcondisNode3 = (TCondis)nodeArrayList2.get(0);
+        tcondopNode3 = (TCondop)nodeArrayList2.get(0);
         prelexprNode4 = (PRelexpr)nodeArrayList3.get(0);
 
-        prelcompNode1 = new ACondisRelcomp(prelcompNode2, tcondisNode3, prelexprNode4);
+        prelcompNode1 = new ACompcondRelcomp(prelcompNode2, tcondopNode3, prelexprNode4);
         }
 	nodeList.add(prelcompNode1);
         return nodeList;
@@ -841,46 +841,46 @@ public class Parser
 
 
     @SuppressWarnings({ "unchecked", "rawtypes" })
-    ArrayList<Object> new14() /* reduce ATermSmplexpr */
+    ArrayList<Object> new14() /* reduce ATermSimplexpr */
     {
         @SuppressWarnings("hiding") ArrayList<Object> nodeList = new ArrayList<Object>();
 
         @SuppressWarnings("unused") ArrayList<Object> nodeArrayList1 = pop();
-        PSmplexpr psmplexprNode1;
+        PSimplexpr psimplexprNode1;
         {
             // Block
         PTerm ptermNode2;
         ptermNode2 = (PTerm)nodeArrayList1.get(0);
 
-        psmplexprNode1 = new ATermSmplexpr(ptermNode2);
+        psimplexprNode1 = new ATermSimplexpr(ptermNode2);
         }
-	nodeList.add(psmplexprNode1);
+	nodeList.add(psimplexprNode1);
         return nodeList;
     }
 
 
 
     @SuppressWarnings({ "unchecked", "rawtypes" })
-    ArrayList<Object> new15() /* reduce AAddSmplexpr */
+    ArrayList<Object> new15() /* reduce AAddSimplexpr */
     {
         @SuppressWarnings("hiding") ArrayList<Object> nodeList = new ArrayList<Object>();
 
         @SuppressWarnings("unused") ArrayList<Object> nodeArrayList3 = pop();
         @SuppressWarnings("unused") ArrayList<Object> nodeArrayList2 = pop();
         @SuppressWarnings("unused") ArrayList<Object> nodeArrayList1 = pop();
-        PSmplexpr psmplexprNode1;
+        PSimplexpr psimplexprNode1;
         {
             // Block
-        PSmplexpr psmplexprNode2;
+        PSimplexpr psimplexprNode2;
         PAddop paddopNode3;
         PTerm ptermNode4;
-        psmplexprNode2 = (PSmplexpr)nodeArrayList1.get(0);
+        psimplexprNode2 = (PSimplexpr)nodeArrayList1.get(0);
         paddopNode3 = (PAddop)nodeArrayList2.get(0);
         ptermNode4 = (PTerm)nodeArrayList3.get(0);
 
-        psmplexprNode1 = new AAddSmplexpr(psmplexprNode2, paddopNode3, ptermNode4);
+        psimplexprNode1 = new AAddSimplexpr(psimplexprNode2, paddopNode3, ptermNode4);
         }
-	nodeList.add(psmplexprNode1);
+	nodeList.add(psimplexprNode1);
         return nodeList;
     }
 
@@ -1039,30 +1039,7 @@ public class Parser
 
 
     @SuppressWarnings({ "unchecked", "rawtypes" })
-    ArrayList<Object> new23() /* reduce ASucccharSimplefactor */
-    {
-        @SuppressWarnings("hiding") ArrayList<Object> nodeList = new ArrayList<Object>();
-
-        @SuppressWarnings("unused") ArrayList<Object> nodeArrayList2 = pop();
-        @SuppressWarnings("unused") ArrayList<Object> nodeArrayList1 = pop();
-        PSimplefactor psimplefactorNode1;
-        {
-            // Block
-        TSuccsym tsuccsymNode2;
-        PSimplefactor psimplefactorNode3;
-        tsuccsymNode2 = (TSuccsym)nodeArrayList1.get(0);
-        psimplefactorNode3 = (PSimplefactor)nodeArrayList2.get(0);
-
-        psimplefactorNode1 = new ASucccharSimplefactor(tsuccsymNode2, psimplefactorNode3);
-        }
-	nodeList.add(psimplefactorNode1);
-        return nodeList;
-    }
-
-
-
-    @SuppressWarnings({ "unchecked", "rawtypes" })
-    ArrayList<Object> new24() /* reduce AIdentSimplefactor */
+    ArrayList<Object> new23() /* reduce AIdentSimplefactor */
     {
         @SuppressWarnings("hiding") ArrayList<Object> nodeList = new ArrayList<Object>();
 
@@ -1085,7 +1062,7 @@ public class Parser
 
 
     @SuppressWarnings({ "unchecked", "rawtypes" })
-    ArrayList<Object> new25() /* reduce AIntNumfac */
+    ArrayList<Object> new24() /* reduce AIntNumfac */
     {
         @SuppressWarnings("hiding") ArrayList<Object> nodeList = new ArrayList<Object>();
 
@@ -1105,7 +1082,7 @@ public class Parser
 
 
     @SuppressWarnings({ "unchecked", "rawtypes" })
-    ArrayList<Object> new26() /* reduce ARealNumfac */
+    ArrayList<Object> new25() /* reduce ARealNumfac */
     {
         @SuppressWarnings("hiding") ArrayList<Object> nodeList = new ArrayList<Object>();
 
@@ -1125,7 +1102,7 @@ public class Parser
 
 
     @SuppressWarnings({ "unchecked", "rawtypes" })
-    ArrayList<Object> new27() /* reduce AMonadNumfac */
+    ArrayList<Object> new26() /* reduce AMonadNumfac */
     {
         @SuppressWarnings("hiding") ArrayList<Object> nodeList = new ArrayList<Object>();
 
@@ -1145,7 +1122,7 @@ public class Parser
 
 
     @SuppressWarnings({ "unchecked", "rawtypes" })
-    ArrayList<Object> new28() /* reduce AScnumRealnum */
+    ArrayList<Object> new27() /* reduce AScnumRealnum */
     {
         @SuppressWarnings("hiding") ArrayList<Object> nodeList = new ArrayList<Object>();
 
@@ -1171,7 +1148,7 @@ public class Parser
 
 
     @SuppressWarnings({ "unchecked", "rawtypes" })
-    ArrayList<Object> new29() /* reduce ARealRealnum */
+    ArrayList<Object> new28() /* reduce ARealRealnum */
     {
         @SuppressWarnings("hiding") ArrayList<Object> nodeList = new ArrayList<Object>();
 
@@ -1191,7 +1168,7 @@ public class Parser
 
 
     @SuppressWarnings({ "unchecked", "rawtypes" })
-    ArrayList<Object> new30() /* reduce ANegMonadexpr */
+    ArrayList<Object> new29() /* reduce ANegMonadexpr */
     {
         @SuppressWarnings("hiding") ArrayList<Object> nodeList = new ArrayList<Object>();
 
@@ -1206,6 +1183,29 @@ public class Parser
         psimplefactorNode3 = (PSimplefactor)nodeArrayList2.get(0);
 
         pmonadexprNode1 = new ANegMonadexpr(tminussymNode2, psimplefactorNode3);
+        }
+	nodeList.add(pmonadexprNode1);
+        return nodeList;
+    }
+
+
+
+    @SuppressWarnings({ "unchecked", "rawtypes" })
+    ArrayList<Object> new30() /* reduce ASucccharMonadexpr */
+    {
+        @SuppressWarnings("hiding") ArrayList<Object> nodeList = new ArrayList<Object>();
+
+        @SuppressWarnings("unused") ArrayList<Object> nodeArrayList2 = pop();
+        @SuppressWarnings("unused") ArrayList<Object> nodeArrayList1 = pop();
+        PMonadexpr pmonadexprNode1;
+        {
+            // Block
+        TSuccsym tsuccsymNode2;
+        PSimplefactor psimplefactorNode3;
+        tsuccsymNode2 = (TSuccsym)nodeArrayList1.get(0);
+        psimplefactorNode3 = (PSimplefactor)nodeArrayList2.get(0);
+
+        pmonadexprNode1 = new ASucccharMonadexpr(tsuccsymNode2, psimplefactorNode3);
         }
 	nodeList.add(pmonadexprNode1);
         return nodeList;
@@ -1591,8 +1591,8 @@ public class Parser
 			{{-1, ERROR, 4}, {1, SHIFT, 1}, {18, SHIFT, 4}, {30, SHIFT, 7}, {31, SHIFT, 8}, {32, SHIFT, 9}, {33, SHIFT, 10}, {34, SHIFT, 11}, },
 			{{-1, ERROR, 5}, {1, SHIFT, 1}, {14, SHIFT, 2}, {18, SHIFT, 4}, {19, SHIFT, 5}, {30, SHIFT, 7}, {31, SHIFT, 8}, {32, SHIFT, 9}, {33, SHIFT, 10}, {34, SHIFT, 11}, },
 			{{-1, REDUCE, 2}, },
-			{{-1, REDUCE, 25}, },
-			{{-1, REDUCE, 29}, {29, SHIFT, 30}, },
+			{{-1, REDUCE, 24}, },
+			{{-1, REDUCE, 28}, {29, SHIFT, 30}, },
 			{{-1, REDUCE, 48}, {19, SHIFT, 31}, },
 			{{-1, REDUCE, 21}, },
 			{{-1, REDUCE, 22}, },
@@ -1605,18 +1605,18 @@ public class Parser
 			{{-1, REDUCE, 16}, },
 			{{-1, REDUCE, 19}, },
 			{{-1, REDUCE, 20}, },
+			{{-1, REDUCE, 25}, },
 			{{-1, REDUCE, 26}, },
-			{{-1, REDUCE, 27}, },
-			{{-1, REDUCE, 30}, },
+			{{-1, REDUCE, 29}, },
 			{{-1, ERROR, 24}, {5, SHIFT, 46}, {6, SHIFT, 47}, {7, SHIFT, 48}, {8, SHIFT, 49}, {9, SHIFT, 50}, {27, SHIFT, 51}, },
 			{{-1, ERROR, 25}, {13, SHIFT, 53}, {15, SHIFT, 54}, },
 			{{-1, REDUCE, 12}, },
 			{{-1, REDUCE, 48}, {19, SHIFT, 55}, },
-			{{-1, REDUCE, 23}, },
+			{{-1, REDUCE, 30}, },
 			{{-1, ERROR, 29}, {20, SHIFT, 58}, },
-			{{-1, ERROR, 30}, {1, SHIFT, 1}, {30, SHIFT, 7}, {31, SHIFT, 8}, },
+			{{-1, ERROR, 30}, {1, SHIFT, 1}, {18, SHIFT, 4}, {30, SHIFT, 7}, {31, SHIFT, 8}, },
 			{{-1, ERROR, 31}, {1, SHIFT, 1}, {14, SHIFT, 2}, {18, SHIFT, 4}, {19, SHIFT, 5}, {30, SHIFT, 7}, {31, SHIFT, 8}, {32, SHIFT, 9}, {33, SHIFT, 10}, {34, SHIFT, 11}, },
-			{{-1, REDUCE, 24}, },
+			{{-1, REDUCE, 23}, },
 			{{-1, REDUCE, 32}, },
 			{{-1, REDUCE, 0}, },
 			{{-1, REDUCE, 1}, },
@@ -1643,7 +1643,7 @@ public class Parser
 			{{-1, ERROR, 56}, {26, SHIFT, 69}, },
 			{{-1, REDUCE, 6}, },
 			{{-1, REDUCE, 18}, },
-			{{-1, REDUCE, 28}, },
+			{{-1, REDUCE, 27}, },
 			{{-1, REDUCE, 33}, },
 			{{-1, ERROR, 61}, {20, SHIFT, 70}, {24, SHIFT, 71}, },
 			{{-1, REDUCE, 15}, {2, SHIFT, 40}, {3, SHIFT, 41}, {4, SHIFT, 42}, {10, SHIFT, 43}, {11, SHIFT, 44}, },
@@ -1696,22 +1696,22 @@ public class Parser
 			"expecting: '-', 'IF', 'SUCC', '(', intdenotation, realdenotation, ident, charsym, stringsym",
 			"expecting: ident",
 			"expecting: EOF",
-			"expecting: '+', '-', '*', '%', '/', '<', '<=', '!=', '>=', '>', '<<', '>>', condis, 'THEN', 'ELSE', ')', ',', ';', '==', '?'",
-			"expecting: '+', '-', '*', '%', '/', '<', '<=', '!=', '>=', '>', '<<', '>>', condis, 'THEN', 'ELSE', ')', ',', ';', '==', '?', 'E'",
-			"expecting: '+', '-', '*', '%', '/', '<', '<=', '!=', '>=', '>', '<<', '>>', condis, 'THEN', 'ELSE', '(', ')', ',', ';', '==', '?'",
+			"expecting: '+', '-', '*', '%', '/', '<', '<=', '!=', '>=', '>', '<<', '>>', condop, 'THEN', 'ELSE', ')', ',', ';', '==', '?'",
+			"expecting: '+', '-', '*', '%', '/', '<', '<=', '!=', '>=', '>', '<<', '>>', condop, 'THEN', 'ELSE', ')', ',', ';', '==', '?', 'E'",
+			"expecting: '+', '-', '*', '%', '/', '<', '<=', '!=', '>=', '>', '<<', '>>', condop, 'THEN', 'ELSE', '(', ')', ',', ';', '==', '?'",
 			"expecting: '?'",
-			"expecting: '+', '-', '<', '<=', '!=', '>=', '>', condis, 'THEN', 'ELSE', ')', ',', ';', '==', '?'",
+			"expecting: '+', '-', '<', '<=', '!=', '>=', '>', condop, 'THEN', 'ELSE', ')', ',', ';', '==', '?'",
 			"expecting: '<', '<=', '!=', '>=', '>', '=='",
-			"expecting: condis, 'THEN'",
+			"expecting: condop, 'THEN'",
 			"expecting: '(', '='",
 			"expecting: ')'",
-			"expecting: '-', intdenotation, realdenotation",
+			"expecting: '-', 'SUCC', intdenotation, realdenotation",
 			"expecting: '-', 'SUCC', '(', intdenotation, realdenotation, ident, charsym, stringsym",
 			"expecting: '='",
 			"expecting: ')', ','",
 			"expecting: 'ELSE'",
 			"expecting: ';'",
-			"expecting: '<', '<=', '!=', '>=', '>', condis, 'THEN', 'ELSE', ')', ',', ';', '==', '?'",
+			"expecting: '<', '<=', '!=', '>=', '>', condop, 'THEN', 'ELSE', ')', ',', ';', '==', '?'",
         };*/
     private static int[] errors;
 /*      {

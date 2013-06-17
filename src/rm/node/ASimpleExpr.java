@@ -5,46 +5,46 @@ package rm.node;
 import rm.analysis.*;
 
 @SuppressWarnings("nls")
-public final class ATermSmplexpr extends PSmplexpr
+public final class ASimpleExpr extends PExpr
 {
-    private PTerm _term_;
+    private PSimplexpr _simplexpr_;
 
-    public ATermSmplexpr()
+    public ASimpleExpr()
     {
         // Constructor
     }
 
-    public ATermSmplexpr(
-        @SuppressWarnings("hiding") PTerm _term_)
+    public ASimpleExpr(
+        @SuppressWarnings("hiding") PSimplexpr _simplexpr_)
     {
         // Constructor
-        setTerm(_term_);
+        setSimplexpr(_simplexpr_);
 
     }
 
     @Override
     public Object clone()
     {
-        return new ATermSmplexpr(
-            cloneNode(this._term_));
+        return new ASimpleExpr(
+            cloneNode(this._simplexpr_));
     }
 
     @Override
     public void apply(Switch sw)
     {
-        ((Analysis) sw).caseATermSmplexpr(this);
+        ((Analysis) sw).caseASimpleExpr(this);
     }
 
-    public PTerm getTerm()
+    public PSimplexpr getSimplexpr()
     {
-        return this._term_;
+        return this._simplexpr_;
     }
 
-    public void setTerm(PTerm node)
+    public void setSimplexpr(PSimplexpr node)
     {
-        if(this._term_ != null)
+        if(this._simplexpr_ != null)
         {
-            this._term_.parent(null);
+            this._simplexpr_.parent(null);
         }
 
         if(node != null)
@@ -57,23 +57,23 @@ public final class ATermSmplexpr extends PSmplexpr
             node.parent(this);
         }
 
-        this._term_ = node;
+        this._simplexpr_ = node;
     }
 
     @Override
     public String toString()
     {
         return ""
-            + toString(this._term_);
+            + toString(this._simplexpr_);
     }
 
     @Override
     void removeChild(@SuppressWarnings("unused") Node child)
     {
         // Remove child
-        if(this._term_ == child)
+        if(this._simplexpr_ == child)
         {
-            this._term_ = null;
+            this._simplexpr_ = null;
             return;
         }
 
@@ -84,9 +84,9 @@ public final class ATermSmplexpr extends PSmplexpr
     void replaceChild(@SuppressWarnings("unused") Node oldChild, @SuppressWarnings("unused") Node newChild)
     {
         // Replace child
-        if(this._term_ == oldChild)
+        if(this._simplexpr_ == oldChild)
         {
-            setTerm((PTerm) newChild);
+            setSimplexpr((PSimplexpr) newChild);
             return;
         }
 

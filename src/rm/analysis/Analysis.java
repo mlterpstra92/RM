@@ -21,13 +21,13 @@ public interface Analysis extends Switch
     void caseAEmptyParlst(AEmptyParlst node);
     void caseAIdentPars(AIdentPars node);
     void caseACommaPars(ACommaPars node);
-    void caseAComplexexprExpr(AComplexexprExpr node);
-    void caseASimpleexprExpr(ASimpleexprExpr node);
-    void caseACondisRelcomp(ACondisRelcomp node);
+    void caseAComplexExpr(AComplexExpr node);
+    void caseASimpleExpr(ASimpleExpr node);
+    void caseACompcondRelcomp(ACompcondRelcomp node);
     void caseACondRelcomp(ACondRelcomp node);
     void caseARelexpr(ARelexpr node);
-    void caseATermSmplexpr(ATermSmplexpr node);
-    void caseAAddSmplexpr(AAddSmplexpr node);
+    void caseATermSimplexpr(ATermSimplexpr node);
+    void caseAAddSimplexpr(AAddSimplexpr node);
     void caseAFactorTerm(AFactorTerm node);
     void caseAMultTerm(AMultTerm node);
     void caseAParFactorexpr(AParFactorexpr node);
@@ -35,7 +35,6 @@ public interface Analysis extends Switch
     void caseANumSimplefactor(ANumSimplefactor node);
     void caseACharSimplefactor(ACharSimplefactor node);
     void caseAStringSimplefactor(AStringSimplefactor node);
-    void caseASucccharSimplefactor(ASucccharSimplefactor node);
     void caseAIdentSimplefactor(AIdentSimplefactor node);
     void caseAIntNumfac(AIntNumfac node);
     void caseARealNumfac(ARealNumfac node);
@@ -43,6 +42,7 @@ public interface Analysis extends Switch
     void caseAScnumRealnum(AScnumRealnum node);
     void caseARealRealnum(ARealRealnum node);
     void caseANegMonadexpr(ANegMonadexpr node);
+    void caseASucccharMonadexpr(ASucccharMonadexpr node);
     void caseAArgsArglst(AArgsArglst node);
     void caseAEmptyArglst(AEmptyArglst node);
     void caseAExprArgs(AExprArgs node);
@@ -76,7 +76,7 @@ public interface Analysis extends Switch
     void caseTLshiftsym(TLshiftsym node);
     void caseTRshiftsym(TRshiftsym node);
     void caseTNotsym(TNotsym node);
-    void caseTCondis(TCondis node);
+    void caseTCondop(TCondop node);
     void caseTIfsym(TIfsym node);
     void caseTThensym(TThensym node);
     void caseTElsesym(TElsesym node);

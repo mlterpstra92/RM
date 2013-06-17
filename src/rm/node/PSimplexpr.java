@@ -2,7 +2,7 @@
 
 package rm.node;
 
-public abstract class PSmplexpr extends Node
+public abstract class PSimplexpr extends Node
 {
     // Empty body
 }

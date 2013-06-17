@@ -273,20 +273,20 @@ public class ReversedDepthFirstAdapter extends AnalysisAdapter
         outACommaPars(node);
     }
 
-    public void inAComplexexprExpr(AComplexexprExpr node)
+    public void inAComplexExpr(AComplexExpr node)
     {
         defaultIn(node);
     }
 
-    public void outAComplexexprExpr(AComplexexprExpr node)
+    public void outAComplexExpr(AComplexExpr node)
     {
         defaultOut(node);
     }
 
     @Override
-    public void caseAComplexexprExpr(AComplexexprExpr node)
+    public void caseAComplexExpr(AComplexExpr node)
     {
-        inAComplexexprExpr(node);
+        inAComplexExpr(node);
         if(node.getFalseclause() != null)
         {
             node.getFalseclause().apply(this);
@@ -311,57 +311,57 @@ public class ReversedDepthFirstAdapter extends AnalysisAdapter
         {
             node.getIfsym().apply(this);
         }
-        outAComplexexprExpr(node);
+        outAComplexExpr(node);
     }
 
-    public void inASimpleexprExpr(ASimpleexprExpr node)
+    public void inASimpleExpr(ASimpleExpr node)
     {
         defaultIn(node);
     }
 
-    public void outASimpleexprExpr(ASimpleexprExpr node)
+    public void outASimpleExpr(ASimpleExpr node)
     {
         defaultOut(node);
     }
 
     @Override
-    public void caseASimpleexprExpr(ASimpleexprExpr node)
+    public void caseASimpleExpr(ASimpleExpr node)
     {
-        inASimpleexprExpr(node);
-        if(node.getSmplexpr() != null)
+        inASimpleExpr(node);
+        if(node.getSimplexpr() != null)
         {
-            node.getSmplexpr().apply(this);
+            node.getSimplexpr().apply(this);
         }
-        outASimpleexprExpr(node);
+        outASimpleExpr(node);
     }
 
-    public void inACondisRelcomp(ACondisRelcomp node)
+    public void inACompcondRelcomp(ACompcondRelcomp node)
     {
         defaultIn(node);
     }
 
-    public void outACondisRelcomp(ACondisRelcomp node)
+    public void outACompcondRelcomp(ACompcondRelcomp node)
     {
         defaultOut(node);
     }
 
     @Override
-    public void caseACondisRelcomp(ACondisRelcomp node)
+    public void caseACompcondRelcomp(ACompcondRelcomp node)
     {
-        inACondisRelcomp(node);
+        inACompcondRelcomp(node);
         if(node.getP2() != null)
         {
             node.getP2().apply(this);
         }
-        if(node.getCondis() != null)
+        if(node.getCondop() != null)
         {
-            node.getCondis().apply(this);
+            node.getCondop().apply(this);
         }
         if(node.getP1() != null)
         {
             node.getP1().apply(this);
         }
-        outACondisRelcomp(node);
+        outACompcondRelcomp(node);
     }
 
     public void inACondRelcomp(ACondRelcomp node)
@@ -414,41 +414,41 @@ public class ReversedDepthFirstAdapter extends AnalysisAdapter
         outARelexpr(node);
     }
 
-    public void inATermSmplexpr(ATermSmplexpr node)
+    public void inATermSimplexpr(ATermSimplexpr node)
     {
         defaultIn(node);
     }
 
-    public void outATermSmplexpr(ATermSmplexpr node)
+    public void outATermSimplexpr(ATermSimplexpr node)
     {
         defaultOut(node);
     }
 
     @Override
-    public void caseATermSmplexpr(ATermSmplexpr node)
+    public void caseATermSimplexpr(ATermSimplexpr node)
     {
-        inATermSmplexpr(node);
+        inATermSimplexpr(node);
         if(node.getTerm() != null)
         {
             node.getTerm().apply(this);
         }
-        outATermSmplexpr(node);
+        outATermSimplexpr(node);
     }
 
-    public void inAAddSmplexpr(AAddSmplexpr node)
+    public void inAAddSimplexpr(AAddSimplexpr node)
     {
         defaultIn(node);
     }
 
-    public void outAAddSmplexpr(AAddSmplexpr node)
+    public void outAAddSimplexpr(AAddSimplexpr node)
     {
         defaultOut(node);
     }
 
     @Override
-    public void caseAAddSmplexpr(AAddSmplexpr node)
+    public void caseAAddSimplexpr(AAddSimplexpr node)
     {
-        inAAddSmplexpr(node);
+        inAAddSimplexpr(node);
         if(node.getTerm() != null)
         {
             node.getTerm().apply(this);
@@ -457,11 +457,11 @@ public class ReversedDepthFirstAdapter extends AnalysisAdapter
         {
             node.getAddop().apply(this);
         }
-        if(node.getSmplexpr() != null)
+        if(node.getSimplexpr() != null)
         {
-            node.getSmplexpr().apply(this);
+            node.getSimplexpr().apply(this);
         }
-        outAAddSmplexpr(node);
+        outAAddSimplexpr(node);
     }
 
     public void inAFactorTerm(AFactorTerm node)
@@ -627,31 +627,6 @@ public class ReversedDepthFirstAdapter extends AnalysisAdapter
         outAStringSimplefactor(node);
     }
 
-    public void inASucccharSimplefactor(ASucccharSimplefactor node)
-    {
-        defaultIn(node);
-    }
-
-    public void outASucccharSimplefactor(ASucccharSimplefactor node)
-    {
-        defaultOut(node);
-    }
-
-    @Override
-    public void caseASucccharSimplefactor(ASucccharSimplefactor node)
-    {
-        inASucccharSimplefactor(node);
-        if(node.getSimplefactor() != null)
-        {
-            node.getSimplefactor().apply(this);
-        }
-        if(node.getSuccsym() != null)
-        {
-            node.getSuccsym().apply(this);
-        }
-        outASucccharSimplefactor(node);
-    }
-
     public void inAIdentSimplefactor(AIdentSimplefactor node)
     {
         defaultIn(node);
@@ -813,6 +788,31 @@ public class ReversedDepthFirstAdapter extends AnalysisAdapter
             node.getMinussym().apply(this);
         }
         outANegMonadexpr(node);
+    }
+
+    public void inASucccharMonadexpr(ASucccharMonadexpr node)
+    {
+        defaultIn(node);
+    }
+
+    public void outASucccharMonadexpr(ASucccharMonadexpr node)
+    {
+        defaultOut(node);
+    }
+
+    @Override
+    public void caseASucccharMonadexpr(ASucccharMonadexpr node)
+    {
+        inASucccharMonadexpr(node);
+        if(node.getSimplefactor() != null)
+        {
+            node.getSimplefactor().apply(this);
+        }
+        if(node.getSuccsym() != null)
+        {
+            node.getSuccsym().apply(this);
+        }
+        outASucccharMonadexpr(node);
     }
 
     public void inAArgsArglst(AArgsArglst node)

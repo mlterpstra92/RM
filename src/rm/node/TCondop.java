@@ -5,14 +5,14 @@ package rm.node;
 import rm.analysis.*;
 
 @SuppressWarnings("nls")
-public final class TCondis extends Token
+public final class TCondop extends Token
 {
-    public TCondis(String text)
+    public TCondop(String text)
     {
         setText(text);
     }
 
-    public TCondis(String text, int line, int pos)
+    public TCondop(String text, int line, int pos)
     {
         setText(text);
         setLine(line);
@@ -22,12 +22,12 @@ public final class TCondis extends Token
     @Override
     public Object clone()
     {
-      return new TCondis(getText(), getLine(), getPos());
+      return new TCondop(getText(), getLine(), getPos());
     }
 
     @Override
     public void apply(Switch sw)
     {
-        ((Analysis) sw).caseTCondis(this);
+        ((Analysis) sw).caseTCondop(this);
     }
 }

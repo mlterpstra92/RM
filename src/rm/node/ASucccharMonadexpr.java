@@ -5,17 +5,17 @@ package rm.node;
 import rm.analysis.*;
 
 @SuppressWarnings("nls")
-public final class ASucccharSimplefactor extends PSimplefactor
+public final class ASucccharMonadexpr extends PMonadexpr
 {
     private TSuccsym _succsym_;
     private PSimplefactor _simplefactor_;
 
-    public ASucccharSimplefactor()
+    public ASucccharMonadexpr()
     {
         // Constructor
     }
 
-    public ASucccharSimplefactor(
+    public ASucccharMonadexpr(
         @SuppressWarnings("hiding") TSuccsym _succsym_,
         @SuppressWarnings("hiding") PSimplefactor _simplefactor_)
     {
@@ -29,7 +29,7 @@ public final class ASucccharSimplefactor extends PSimplefactor
     @Override
     public Object clone()
     {
-        return new ASucccharSimplefactor(
+        return new ASucccharMonadexpr(
             cloneNode(this._succsym_),
             cloneNode(this._simplefactor_));
     }
@@ -37,7 +37,7 @@ public final class ASucccharSimplefactor extends PSimplefactor
     @Override
     public void apply(Switch sw)
     {
-        ((Analysis) sw).caseASucccharSimplefactor(this);
+        ((Analysis) sw).caseASucccharMonadexpr(this);
     }
 
     public TSuccsym getSuccsym()

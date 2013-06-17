@@ -2,11 +2,12 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package rm;
+package rm.types;
 
 /**
  *
  * @author Maarten
+ * Type class: Define the operations that all types must be able to execute 
  */
 public abstract class Type
 {
@@ -21,5 +22,4 @@ public abstract class Type
     public abstract Type times(Type other);
     public abstract Type div(Type rightNumber);
     public abstract void negate();
-
 }

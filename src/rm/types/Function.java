@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package rm;
+package rm.types;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -11,8 +11,7 @@ import rm.node.PExpr;
 /**
  *
  * @author Maarten
- */
-public class Function {
+ */public class Function {
     private String name;
     private PExpr expr;
     private ArrayList<FuncArg> args;

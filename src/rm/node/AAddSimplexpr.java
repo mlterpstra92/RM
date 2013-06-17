@@ -5,24 +5,24 @@ package rm.node;
 import rm.analysis.*;
 
 @SuppressWarnings("nls")
-public final class AAddSmplexpr extends PSmplexpr
+public final class AAddSimplexpr extends PSimplexpr
 {
-    private PSmplexpr _smplexpr_;
+    private PSimplexpr _simplexpr_;
     private PAddop _addop_;
     private PTerm _term_;
 
-    public AAddSmplexpr()
+    public AAddSimplexpr()
     {
         // Constructor
     }
 
-    public AAddSmplexpr(
-        @SuppressWarnings("hiding") PSmplexpr _smplexpr_,
+    public AAddSimplexpr(
+        @SuppressWarnings("hiding") PSimplexpr _simplexpr_,
         @SuppressWarnings("hiding") PAddop _addop_,
         @SuppressWarnings("hiding") PTerm _term_)
     {
         // Constructor
-        setSmplexpr(_smplexpr_);
+        setSimplexpr(_simplexpr_);
 
         setAddop(_addop_);
 
@@ -33,8 +33,8 @@ public final class AAddSmplexpr extends PSmplexpr
     @Override
     public Object clone()
     {
-        return new AAddSmplexpr(
-            cloneNode(this._smplexpr_),
+        return new AAddSimplexpr(
+            cloneNode(this._simplexpr_),
             cloneNode(this._addop_),
             cloneNode(this._term_));
     }
@@ -42,19 +42,19 @@ public final class AAddSmplexpr extends PSmplexpr
     @Override
     public void apply(Switch sw)
     {
-        ((Analysis) sw).caseAAddSmplexpr(this);
+        ((Analysis) sw).caseAAddSimplexpr(this);
     }
 
-    public PSmplexpr getSmplexpr()
+    public PSimplexpr getSimplexpr()
     {
-        return this._smplexpr_;
+        return this._simplexpr_;
     }
 
-    public void setSmplexpr(PSmplexpr node)
+    public void setSimplexpr(PSimplexpr node)
     {
-        if(this._smplexpr_ != null)
+        if(this._simplexpr_ != null)
         {
-            this._smplexpr_.parent(null);
+            this._simplexpr_.parent(null);
         }
 
         if(node != null)
@@ -67,7 +67,7 @@ public final class AAddSmplexpr extends PSmplexpr
             node.parent(this);
         }
 
-        this._smplexpr_ = node;
+        this._simplexpr_ = node;
     }
 
     public PAddop getAddop()
@@ -124,7 +124,7 @@ public final class AAddSmplexpr extends PSmplexpr
     public String toString()
     {
         return ""
-            + toString(this._smplexpr_)
+            + toString(this._simplexpr_)
             + toString(this._addop_)
             + toString(this._term_);
     }
@@ -133,9 +133,9 @@ public final class AAddSmplexpr extends PSmplexpr
     void removeChild(@SuppressWarnings("unused") Node child)
     {
         // Remove child
-        if(this._smplexpr_ == child)
+        if(this._simplexpr_ == child)
         {
-            this._smplexpr_ = null;
+            this._simplexpr_ = null;
             return;
         }
 
@@ -158,9 +158,9 @@ public final class AAddSmplexpr extends PSmplexpr
     void replaceChild(@SuppressWarnings("unused") Node oldChild, @SuppressWarnings("unused") Node newChild)
     {
         // Replace child
-        if(this._smplexpr_ == oldChild)
+        if(this._simplexpr_ == oldChild)
         {
-            setSmplexpr((PSmplexpr) newChild);
+            setSimplexpr((PSimplexpr) newChild);
             return;
         }
 

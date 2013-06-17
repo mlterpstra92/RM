@@ -1,14 +1,12 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-package rm;
+
+package rm.types;
 
 import java.util.Objects;
 
 /**
  *
  * @author Maarten
+ * Implementation of the String datatype
  */
 public class StringType extends Type {
     private String value;
@@ -50,6 +48,7 @@ public class StringType extends Type {
         if(obj != null) return this.value.compareTo((String)obj.getValue()) >= 0;    
         throw new IllegalArgumentException("Invalid type of other");    }
 
+    //Add in a string context means concatenation
     @Override
     public Type add(Type other) {
         StringType obj = checkObj(other);
@@ -58,22 +57,22 @@ public class StringType extends Type {
 
     @Override
     public Type minus(Type other) {
-        throw new UnsupportedOperationException("Not supported."); //To change body of generated methods, choose Tools | Templates.
+        throw new UnsupportedOperationException("Not supported.");
     }
 
     @Override
     public Type times(Type other) {
-        throw new UnsupportedOperationException("Not supported."); //To change body of generated methods, choose Tools | Templates.
+        throw new UnsupportedOperationException("Not supported."); 
     }
 
     @Override
     public Type div(Type rightNumber) {
-        throw new UnsupportedOperationException("Not supported."); //To change body of generated methods, choose Tools | Templates.
+        throw new UnsupportedOperationException("Not supported."); 
     }
 
     @Override
     public void negate() {
-        throw new UnsupportedOperationException("Not supported."); //To change body of generated methods, choose Tools | Templates.
+        throw new UnsupportedOperationException("Not supported."); 
     }
  
     public StringType concat(StringType other)
@@ -99,6 +98,7 @@ public class StringType extends Type {
         return Objects.equals(this.value, other.getValue());
     }
 
+    //Perform a "safe cast" the desired datatype
     public StringType checkObj(Type obj)
     {
         if (obj == null) {
@@ -110,5 +110,4 @@ public class StringType extends Type {
         final StringType other = (StringType) obj;
         return other;
     }
-
 }

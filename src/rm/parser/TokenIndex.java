@@ -88,7 +88,7 @@ class TokenIndex extends AnalysisAdapter
     }
 
     @Override
-    public void caseTCondis(@SuppressWarnings("unused") TCondis node)
+    public void caseTCondop(@SuppressWarnings("unused") TCondop node)
     {
         this.index = 13;
     }

@@ -129,19 +129,19 @@ public class AnalysisAdapter implements Analysis
     }
 
     @Override
-    public void caseAComplexexprExpr(AComplexexprExpr node)
+    public void caseAComplexExpr(AComplexExpr node)
     {
         defaultCase(node);
     }
 
     @Override
-    public void caseASimpleexprExpr(ASimpleexprExpr node)
+    public void caseASimpleExpr(ASimpleExpr node)
     {
         defaultCase(node);
     }
 
     @Override
-    public void caseACondisRelcomp(ACondisRelcomp node)
+    public void caseACompcondRelcomp(ACompcondRelcomp node)
     {
         defaultCase(node);
     }
@@ -159,13 +159,13 @@ public class AnalysisAdapter implements Analysis
     }
 
     @Override
-    public void caseATermSmplexpr(ATermSmplexpr node)
+    public void caseATermSimplexpr(ATermSimplexpr node)
     {
         defaultCase(node);
     }
 
     @Override
-    public void caseAAddSmplexpr(AAddSmplexpr node)
+    public void caseAAddSimplexpr(AAddSimplexpr node)
     {
         defaultCase(node);
     }
@@ -213,12 +213,6 @@ public class AnalysisAdapter implements Analysis
     }
 
     @Override
-    public void caseASucccharSimplefactor(ASucccharSimplefactor node)
-    {
-        defaultCase(node);
-    }
-
-    @Override
     public void caseAIdentSimplefactor(AIdentSimplefactor node)
     {
         defaultCase(node);
@@ -256,6 +250,12 @@ public class AnalysisAdapter implements Analysis
 
     @Override
     public void caseANegMonadexpr(ANegMonadexpr node)
+    {
+        defaultCase(node);
+    }
+
+    @Override
+    public void caseASucccharMonadexpr(ASucccharMonadexpr node)
     {
         defaultCase(node);
     }
@@ -453,7 +453,7 @@ public class AnalysisAdapter implements Analysis
     }
 
     @Override
-    public void caseTCondis(TCondis node)
+    public void caseTCondop(TCondop node)
     {
         defaultCase(node);
     }

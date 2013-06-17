@@ -10,6 +10,13 @@ import java.util.HashMap;
 import java.util.Stack;
 import rm.node.*;
 import rm.analysis.*;
+import rm.types.CharType;
+import rm.types.FuncArg;
+import rm.types.Function;
+import rm.types.IntegerType;
+import rm.types.RealType;
+import rm.types.StringType;
+import rm.types.Type;
 
 
 
@@ -19,29 +26,41 @@ import rm.analysis.*;
  */
 
 class Interpreter extends DepthFirstAdapter {
+
+    static boolean FailOnRedeclaration = false;
+    static void setFailOnRedeclare() 
+    {
+        FailOnRedeclaration = true;
+    }
+    
+    //Retrieve the parameters for a function call
     private Iterable<String> getParams(PParlst parlst) {
         ArrayList<String> list = new ArrayList<>();
         if(!(parlst instanceof AEmptyParlst))
         {
             AParlstParlst lst = (AParlstParlst)parlst;
-            parseParams(lst.getPars(), list);
+            interpretParams(lst.getPars(), list);
         }
         return list;
     }
 
-    private void parseParams(PPars pars, ArrayList<String> list) {
+    private void interpretParams(PPars pars, ArrayList<String> list) {
         if(pars instanceof AIdentPars)
             list.add(((AIdentPars)pars).getIdent().getText().trim());
         else
         {
             ACommaPars p = (ACommaPars)pars;
-            parseParams(p.getPars(), list);
+            interpretParams(p.getPars(), list);
             list.add(p.getIdent().getText().trim());
         }
     }
 
+    //The function execution stack and the symbol table
     Stack<Function> stack = new Stack<>();
     HashMap<String, Function> symbolTable = new HashMap<>();
+    
+    
+    //These are basically the main 'hooks' for the interpreter
     @Override
     public void caseADefProgram(ADefProgram node){
         
@@ -64,39 +83,56 @@ class Interpreter extends DepthFirstAdapter {
             caseACompProgram((ACompProgram)node.getProgram());
     }
     
+    //Define a new function
     @Override
     public void caseADef(ADef def)
     {
+        //Get the name - this is the unique identifier
         String ident = (def.getIdent()).getText().trim();
-        if(symbolTable.get(ident) != null)         
+        //Check if we are declaring a function
+        //If we are we should at least issue a warning, depending on what the user wants
+        boolean isBuiltin = isBuiltinFunction(ident);
+        if((!isBuiltin) && (symbolTable.get(ident) == null))
         {
-            System.err.println("Function already defined");
-            return;
+            //Add a new function to the symbol table
+            Function f = new Function(ident);
+            f.setExpr(def.getExpr());
+            //Keep track of order of arguments so that we don't set the wrong value
+            //For the wrong argument
+            int order = 0;
+            //Add dummy paramters
+            for(String arg : getParams(def.getParlst()))
+            {
+                FuncArg v = new FuncArg(arg, null, order);
+                f.addArg(v);
+                ++order;
+            }
+            symbolTable.put(ident,f);
         }
-        Function f = new Function(ident);
-        f.setExpr(def.getExpr());
-        int order = 0;
-        for(String arg : getParams(def.getParlst()))
+        else 
         {
-            FuncArg v = new FuncArg(arg, null, order);
-            f.addArg(v);
-            ++order;
+            //If the user redeclares a function (which is technically possible, but probably not wanted)
+            //We should at least issue a warning, possibly failure
+            if(FailOnRedeclaration)
+            {
+                System.err.println("Function may not be redeclared. Exiting...");
+                System.exit(-5);
+            }
+            else
+                System.err.println("Warning: function " + ident + " is already defined. Possibly the result is NOT what you intended");
         }
-        symbolTable.put(ident,f);
+        
     }
     
     @Override
+    //The user calls a function in his/her program.
+    //Execute it and display the results
     public void caseAComp(AComp node)
     {
-        Type n;
-        try {
-            n = parseExpr(node.getExpr());
-        } catch (Exception ex) {
-            System.err.println(ex.getMessage());
-            return;
-        }
+        Type n = interpretExpr(node.getExpr());
         if(n != null)
         {
+            //If it is a real value set proper rounding mode
             if(n instanceof RealType)
             {
                NumberFormat numf = NumberFormat.getNumberInstance();
@@ -106,108 +142,128 @@ class Interpreter extends DepthFirstAdapter {
         }
     }
     
-    public Type parseExpr(PExpr expr) throws Exception
+    //An expression is either complex (using IF .. THEN .. ELSE .. structure) 
+    //or simple (not using this construct)
+    public Type interpretExpr(PExpr expr)
     {
-        if(expr instanceof AComplexexprExpr)
+        if(expr instanceof AComplexExpr)
         {
-            return parseComplexExpr((AComplexexprExpr)expr);
+            return interpretComplexExpr((AComplexExpr)expr);
         }
-        else return parseSimpleExpr(((ASimpleexprExpr)expr).getSmplexpr());
+        else return interpretSimpleExpr(((ASimpleExpr)expr).getSimplexpr());
     }
     
-    private Type parseComplexExpr(AComplexexprExpr aComplexExpr) throws Exception {
-        Boolean isTrue = parseRelComp((PRelcomp)aComplexExpr.getRelcomp());
+    //Interpret the conditional expression and depending on its truth value
+    //return either the interpretation of the true clause or the false clause
+    private Type interpretComplexExpr(AComplexExpr aComplexExpr) {
+        Boolean isTrue = interpretRelComp((PRelcomp)aComplexExpr.getRelcomp());
         if(isTrue)
-            return parseExpr(aComplexExpr.getTrueclause());
-        else return parseExpr(aComplexExpr.getFalseclause());
+            return interpretExpr(aComplexExpr.getTrueclause());
+        else return interpretExpr(aComplexExpr.getFalseclause());
     }
     
-    private Boolean parseRelComp(PRelcomp pRelcomp) throws Exception {
-        if(pRelcomp instanceof ACondisRelcomp)
+    //Determine the truth value of a relational compound
+    //Notice that Boolean AND and Boolean OR have the same precedence
+    //So it is just a left-to-right interpretation
+    private Boolean interpretRelComp(PRelcomp pRelcomp) {
+        if(pRelcomp instanceof ACompcondRelcomp)
         {
-            ACondisRelcomp condis = (ACondisRelcomp)pRelcomp;
-            final Boolean leftside = parseRelComp(condis.getP1());
-            final Boolean rightSide = parseRelExpr((ARelexpr)condis.getP2());
-            switch(condis.getCondis().getText().trim())
+            ACompcondRelcomp condis = (ACompcondRelcomp)pRelcomp;
+            final Boolean leftside = interpretRelComp(condis.getP1());
+            final Boolean rightSide = interpretRelExpr((ARelexpr)condis.getP2());
+            switch(condis.getCondop().getText().trim())
             {
                 case "&&":
                     return leftside && rightSide;
                 case "||":
                     return leftside || rightSide;
                 default:
-                    throw new Exception("Invalid construct " + condis.getCondis().getText().trim());
+                    throw new IllegalArgumentException("Invalid construct " + condis.getCondop().getText().trim());
             }
         }
         else
         {
             ACondRelcomp ac = (ACondRelcomp)pRelcomp;
-            return parseRelExpr((ARelexpr)ac.getRelexpr());
+            return interpretRelExpr((ARelexpr)ac.getRelexpr());
         }
     }
     
-    private Boolean parseRelExpr(ARelexpr relexpr) throws Exception 
+    //Determine the interpretation of a "simple" relational expression
+    private Boolean interpretRelExpr(ARelexpr relexpr) 
     {
-        Type leftNumber = parseExpr(relexpr.getLeft());
-        Type rightNumber = parseExpr(relexpr.getRight());
-        if(shouldCoerce(leftNumber, rightNumber))
+        //Get both operands
+        Type leftType = interpretExpr(relexpr.getLeft());
+        Type rightType = interpretExpr(relexpr.getRight());
+        //Possibly do coercion depending on the datatypes
+        if(shouldCoerce(leftType, rightType))
         {
-            leftNumber = new RealType(new Double(leftNumber.getValue().toString()));
-            rightNumber = new RealType(new Double(rightNumber.getValue().toString()));
+            leftType = new RealType(new Double(leftType.getValue().toString()));
+            rightType = new RealType(new Double(rightType.getValue().toString()));
         }
+        //Get the right operator and perform the operation
+        //The implementation of these operations is handled by their types
         PRelop op = (relexpr.getRelop());
         if(op instanceof AEqualRelop)
-            return leftNumber.equals(rightNumber);
+            return leftType.equals(rightType);
         if(op instanceof ANotequalRelop)
-            return !leftNumber.equals(rightNumber);
+            return !leftType.equals(rightType);
         if(op instanceof ALessthanRelop)
-            return leftNumber.IsLessThan(rightNumber);
+            return leftType.IsLessThan(rightType);
         if(op instanceof ALessorequalRelop)
-            return leftNumber.IsLessOrEqual(rightNumber);
+            return leftType.IsLessOrEqual(rightType);
         if(op instanceof AGreaterRelop)
-            return leftNumber.IsGreaterThan(rightNumber);
+            return leftType.IsGreaterThan(rightType);
         if(op instanceof AGreaterequalRelop)
-            return leftNumber.IsGreaterOrEqual(rightNumber);
+            return leftType.IsGreaterOrEqual(rightType);
         
-        throw new Exception("Invalid operator " + relexpr.getRelop().toString());
+        throw new IllegalArgumentException("Invalid operator " + relexpr.getRelop().toString());
     }
     
-    private Type parseSimpleExpr(PSmplexpr aSimpleExpr) throws Exception {
-        if(aSimpleExpr instanceof AAddSmplexpr)
+    //A simple expression is either a term or the addition/substraction
+    //of a simple expression and a term
+    private Type interpretSimpleExpr(PSimplexpr aSimpleExpr) {
+        if(aSimpleExpr instanceof AAddSimplexpr)
         {
-            AAddSmplexpr ex = (AAddSmplexpr)aSimpleExpr;
-            Type n1 = parseSimpleExpr(ex.getSmplexpr());
-            Type n2 = parseTerm(ex.getTerm());
+            AAddSimplexpr ex = (AAddSimplexpr)aSimpleExpr;
+            Type n1 = interpretSimpleExpr(ex.getSimplexpr());
+            Type n2 = interpretTerm(ex.getTerm());
+            //It might be possible that we need to do coercion
             if(shouldCoerce(n1, n2))
             {
                 n1 = new RealType(new Double(n1.getValue().toString()));
                 n2 = new RealType(new Double(n2.getValue().toString()));
             }
+            //Implementations of add and minus courtesy of the type implementation
             if(ex.getAddop() instanceof APlusAddop)
                 return n1.add(n2);
             else
                 return n1.minus(n2);
         }
         else
-            return parseTerm(((ATermSmplexpr)aSimpleExpr).getTerm());
+            return interpretTerm(((ATermSimplexpr)aSimpleExpr).getTerm());
     }
     
-    private Type parseTerm(PTerm term) throws Exception {
+    //A term is either a multiplication/division of a term and factor or just a factor
+    private Type interpretTerm(PTerm term) throws IllegalArgumentException {
         if(term instanceof AMultTerm)
         {
             AMultTerm ex = (AMultTerm)term;
-            Type n1 = parseTerm(ex.getTerm());
-            Type n2 = parseFactorexpr(ex.getFactorexpr());
+            Type n1 = interpretTerm(ex.getTerm());
+            Type n2 = interpretFactorExpr(ex.getFactorexpr());
             final Object divisor = n2.getValue();
+            //Do possible coercion
             if(shouldCoerce(n1, n2))
             {
                 n1 = new RealType(new Double(n1.getValue().toString()));
                 n2 = new RealType(new Double(divisor.toString()));
             }
+            
             if(ex.getMulop() instanceof AMultMulop)
                 return n1.times(n2);
             
             else if(ex.getMulop() instanceof ADivMulop)
             {
+                //We cannot divide by zero so we need to check for that
                 if(divisor instanceof Double && (Double)divisor == 0.0)
                     throw new IllegalArgumentException("Error: Division by zero");
                 
@@ -217,6 +273,7 @@ class Interpreter extends DepthFirstAdapter {
                 return n1.div(n2);
                 
             }
+            //Modulo operation (e.g. 14 % 2 = 0)
             else if(ex.getMulop() instanceof AIntegermodMulop)
             {
                 IntegerType iv1 = (IntegerType)n1;
@@ -224,78 +281,68 @@ class Interpreter extends DepthFirstAdapter {
 
                 return iv1.imod(iv2);
             }
+            //Left shift of integers (4 << 1 = 8)
             else if(ex.getMulop() instanceof ALshiftMulop)
             {
                 IntegerType iv1 = (IntegerType)n1;
                 IntegerType iv2 = (IntegerType)n2;
                 return iv1.lshift(iv2);
             }
+            //Right shift of integers (4 >> 1 = 2)
             else if(ex.getMulop() instanceof ARshiftMulop)
             {
                 IntegerType iv1 = (IntegerType)n1;
                 IntegerType iv2 = (IntegerType)n2;
                 return iv1.rshift(iv2);
             }
-            else throw new Exception("Invalid operator " + ex.getMulop().toString());
+            else throw new IllegalArgumentException("Invalid operator " + ex.getMulop().toString());
         }
         else
-            return parseFactorexpr(((AFactorTerm)term).getFactorexpr());
+            return interpretFactorExpr(((AFactorTerm)term).getFactorexpr());
     }
     
-    private ArrayList<Type> getArgs(PArglst args) throws Exception
+    //Retrieve arguments for a functioncall
+    private ArrayList<Type> getArgs(PArglst args)
     {
         ArrayList<Type> list = new ArrayList<>();
         if(!(args instanceof AEmptyArglst))
         {
             AArgsArglst lst = (AArgsArglst)args;
-            parseArgs(lst.getArgs(), list);
+            interpretArgs(lst.getArgs(), list);
         }
         return list;
     }
     
-    private void parseArgs(PArgs args, ArrayList<Type> list) throws Exception
+    private void interpretArgs(PArgs args, ArrayList<Type> list)
     {
         if(args instanceof AExprArgs)
-            list.add(parseExpr(((AExprArgs)args).getExpr()));
+            list.add(interpretExpr(((AExprArgs)args).getExpr()));
         else
         {
             AListargsArgs listargs = (AListargsArgs)args;
-            parseArgs(listargs.getArgs(), list);
-            list.add(parseExpr(listargs.getExpr()));
+            interpretArgs(listargs.getArgs(), list);
+            list.add(interpretExpr(listargs.getExpr()));
         }
     }
     
-    private Type parseFactorexpr(PFactorexpr factor) throws Exception 
+    //A factor expression is either an expression or a simple factor
+    private Type interpretFactorExpr(PFactorexpr factor) 
     {
         if(factor instanceof AParFactorexpr)
-            return parseExpr(((AParFactorexpr)factor).getExpr());
-        else return parseSimpleFactor(((ASimplefacFactorexpr)factor).getSimplefactor());
+            return interpretExpr(((AParFactorexpr)factor).getExpr());
+        else return interpretSimpleFactor(((ASimplefacFactorexpr)factor).getSimplefactor());
     }
     
-    /*private Type parseNumber(PNumfac numfac)
+    //A real number can either be written as a scientific number (1.0E-5) or as
+    //A plain old real number (3.14)
+    private Type interpretRealNum(ARealNumfac realnum)
     {
-        if(numfac instanceof AIntNumfac)
-        {
-            AIntNumfac intfac = (AIntNumfac)numfac;
-            return new IntegerType(Integer.parseInt(intfac.getIntdenotation().getText().trim()));
-        }        
-        else
-        {
-            ARealNumfac realfac = (ARealNumfac)numfac;
-            return new RealType(Double.parseDouble(realfac.getRealdenotation().getText().trim()));
-        }
-
-    }*/
-    
-    private Type parseRealNum(ARealNumfac realnum) throws Exception
-    {
+        //What follows is a lot of type juggling to extract the doubles out of it
         if(realnum.getRealnum() instanceof AScnumRealnum)
         {
             AScnumRealnum scnum = (AScnumRealnum)realnum.getRealnum();
             double base = Double.parseDouble(scnum.getBase().getText().trim());
-            double exp = new Double(parseNumber(scnum.getExp()).getValue().toString());
-            System.out.println(base + " " + exp);
-            
+            double exp = new Double(interpretNumber(scnum.getExp()).getValue().toString());
             return new RealType(Math.pow(base*10.0, exp));
         }
         else
@@ -305,66 +352,63 @@ class Interpreter extends DepthFirstAdapter {
         }
             
     }
-    private Type parseNumber(PNumfac numfac) throws Exception
+    
+    //A number is either an integer, a real or a monad
+    private Type interpretNumber(PNumfac numfac)
     {
         if(numfac instanceof AIntNumfac)
         {
             return new IntegerType(Integer.parseInt(((AIntNumfac)numfac).getIntdenotation().getText().trim()));
         }
         else if(numfac instanceof ARealNumfac)
-            return parseRealNum((ARealNumfac)numfac);
+            return interpretRealNum((ARealNumfac)numfac);
+        
         else if(numfac instanceof AMonadNumfac)
         {
-             AMonadNumfac monadnum = (AMonadNumfac)numfac;
-            ANegMonadexpr negmonad = (ANegMonadexpr)monadnum.getMonadexpr();
-            Type t = parseSimpleFactor(negmonad.getSimplefactor());
-            t.negate();
-            return t;
-
+            AMonadNumfac monadnum = (AMonadNumfac)numfac;
+            return interpretMonadExpr(monadnum.getMonadexpr());
         }
         else return null;
     }
-    private Type parseNumber(ANumSimplefactor numfac) throws Exception{
-        if(numfac.getNumfac() instanceof AIntNumfac)
+    
+    private Type interpretMonadExpr(PMonadexpr numfac)
+    {
+        //A monad expression is either the negation of that expression
+        if(numfac instanceof ANegMonadexpr)
         {
-            AIntNumfac intfac = (AIntNumfac)numfac.getNumfac();
-            return new IntegerType(Integer.parseInt(intfac.getIntdenotation().getText().trim()));
-        }
-        else if(numfac.getNumfac() instanceof ARealNumfac)
-        {
-            return parseRealNum((ARealNumfac)numfac.getNumfac());
-        }
-        else if(numfac.getNumfac() instanceof AMonadNumfac)
-        {
-            AMonadNumfac monadnum = (AMonadNumfac)numfac.getNumfac();
-            ANegMonadexpr negmonad = (ANegMonadexpr)monadnum.getMonadexpr();
-            Type t = parseSimpleFactor(negmonad.getSimplefactor());
+            ANegMonadexpr negmonad = (ANegMonadexpr)numfac;
+            Type t = interpretSimpleFactor(negmonad.getSimplefactor());
             t.negate();
             return t;
         }
+        //Or it is the succession of a char
+        if(numfac instanceof ASucccharMonadexpr)
+        {            
+            ASucccharMonadexpr succfac = (ASucccharMonadexpr)numfac;
+            Type toSucc = interpretSimpleFactor(succfac.getSimplefactor());
+            if(!toSucc.getClass().getName().equals(CharType.class.getName()))
+                throw new IllegalArgumentException("Cannot succeed to a non-character");
+            return toSucc.add(new IntegerType(1));
+        }
         return null;
-        
     }
     
-    private Type parseSimpleFactor(PSimplefactor factor) throws Exception
+    //A simple factor is just a plain datatype or a function declaration
+    private Type interpretSimpleFactor(PSimplefactor factor)
     {
+        //If we have a number interpret that
         if (factor instanceof ANumSimplefactor)
         {
-            return parseNumber((ANumSimplefactor)factor);
+            return interpretNumber(((ANumSimplefactor)factor).getNumfac());
         }
+        //Same goes for char. We need charAt(1) because a char declaration is
+        //like 'a', so charAt(0) contains an apostrophe 
         else if(factor instanceof ACharSimplefactor)
         {
             return new CharType(((ACharSimplefactor)factor).getCharsym().getText().trim().charAt(1));
         }
         
-        else if(factor instanceof ASucccharSimplefactor)
-        {
-            ASucccharSimplefactor succfac = (ASucccharSimplefactor)factor;
-            Type toSucc = parseSimpleFactor(succfac.getSimplefactor());
-            if(!toSucc.getClass().getName().equals(CharType.class.getName()))
-                throw new IllegalArgumentException("Cannot succeed to a non-character");
-            return toSucc.add(new IntegerType(1));
-        }
+        //The string datatype
         else if(factor instanceof AStringSimplefactor)
         {
             AStringSimplefactor stringFac = (AStringSimplefactor)factor;
@@ -375,76 +419,136 @@ class Interpreter extends DepthFirstAdapter {
         }
         //Function call
         AIdentSimplefactor fac = (AIdentSimplefactor)factor;
-        return handleFunc(fac);
+        Type t = null;
+        try{
+             t = handleFunc(fac);
+        }
+        catch(Exception ex)
+        {
+            System.err.println("Error in function handling: " + ex.getMessage());
+        }
+        finally{
+            return t;
+        }
     }
 
-   private Type handleFunc(AIdentSimplefactor func) throws Exception {
+    //As the name describes, this function handles the execution of a function in the program
+    private Type handleFunc(AIdentSimplefactor func) throws Exception 
+    {
+        //Get the function name
         String ident = func.getIdent().getText().trim();
+        //Retrieve all its arguments
         ArrayList<Type> list = getArgs(func.getArglst());
+        //Check if it is a built-in function
         Type builtInFuncResult = executeBuiltInFunc(ident, list);
         if(builtInFuncResult != null)
             return builtInFuncResult;
-        
+
+        //If we're here it means it wasn't a built-in function so we look
+        //in the symbol table for a function that matches our name
+        //The downside of this is that we can't do anything like polymorphism
         Function function = symbolTable.get(ident);
-        
+
+        //If we have found a fitting function we set its arguments to the 
+        //values it was called with and execute that
         if(function != null)
         {
-            stack.push(function);
             setArguments(function, list);
-            return parseExpr(function.getExpr());
+            return executeFunc(function);
         }
-        
+
+        //If we couldn't find it as a function, it might be that we are handling
+        //a functions argument. So we look at the current function and see if we
+        //can find it there
         Function curr = stack.peek();
         FuncArg fa = curr.getArg(ident);
         if(fa != null)
         {
             return fa.getValue();
         }
+
+        //If we can't even do that, the user probably wants something we don't have
+        //so we raise an exception
         throw new Exception("Error: No such function/argument as " + ident + " exists");
     }
 
+    //We should only coerce values if and only if one of the types is a real and the other is an integer
+    //Not if both types are reals or if we are dealing with doubles and chars
     private boolean shouldCoerce(Type n1, Type n2) 
     {
-        return ((n1 instanceof RealType) ^ (n2 instanceof RealType)) && ((n1 instanceof IntegerType || n2 instanceof IntegerType));
+        return ((n1 instanceof RealType) ^ (n2 instanceof RealType)) && ((n1 instanceof IntegerType ^ n2 instanceof IntegerType));
     }
 
-    private Type executeBuiltInFunc(String ident, ArrayList<Type> list) throws Exception 
+    //Possible improvement: add them to the symbol table instead of this hackey thing
+    private Type executeBuiltInFunc(String ident, ArrayList<Type> list) 
     {
         Type retVal;
-        if(list.isEmpty())
-            return null;
-        
-        Double d = new Double((list.get(0)).getValue().toString());
-        switch(ident)
+        //All built-in function require exactly one argument
+        if(list.size() == 1) 
         {
-            case "sin":
-                retVal = new RealType(Math.sin(d));
-                break;
-            case "cos":
-                retVal = new RealType(Math.cos(d));
-                break;
-            case "tan":
-                retVal = new RealType(Math.tan(d));
-                break;
-            case "exp":
-                retVal = new RealType(Math.exp(d));
-                break;
-            case "log":
-                retVal = new RealType(Math.log(d));
-                break;
-            default:
-                retVal = null;
-                break;
-        }
-        return retVal;
+            Double d = new Double((list.get(0)).getValue().toString());
+            switch(ident)
+            {
+                case "sin":
+                    retVal = new RealType(Math.sin(d));
+                    break;
+                case "cos":
+                    retVal = new RealType(Math.cos(d));
+                    break;
+                case "tan":
+                    retVal = new RealType(Math.tan(d));
+                    break;
+                case "exp":
+                    retVal = new RealType(Math.exp(d));
+                    break;
+                case "log":
+                    retVal = new RealType(Math.log(d));
+                    break;
+                default:
+                    retVal = null;
+                    break;
+            }
+            return retVal;
+        } 
+        else 
+            return null;
     }
 
+    //Update the arguments of the called function with new values
     private void setArguments(Function func, ArrayList<Type> list) 
     {
-        for(int i = 0; i < func.getArgs().size(); ++i)
+        int i = 0;
+        for(FuncArg arg : func.getArgs())
         {
-            FuncArg fa = func.getArg(i);
-            fa.setValue(list.get(i));
+            arg.setValue(list.get(i));
+            ++i;
         }
+    }
+
+    //Function execution is quite simple: push it on the stack, interpret its expression
+    //and pop it off
+    private Type executeFunc(Function function) 
+    {
+        stack.push(function);
+        Type t = interpretExpr(function.getExpr());
+        stack.pop();
+        return t;
+    }
+
+    //Because built-in functions are not in the symbol table things like this are needed
+    private boolean isBuiltinFunction(String ident) {
+        return ident.equals("sin") ||
+               ident.equals("cos") ||
+               ident.equals("tan") ||
+               ident.equals("exp") ||
+               ident.equals("log");
+    }
+    
+    //Make sure the stack is empty at the end of program execution
+    @Override
+    public void caseAEmpty(AEmpty node)
+    {
+        if(!stack.empty())
+            System.err.println("Unexpected elements on stack");
     }
 }

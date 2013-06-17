@@ -5,26 +5,26 @@ package rm.node;
 import rm.analysis.*;
 
 @SuppressWarnings("nls")
-public final class ACondisRelcomp extends PRelcomp
+public final class ACompcondRelcomp extends PRelcomp
 {
     private PRelcomp _p1_;
-    private TCondis _condis_;
+    private TCondop _condop_;
     private PRelexpr _p2_;
 
-    public ACondisRelcomp()
+    public ACompcondRelcomp()
     {
         // Constructor
     }
 
-    public ACondisRelcomp(
+    public ACompcondRelcomp(
         @SuppressWarnings("hiding") PRelcomp _p1_,
-        @SuppressWarnings("hiding") TCondis _condis_,
+        @SuppressWarnings("hiding") TCondop _condop_,
         @SuppressWarnings("hiding") PRelexpr _p2_)
     {
         // Constructor
         setP1(_p1_);
 
-        setCondis(_condis_);
+        setCondop(_condop_);
 
         setP2(_p2_);
 
@@ -33,16 +33,16 @@ public final class ACondisRelcomp extends PRelcomp
     @Override
     public Object clone()
     {
-        return new ACondisRelcomp(
+        return new ACompcondRelcomp(
             cloneNode(this._p1_),
-            cloneNode(this._condis_),
+            cloneNode(this._condop_),
             cloneNode(this._p2_));
     }
 
     @Override
     public void apply(Switch sw)
     {
-        ((Analysis) sw).caseACondisRelcomp(this);
+        ((Analysis) sw).caseACompcondRelcomp(this);
     }
 
     public PRelcomp getP1()
@@ -70,16 +70,16 @@ public final class ACondisRelcomp extends PRelcomp
         this._p1_ = node;
     }
 
-    public TCondis getCondis()
+    public TCondop getCondop()
     {
-        return this._condis_;
+        return this._condop_;
     }
 
-    public void setCondis(TCondis node)
+    public void setCondop(TCondop node)
     {
-        if(this._condis_ != null)
+        if(this._condop_ != null)
         {
-            this._condis_.parent(null);
+            this._condop_.parent(null);
         }
 
         if(node != null)
@@ -92,7 +92,7 @@ public final class ACondisRelcomp extends PRelcomp
             node.parent(this);
         }
 
-        this._condis_ = node;
+        this._condop_ = node;
     }
 
     public PRelexpr getP2()
@@ -125,7 +125,7 @@ public final class ACondisRelcomp extends PRelcomp
     {
         return ""
             + toString(this._p1_)
-            + toString(this._condis_)
+            + toString(this._condop_)
             + toString(this._p2_);
     }
 
@@ -139,9 +139,9 @@ public final class ACondisRelcomp extends PRelcomp
             return;
         }
 
-        if(this._condis_ == child)
+        if(this._condop_ == child)
         {
-            this._condis_ = null;
+            this._condop_ = null;
             return;
         }
 
@@ -164,9 +164,9 @@ public final class ACondisRelcomp extends PRelcomp
             return;
         }
 
-        if(this._condis_ == oldChild)
+        if(this._condop_ == oldChild)
         {
-            setCondis((TCondis) newChild);
+            setCondop((TCondop) newChild);
             return;
         }
 

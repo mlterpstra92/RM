@@ -37,7 +37,7 @@ Tokens
     rshiftsym = '>>';
     notsym = '!';
     
-    condis = '&&'  | '||';
+    condop = '&&'  | '||';
     ifsym = 'IF';
     thensym = 'THEN';
     elsesym = 'ELSE';
@@ -69,32 +69,45 @@ Ignored Tokens
     comment, blank;
 
 Productions
-    program = {def}def program | {comp}comp program | {end}endsym;
+    program = {def} def program | 
+              {comp} comp program |  
+              {end} endsym;
     def = letsym ident parlst assignsym expr semicolonsym;
     comp = expr questionsym;
-    parlst = {parlst}lparsym pars rparsym | {empty}empty;
-    pars = {ident}ident | {comma}pars commasym ident;
-    expr = {complexexpr}ifsym relcomp thensym [trueclause]:expr elsesym [falseclause]:expr | {simpleexpr}smplexpr;
-    relcomp = {condis}[p1]:relcomp condis [p2]:relexpr | {cond}relexpr;
+    parlst = {parlst} lparsym pars rparsym | 
+             {empty} empty;
+    pars = {ident} ident | 
+           {comma} pars commasym ident;
+    expr = {complex} ifsym relcomp thensym [trueclause]:expr elsesym [falseclause]:expr | 
+           {simple} simplexpr;
+    relcomp = {compcond} [p1]:relcomp condop [p2]:relexpr | 
+              {cond} relexpr;
     relexpr = [left]:expr relop [right]:expr;
-    smplexpr = {term}term 
-             | {add}smplexpr addop term;
-    term = {factor}factorexpr | {mult}term mulop factorexpr;
+    simplexpr = {term}term 
+             | {add}simplexpr addop term;
+    term = {factor}factorexpr | 
+           {mult}term mulop factorexpr;
     factorexpr = {par}lparsym expr rparsym 
                | {simplefac} simplefactor;
     simplefactor  = 
                {num}numfac
              | {char} charsym
              | {string} stringsym 
-             | {succchar} succsym simplefactor
              | {ident}ident arglst;
-    numfac = {int}intdenotation | {real} realnum | {monad} monadexpr;
-    realnum = {scnum} [base]:realdenotation esym [exp]:numfac | {real}realdenotation;
-    monadexpr = {neg} minussym simplefactor;
-    arglst = {args}lparsym args rparsym | {empty}empty;
-    args = {expr}expr | {listargs}args commasym expr;
-    addop = {plus}plussym | {minus}minussym;
-    mulop = {mult}timessym 
+    numfac = {int}intdenotation | 
+             {real} realnum | 
+             {monad} monadexpr;
+    realnum = {scnum} [base]:realdenotation esym [exp]:numfac | 
+              {real}realdenotation;
+    monadexpr = {neg} minussym simplefactor |
+                {succchar} succsym simplefactor;
+    arglst = {args}lparsym args rparsym | 
+             {empty}empty;
+    args = {expr}expr | 
+           {listargs}args commasym expr;
+    addop = {plus}plussym | 
+            {minus}minussym;
+    mulop =   {mult}timessym 
             | {div}divsym 
             | {integermod}imodsym 
             | {lshift} lshiftsym

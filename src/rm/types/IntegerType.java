@@ -1,14 +1,11 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-package rm;
+package rm.types;
 
 import java.util.Objects;
 
 /**
  *
  * @author maarten
+ * Implementation of the int datatype
  */
 public class IntegerType extends Type
 {
@@ -151,6 +148,7 @@ public class IntegerType extends Type
     @Override
     public Type div(Type rightNumber) {
         IntegerType other = checkObj(rightNumber);
+        //Division by zero is checked in the interpreter
         if(other != null)
             return new IntegerType(this.value / other.getValue());
         return null;
