@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package rm;
 
 import java.io.*;
@@ -23,13 +19,14 @@ public class RM {
         if(args.length == 0)
         {
             try {
+                //print fancy error using the calling JAR name
                 String[] path = RM.class.getProtectionDomain().getCodeSource().getLocation().toURI().toString().split("/");
                 System.err.println("Usage: java -jar " + path[path.length-1] + " [-FailOnRedeclare] path");
             }
-            catch (URISyntaxException up) 
+            catch (URISyntaxException e) 
             {
+                //Fall back to default name if that failed
                 System.err.println("Usage: java -jar RM.jar [-FailOnRedeclare] path");
-                //throw up;
             }
             finally
             {
