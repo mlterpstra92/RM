@@ -282,13 +282,13 @@ public class Parser
                 push(goTo(7), list, false);
             }
             break;
-            case 14: /* reduce ATermSimplexpr */
+            case 14: /* reduce ATermSimpleexpr */
             {
                 ArrayList<Object> list = new14();
                 push(goTo(8), list, false);
             }
             break;
-            case 15: /* reduce AAddSimplexpr */
+            case 15: /* reduce AAddSimpleexpr */
             {
                 ArrayList<Object> list = new15();
                 push(goTo(8), list, false);
@@ -757,10 +757,10 @@ public class Parser
         PExpr pexprNode1;
         {
             // Block
-        PSimplexpr psimplexprNode2;
-        psimplexprNode2 = (PSimplexpr)nodeArrayList1.get(0);
+        PSimpleexpr psimpleexprNode2;
+        psimpleexprNode2 = (PSimpleexpr)nodeArrayList1.get(0);
 
-        pexprNode1 = new ASimpleExpr(psimplexprNode2);
+        pexprNode1 = new ASimpleExpr(psimpleexprNode2);
         }
 	nodeList.add(pexprNode1);
         return nodeList;
@@ -841,46 +841,46 @@ public class Parser
 
 
     @SuppressWarnings({ "unchecked", "rawtypes" })
-    ArrayList<Object> new14() /* reduce ATermSimplexpr */
+    ArrayList<Object> new14() /* reduce ATermSimpleexpr */
     {
         @SuppressWarnings("hiding") ArrayList<Object> nodeList = new ArrayList<Object>();
 
         @SuppressWarnings("unused") ArrayList<Object> nodeArrayList1 = pop();
-        PSimplexpr psimplexprNode1;
+        PSimpleexpr psimpleexprNode1;
         {
             // Block
         PTerm ptermNode2;
         ptermNode2 = (PTerm)nodeArrayList1.get(0);
 
-        psimplexprNode1 = new ATermSimplexpr(ptermNode2);
+        psimpleexprNode1 = new ATermSimpleexpr(ptermNode2);
         }
-	nodeList.add(psimplexprNode1);
+	nodeList.add(psimpleexprNode1);
         return nodeList;
     }
 
 
 
     @SuppressWarnings({ "unchecked", "rawtypes" })
-    ArrayList<Object> new15() /* reduce AAddSimplexpr */
+    ArrayList<Object> new15() /* reduce AAddSimpleexpr */
     {
         @SuppressWarnings("hiding") ArrayList<Object> nodeList = new ArrayList<Object>();
 
         @SuppressWarnings("unused") ArrayList<Object> nodeArrayList3 = pop();
         @SuppressWarnings("unused") ArrayList<Object> nodeArrayList2 = pop();
         @SuppressWarnings("unused") ArrayList<Object> nodeArrayList1 = pop();
-        PSimplexpr psimplexprNode1;
+        PSimpleexpr psimpleexprNode1;
         {
             // Block
-        PSimplexpr psimplexprNode2;
+        PSimpleexpr psimpleexprNode2;
         PAddop paddopNode3;
         PTerm ptermNode4;
-        psimplexprNode2 = (PSimplexpr)nodeArrayList1.get(0);
+        psimpleexprNode2 = (PSimpleexpr)nodeArrayList1.get(0);
         paddopNode3 = (PAddop)nodeArrayList2.get(0);
         ptermNode4 = (PTerm)nodeArrayList3.get(0);
 
-        psimplexprNode1 = new AAddSimplexpr(psimplexprNode2, paddopNode3, ptermNode4);
+        psimpleexprNode1 = new AAddSimpleexpr(psimpleexprNode2, paddopNode3, ptermNode4);
         }
-	nodeList.add(psimplexprNode1);
+	nodeList.add(psimpleexprNode1);
         return nodeList;
     }
 
@@ -1178,11 +1178,11 @@ public class Parser
         {
             // Block
         TMinussym tminussymNode2;
-        PSimplefactor psimplefactorNode3;
+        PFactorexpr pfactorexprNode3;
         tminussymNode2 = (TMinussym)nodeArrayList1.get(0);
-        psimplefactorNode3 = (PSimplefactor)nodeArrayList2.get(0);
+        pfactorexprNode3 = (PFactorexpr)nodeArrayList2.get(0);
 
-        pmonadexprNode1 = new ANegMonadexpr(tminussymNode2, psimplefactorNode3);
+        pmonadexprNode1 = new ANegMonadexpr(tminussymNode2, pfactorexprNode3);
         }
 	nodeList.add(pmonadexprNode1);
         return nodeList;
@@ -1585,7 +1585,7 @@ public class Parser
     private static int[][][] actionTable;
 /*      {
 			{{-1, ERROR, 0}, {1, SHIFT, 1}, {14, SHIFT, 2}, {17, SHIFT, 3}, {18, SHIFT, 4}, {19, SHIFT, 5}, {23, SHIFT, 6}, {30, SHIFT, 7}, {31, SHIFT, 8}, {32, SHIFT, 9}, {33, SHIFT, 10}, {34, SHIFT, 11}, },
-			{{-1, ERROR, 1}, {1, SHIFT, 1}, {18, SHIFT, 4}, {30, SHIFT, 7}, {31, SHIFT, 8}, {32, SHIFT, 9}, {33, SHIFT, 10}, {34, SHIFT, 11}, },
+			{{-1, ERROR, 1}, {1, SHIFT, 1}, {18, SHIFT, 4}, {19, SHIFT, 5}, {30, SHIFT, 7}, {31, SHIFT, 8}, {32, SHIFT, 9}, {33, SHIFT, 10}, {34, SHIFT, 11}, },
 			{{-1, ERROR, 2}, {1, SHIFT, 1}, {14, SHIFT, 2}, {18, SHIFT, 4}, {19, SHIFT, 5}, {30, SHIFT, 7}, {31, SHIFT, 8}, {32, SHIFT, 9}, {33, SHIFT, 10}, {34, SHIFT, 11}, },
 			{{-1, ERROR, 3}, {32, SHIFT, 27}, },
 			{{-1, ERROR, 4}, {1, SHIFT, 1}, {18, SHIFT, 4}, {30, SHIFT, 7}, {31, SHIFT, 8}, {32, SHIFT, 9}, {33, SHIFT, 10}, {34, SHIFT, 11}, },
@@ -1677,8 +1677,8 @@ public class Parser
 			{{-1, 26}, {53, 65}, },
 			{{-1, 16}, },
 			{{-1, 17}, {39, 62}, },
-			{{-1, 18}, {45, 63}, },
-			{{-1, 19}, {1, 23}, {4, 28}, },
+			{{-1, 18}, {1, 23}, {45, 63}, },
+			{{-1, 19}, {4, 28}, },
 			{{-1, 20}, {30, 59}, },
 			{{-1, 21}, },
 			{{-1, 22}, },
@@ -1692,9 +1692,10 @@ public class Parser
     private static String[] errorMessages;
 /*      {
 			"expecting: '-', 'IF', 'LET', 'SUCC', '(', '.', intdenotation, realdenotation, ident, charsym, stringsym",
-			"expecting: '-', 'SUCC', intdenotation, realdenotation, ident, charsym, stringsym",
+			"expecting: '-', 'SUCC', '(', intdenotation, realdenotation, ident, charsym, stringsym",
 			"expecting: '-', 'IF', 'SUCC', '(', intdenotation, realdenotation, ident, charsym, stringsym",
 			"expecting: ident",
+			"expecting: '-', 'SUCC', intdenotation, realdenotation, ident, charsym, stringsym",
 			"expecting: EOF",
 			"expecting: '+', '-', '*', '%', '/', '<', '<=', '!=', '>=', '>', '<<', '>>', condop, 'THEN', 'ELSE', ')', ',', ';', '==', '?'",
 			"expecting: '+', '-', '*', '%', '/', '<', '<=', '!=', '>=', '>', '<<', '>>', condop, 'THEN', 'ELSE', ')', ',', ';', '==', '?', 'E'",
@@ -1706,7 +1707,6 @@ public class Parser
 			"expecting: '(', '='",
 			"expecting: ')'",
 			"expecting: '-', 'SUCC', intdenotation, realdenotation",
-			"expecting: '-', 'SUCC', '(', intdenotation, realdenotation, ident, charsym, stringsym",
 			"expecting: '='",
 			"expecting: ')', ','",
 			"expecting: 'ELSE'",
@@ -1715,7 +1715,7 @@ public class Parser
         };*/
     private static int[] errors;
 /*      {
-			0, 1, 2, 3, 1, 2, 4, 5, 6, 7, 5, 5, 4, 0, 0, 8, 9, 5, 5, 5, 5, 5, 5, 5, 10, 11, 11, 12, 5, 13, 14, 2, 5, 5, 4, 4, 0, 15, 15, 15, 15, 15, 15, 15, 15, 15, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 16, 16, 5, 5, 17, 17, 5, 5, 11, 11, 18, 17, 17, 2, 5, 2, 2, 16, 3, 19, 17, 20, 17, 0, 
+			0, 1, 2, 3, 4, 2, 5, 6, 7, 8, 6, 6, 5, 0, 0, 9, 10, 6, 6, 6, 6, 6, 6, 6, 11, 12, 12, 13, 6, 14, 15, 2, 6, 6, 5, 5, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 16, 16, 6, 6, 17, 17, 6, 6, 12, 12, 18, 17, 17, 2, 6, 2, 2, 16, 3, 19, 17, 20, 17, 0, 
         };*/
 
     static 

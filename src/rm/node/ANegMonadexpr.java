@@ -8,7 +8,7 @@ import rm.analysis.*;
 public final class ANegMonadexpr extends PMonadexpr
 {
     private TMinussym _minussym_;
-    private PSimplefactor _simplefactor_;
+    private PFactorexpr _factorexpr_;
 
     public ANegMonadexpr()
     {
@@ -17,12 +17,12 @@ public final class ANegMonadexpr extends PMonadexpr
 
     public ANegMonadexpr(
         @SuppressWarnings("hiding") TMinussym _minussym_,
-        @SuppressWarnings("hiding") PSimplefactor _simplefactor_)
+        @SuppressWarnings("hiding") PFactorexpr _factorexpr_)
     {
         // Constructor
         setMinussym(_minussym_);
 
-        setSimplefactor(_simplefactor_);
+        setFactorexpr(_factorexpr_);
 
     }
 
@@ -31,7 +31,7 @@ public final class ANegMonadexpr extends PMonadexpr
     {
         return new ANegMonadexpr(
             cloneNode(this._minussym_),
-            cloneNode(this._simplefactor_));
+            cloneNode(this._factorexpr_));
     }
 
     @Override
@@ -65,16 +65,16 @@ public final class ANegMonadexpr extends PMonadexpr
         this._minussym_ = node;
     }
 
-    public PSimplefactor getSimplefactor()
+    public PFactorexpr getFactorexpr()
     {
-        return this._simplefactor_;
+        return this._factorexpr_;
     }
 
-    public void setSimplefactor(PSimplefactor node)
+    public void setFactorexpr(PFactorexpr node)
     {
-        if(this._simplefactor_ != null)
+        if(this._factorexpr_ != null)
         {
-            this._simplefactor_.parent(null);
+            this._factorexpr_.parent(null);
         }
 
         if(node != null)
@@ -87,7 +87,7 @@ public final class ANegMonadexpr extends PMonadexpr
             node.parent(this);
         }
 
-        this._simplefactor_ = node;
+        this._factorexpr_ = node;
     }
 
     @Override
@@ -95,7 +95,7 @@ public final class ANegMonadexpr extends PMonadexpr
     {
         return ""
             + toString(this._minussym_)
-            + toString(this._simplefactor_);
+            + toString(this._factorexpr_);
     }
 
     @Override
@@ -108,9 +108,9 @@ public final class ANegMonadexpr extends PMonadexpr
             return;
         }
 
-        if(this._simplefactor_ == child)
+        if(this._factorexpr_ == child)
         {
-            this._simplefactor_ = null;
+            this._factorexpr_ = null;
             return;
         }
 
@@ -127,9 +127,9 @@ public final class ANegMonadexpr extends PMonadexpr
             return;
         }
 
-        if(this._simplefactor_ == oldChild)
+        if(this._factorexpr_ == oldChild)
         {
-            setSimplefactor((PSimplefactor) newChild);
+            setFactorexpr((PFactorexpr) newChild);
             return;
         }
 

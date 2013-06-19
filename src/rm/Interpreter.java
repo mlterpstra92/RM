@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package rm;
 
 import java.text.NumberFormat;
@@ -46,6 +42,27 @@ class Interpreter extends DepthFirstAdapter {
             caseACompProgram((ACompProgram)node.getPProgram());
     }
     
+    
+
+    //Functions to be added to the symbol table
+    private void addBuiltInFunctions() {
+        ArrayList<String> builtInFuncs = new ArrayList<String>(){{
+            add("cos");
+            add("sin");
+            add("tan");
+            add("exp");
+            add("log");
+        }};
+        for(String s : builtInFuncs)
+        {
+            ArrayList<FuncArg> args = new ArrayList<>();
+            //Default dummy parameter
+            args.add(new FuncArg("x", null, 0));
+            Function f = new Function(s, args);
+            symbolTable.put(s, f);
+        }
+    }
+    
     //These are basically the main 'hooks' for the interpreter
     @Override
     public void caseADefProgram(ADefProgram node)
@@ -59,8 +76,8 @@ class Interpreter extends DepthFirstAdapter {
     }
     
     @Override
-    public void caseACompProgram(ACompProgram node){
-        
+    public void caseACompProgram(ACompProgram node)
+    {    
         AComp comp = (AComp)node.getComp();
         caseAComp(comp);
         if(node.getProgram() instanceof ADefProgram)
@@ -77,8 +94,7 @@ class Interpreter extends DepthFirstAdapter {
         String ident = (def.getIdent()).getText().trim();
         //Check if we are declaring a function
         //If we are we should at least issue a warning, depending on what the user wants
-        boolean isBuiltin = false;//isBuiltinFunction(ident);
-        if((!isBuiltin) && (symbolTable.get(ident) == null))
+        if(symbolTable.get(ident) == null)
         {
             //Add a new function to the symbol table
             Function f = new Function(ident);
@@ -105,12 +121,12 @@ class Interpreter extends DepthFirstAdapter {
                 System.exit(-5);
             }
             else
-                System.err.println("Warning: function " + ident + " is already defined. Possibly the result is NOT what you intended");
+                System.err.println("Warning: function " + ident + " is already defined. The end result may not be what you intended");
         }
     }
     
     //Retrieve the parameters for a function call
-    private Iterable<String> getParams(PParlst parlst) {
+    private ArrayList<String> getParams(PParlst parlst) {
         ArrayList<String> list = new ArrayList<>();
         if(!(parlst instanceof AEmptyParlst))
         {
@@ -157,7 +173,7 @@ class Interpreter extends DepthFirstAdapter {
         {
             return interpretComplexExpr((AComplexExpr)expr);
         }
-        else return interpretSimpleExpr(((ASimpleExpr)expr).getSimplexpr());
+        else return interpretSimpleExpr(((ASimpleExpr)expr).getSimpleexpr());
     }
     
     //Interpret the conditional expression and depending on its truth value
@@ -228,11 +244,11 @@ class Interpreter extends DepthFirstAdapter {
     
     //A simple expression is either a term or the addition/substraction
     //of a simple expression and a term
-    private Type interpretSimpleExpr(PSimplexpr aSimpleExpr) {
-        if(aSimpleExpr instanceof AAddSimplexpr)
+    private Type interpretSimpleExpr(PSimpleexpr aSimpleExpr) {
+        if(aSimpleExpr instanceof AAddSimpleexpr)
         {
-            AAddSimplexpr ex = (AAddSimplexpr)aSimpleExpr;
-            Type n1 = interpretSimpleExpr(ex.getSimplexpr());
+            AAddSimpleexpr ex = (AAddSimpleexpr)aSimpleExpr;
+            Type n1 = interpretSimpleExpr(ex.getSimpleexpr());
             Type n2 = interpretTerm(ex.getTerm());
             //It might be possible that we need to do coercion
             if(shouldCoerce(n1, n2))
@@ -247,7 +263,7 @@ class Interpreter extends DepthFirstAdapter {
                 return n1.minus(n2);
         }
         else
-            return interpretTerm(((ATermSimplexpr)aSimpleExpr).getTerm());
+            return interpretTerm(((ATermSimpleexpr)aSimpleExpr).getTerm());
     }
     
     //A term is either a multiplication/division of a term and factor or just a factor
@@ -384,7 +400,7 @@ class Interpreter extends DepthFirstAdapter {
         if(numfac instanceof ANegMonadexpr)
         {
             ANegMonadexpr negmonad = (ANegMonadexpr)numfac;
-            Type t = interpretSimpleFactor(negmonad.getSimplefactor());
+            Type t = interpretFactorExpr(negmonad.getFactorexpr());
             t.negate();
             return t;
         }
@@ -447,10 +463,6 @@ class Interpreter extends DepthFirstAdapter {
         String ident = func.getIdent().getText().trim();
         //Retrieve all its arguments
         ArrayList<Type> list = getArgs(func.getArglst());
-        //Check if it is a built-in function
-        //Type builtInFuncResult = executeBuiltInFunc(ident, list);
-        //if(builtInFuncResult != null)
-        //    return builtInFuncResult;
 
         //If we're here it means it wasn't a built-in function so we look
         //in the symbol table for a function that matches our name
@@ -468,8 +480,8 @@ class Interpreter extends DepthFirstAdapter {
         //If we couldn't find it as a function, it might be that we are handling
         //a functions argument. So we look at the current function and see if we
         //can find it there
-        Function curr = stack.peek();
-        FuncArg fa = curr.getArg(ident);
+        Function currentFunction = stack.peek();
+        FuncArg fa = currentFunction.getArg(ident);
         if(fa != null)
         {
             return fa.getValue();
@@ -487,6 +499,32 @@ class Interpreter extends DepthFirstAdapter {
         return ((n1 instanceof RealType) ^ (n2 instanceof RealType)) && ((n1 instanceof IntegerType ^ n2 instanceof IntegerType));
     }
 
+    //Update the arguments of the called function with new values
+    private void setArguments(Function func, ArrayList<Type> list) 
+    {
+        int i = 0;
+        for(FuncArg arg : func.getArgs())
+        {
+            arg.setValue(list.get(i));
+            ++i;
+        }
+    }
+
+    //Function execution is quite simple: push it on the stack, interpret its expression
+    //and pop it off
+    private Type executeFunc(Function function) 
+    {
+        //If the expression is null it means that the function is built-in
+        if(function.getExpr() != null) {
+            stack.push(function);
+            Type t = interpretExpr(function.getExpr());
+            stack.pop();
+            return t;
+        }
+        else 
+            return executeBuiltInFunc(function);
+    }
+    
     //Possible improvement: Set the appropriate expression for built-in functions
     //so we don't need this
     private Type executeBuiltInFunc(Function f) 
@@ -494,6 +532,7 @@ class Interpreter extends DepthFirstAdapter {
         if(f.getArgs().size() == 1)
         {
             Type retVal;
+            //For every built-in function the argument name is "x" 
             Double d = new Double(f.getArg("x").getValue().getValue().toString().trim());
             switch(f.getName())
             {
@@ -520,31 +559,6 @@ class Interpreter extends DepthFirstAdapter {
         }
         throw new IllegalArgumentException("One argument expected");
     }
-
-    //Update the arguments of the called function with new values
-    private void setArguments(Function func, ArrayList<Type> list) 
-    {
-        int i = 0;
-        for(FuncArg arg : func.getArgs())
-        {
-            arg.setValue(list.get(i));
-            ++i;
-        }
-    }
-
-    //Function execution is quite simple: push it on the stack, interpret its expression
-    //and pop it off
-    private Type executeFunc(Function function) 
-    {
-        if(function.getExpr() != null) {
-            stack.push(function);
-            Type t = interpretExpr(function.getExpr());
-            stack.pop();
-            return t;
-        }
-        else 
-            return executeBuiltInFunc(function);
-    }
     
     //Make sure the stack is empty at the end of program execution
     @Override
@@ -552,24 +566,5 @@ class Interpreter extends DepthFirstAdapter {
     {
         if(!stack.empty())
             System.err.println("Unexpected elements on stack");
-    }
-
-    //Functions to be added to the symbol table
-    private void addBuiltInFunctions() {
-        ArrayList<String> builtInFuncs = new ArrayList<String>(){{
-            add("cos");
-            add("sin");
-            add("tan");
-            add("exp");
-            add("log");
-        }};
-        for(String s : builtInFuncs)
-        {
-            ArrayList<FuncArg> args = new ArrayList<>();
-            //Default dummy parameter
-            args.add(new FuncArg("x", null, 0));
-            Function f = new Function(s, args);
-            symbolTable.put(s, f);
-        }
     }
 }

@@ -328,9 +328,9 @@ public class DepthFirstAdapter extends AnalysisAdapter
     public void caseASimpleExpr(ASimpleExpr node)
     {
         inASimpleExpr(node);
-        if(node.getSimplexpr() != null)
+        if(node.getSimpleexpr() != null)
         {
-            node.getSimplexpr().apply(this);
+            node.getSimpleexpr().apply(this);
         }
         outASimpleExpr(node);
     }
@@ -414,44 +414,44 @@ public class DepthFirstAdapter extends AnalysisAdapter
         outARelexpr(node);
     }
 
-    public void inATermSimplexpr(ATermSimplexpr node)
+    public void inATermSimpleexpr(ATermSimpleexpr node)
     {
         defaultIn(node);
     }
 
-    public void outATermSimplexpr(ATermSimplexpr node)
+    public void outATermSimpleexpr(ATermSimpleexpr node)
     {
         defaultOut(node);
     }
 
     @Override
-    public void caseATermSimplexpr(ATermSimplexpr node)
+    public void caseATermSimpleexpr(ATermSimpleexpr node)
     {
-        inATermSimplexpr(node);
+        inATermSimpleexpr(node);
         if(node.getTerm() != null)
         {
             node.getTerm().apply(this);
         }
-        outATermSimplexpr(node);
+        outATermSimpleexpr(node);
     }
 
-    public void inAAddSimplexpr(AAddSimplexpr node)
+    public void inAAddSimpleexpr(AAddSimpleexpr node)
     {
         defaultIn(node);
     }
 
-    public void outAAddSimplexpr(AAddSimplexpr node)
+    public void outAAddSimpleexpr(AAddSimpleexpr node)
     {
         defaultOut(node);
     }
 
     @Override
-    public void caseAAddSimplexpr(AAddSimplexpr node)
+    public void caseAAddSimpleexpr(AAddSimpleexpr node)
     {
-        inAAddSimplexpr(node);
-        if(node.getSimplexpr() != null)
+        inAAddSimpleexpr(node);
+        if(node.getSimpleexpr() != null)
         {
-            node.getSimplexpr().apply(this);
+            node.getSimpleexpr().apply(this);
         }
         if(node.getAddop() != null)
         {
@@ -461,7 +461,7 @@ public class DepthFirstAdapter extends AnalysisAdapter
         {
             node.getTerm().apply(this);
         }
-        outAAddSimplexpr(node);
+        outAAddSimpleexpr(node);
     }
 
     public void inAFactorTerm(AFactorTerm node)
@@ -783,9 +783,9 @@ public class DepthFirstAdapter extends AnalysisAdapter
         {
             node.getMinussym().apply(this);
         }
-        if(node.getSimplefactor() != null)
+        if(node.getFactorexpr() != null)
         {
-            node.getSimplefactor().apply(this);
+            node.getFactorexpr().apply(this);
         }
         outANegMonadexpr(node);
     }

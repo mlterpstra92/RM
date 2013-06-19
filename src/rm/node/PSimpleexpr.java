@@ -2,7 +2,7 @@
 
 package rm.node;
 
-public abstract class PComp extends Node
+public abstract class PSimpleexpr extends Node
 {
     // Empty body
 }

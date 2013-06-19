@@ -26,8 +26,8 @@ public interface Analysis extends Switch
     void caseACompcondRelcomp(ACompcondRelcomp node);
     void caseACondRelcomp(ACondRelcomp node);
     void caseARelexpr(ARelexpr node);
-    void caseATermSimplexpr(ATermSimplexpr node);
-    void caseAAddSimplexpr(AAddSimplexpr node);
+    void caseATermSimpleexpr(ATermSimpleexpr node);
+    void caseAAddSimpleexpr(AAddSimpleexpr node);
     void caseAFactorTerm(AFactorTerm node);
     void caseAMultTerm(AMultTerm node);
     void caseAParFactorexpr(AParFactorexpr node);

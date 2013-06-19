@@ -83,13 +83,13 @@ Productions
     pars = {ident} ident | 
            {comma} pars commasym ident;
     expr = {complex} ifsym relcomp thensym [trueclause]:expr elsesym [falseclause]:expr | 
-           {simple} simplexpr;
+           {simple} simpleexpr;
     //Left recursion is no problem here
     relcomp = {compcond} [p1]:relcomp condop [p2]:relexpr | 
               {cond} relexpr;
     relexpr = [left]:expr relop [right]:expr;
-    simplexpr = {term}term 
-             | {add}simplexpr addop term;
+    simpleexpr = {term}term 
+             | {add}simpleexpr addop term;
     term = {factor}factorexpr | 
            {mult}term mulop factorexpr;
     factorexpr = {par}lparsym expr rparsym 
@@ -104,7 +104,7 @@ Productions
              {monad} monadexpr;
     realnum = {scnum} [base]:realdenotation esym [exp]:numfac | 
               {real}realdenotation;
-    monadexpr = {neg} minussym simplefactor |
+    monadexpr = {neg} minussym factorexpr |
                 {succchar} succsym simplefactor;
     arglst = {args}lparsym args rparsym | 
              {empty}empty;

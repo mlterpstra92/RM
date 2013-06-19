@@ -159,13 +159,13 @@ public class AnalysisAdapter implements Analysis
     }
 
     @Override
-    public void caseATermSimplexpr(ATermSimplexpr node)
+    public void caseATermSimpleexpr(ATermSimpleexpr node)
     {
         defaultCase(node);
     }
 
     @Override
-    public void caseAAddSimplexpr(AAddSimplexpr node)
+    public void caseAAddSimpleexpr(AAddSimpleexpr node)
     {
         defaultCase(node);
     }
