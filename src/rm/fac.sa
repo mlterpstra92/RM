@@ -1,0 +1,5 @@
+//Combination of recursion, monadic expressions and nested functions
+LET abs(n) = IF n < 0 THEN -n ELSE n;
+LET fac(n) = IF n <= 1 THEN 1 ELSE n*fac(n-1);
+fac(abs(-5))?
+.

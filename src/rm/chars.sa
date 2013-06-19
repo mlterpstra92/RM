@@ -1,0 +1,6 @@
+//Uses char arithmetic and SUCC operation
+LET c = 'A';
+LET incrementWhileInAlphabet(x) = IF x < 'z' THEN incrementWhileInAlphabet(SUCC x) ELSE x;
+LET prepare(c) = IF c >= 'A' && c <= 'Z' THEN c + ('a' - 'A') ELSE c;
+incrementWhileInAlphabet(prepare(c))?
+.
