@@ -18,9 +18,7 @@ import rm.types.RealType;
 import rm.types.StringType;
 import rm.types.Type;
 
-
-
-            /**
+ /**
  *
  * @author Maarten
  */

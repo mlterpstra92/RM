@@ -46,7 +46,8 @@ public class StringType extends Type {
     public Boolean IsGreaterOrEqual(Type other) {
         StringType obj = checkObj(other);
         if(obj != null) return this.value.compareTo((String)obj.getValue()) >= 0;    
-        throw new IllegalArgumentException("Invalid type of other");    }
+        throw new IllegalArgumentException("Invalid type of other");    
+    }
 
     //Add in a string context means concatenation
     @Override

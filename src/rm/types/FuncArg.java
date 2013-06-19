@@ -1,12 +1,10 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package rm.types;
 
 /**
  *
  * @author Maarten
+ * This class represents an argument for a function
+ * It is identified by a name and has a value and an order
  */
 public class FuncArg implements Comparable<FuncArg>{
     private String argName;

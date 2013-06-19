@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package rm.types;
 
 import java.util.Objects;
@@ -9,6 +5,7 @@ import java.util.Objects;
 /**
  *
  * @author Maarten
+ * This function represents the Char datatype
  */
 public class CharType extends Type{
     private Character value;
@@ -40,6 +37,7 @@ public class CharType extends Type{
         return Objects.equals(this.value, other.getValue());
     }
 
+    //Does sort of safe type-cast 
     public CharType checkObj(Type obj)
     {
         if (obj == null) {
@@ -94,6 +92,7 @@ public class CharType extends Type{
         if(obj != null){
             return new CharType((char)(this.value + obj.getValue()));
         }
+        //It is possible to add an integer value to a char
         if(other.getClass().getName().equals(IntegerType.class.getName()))
         {
             IntegerType i = (IntegerType)other;
@@ -108,22 +107,28 @@ public class CharType extends Type{
         if(obj != null){
             return new CharType((char)(this.value - obj.getValue()));
         }
+        //It is possible to substract an integer value to a char
+        if(other.getClass().getName().equals(IntegerType.class.getName()))
+        {
+            IntegerType i = (IntegerType)other;
+            return new CharType((char)(this.value - i.getValue()));
+        }
         throw new IllegalArgumentException("Cannot substract " + other.getClass().getSimpleName() + " from a char");   
  
     }
 
     @Override
     public Type times(Type other) {
-        throw new UnsupportedOperationException("Chars don't implement mathematical operators"); //To change body of generated methods, choose Tools | Templates.
+        throw new UnsupportedOperationException("Chars don't implement mathematical operators"); 
     }
 
     @Override
     public Type div(Type rightNumber) {
-        throw new UnsupportedOperationException("Chars don't implement mathematical operators"); //To change body of generated methods, choose Tools | Templates.
+        throw new UnsupportedOperationException("Chars don't implement mathematical operators");
     }
 
     @Override
     public void negate() {
-        throw new UnsupportedOperationException("Chars don't have an inverse"); //To change body of generated methods, choose Tools | Templates.
+        throw new UnsupportedOperationException("Chars don't have an inverse");
     }
 }

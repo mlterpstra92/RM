@@ -54,6 +54,7 @@ public class IntegerType extends Type
         final IntegerType other = (IntegerType) obj;
         return other;
     }
+    
     @Override
     public Boolean IsLessThan(Type obj) {
         IntegerType other = checkObj(obj);
