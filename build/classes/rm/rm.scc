@@ -1,20 +1,24 @@
 /* 
 	filename   : RM.ssc
 	created on : May 3, 2013
-	description:
+	description: This grammar represents the grammar of RM given at the exercise
 */
 
-/* define package-prefix */
 Package rm;
 
 Helpers
-    all = [0 .. 0xFFFF];  
+    all = [0 .. 0xFFFF];
+    //ASCII code for tab is 9
     tab = 9;
+    //ASCII code for tab is 13
     cr = 13;
+    //ASCII code for tab is 10
     lf = 10;
+    //Support either lowercase or uppercase characters
     letter = [['A'..'Z'] + ['a'..'z']];	
     digit = ['0' .. '9'];
     eol = cr lf | cr | lf;   
+    //These are needed for comments
     not_star = [all - '*'];
     not_star_slash = [not_star - '/'];
     short_comment = '//' [all - [cr + lf]]* eol;
@@ -80,6 +84,7 @@ Productions
            {comma} pars commasym ident;
     expr = {complex} ifsym relcomp thensym [trueclause]:expr elsesym [falseclause]:expr | 
            {simple} simplexpr;
+    //Left recursion is no problem here
     relcomp = {compcond} [p1]:relcomp condop [p2]:relexpr | 
               {cond} relexpr;
     relexpr = [left]:expr relop [right]:expr;
